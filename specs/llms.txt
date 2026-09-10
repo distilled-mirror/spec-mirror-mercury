@@ -1,0 +1,122 @@
+# Mercury API Documentation
+
+> Documentation for Mercury API
+
+Append .md to any documentation page URL to get its markdown version.
+
+## Guides
+- [Welcome to Mercury's API docs](https://docs.mercury.com/docs/welcome.md): Access your accounts, transaction histories, and make payments programmatically with the Mercury API
+- [Getting Started](https://docs.mercury.com/docs/getting-started.md): Learn how to authenticate, set up API tokens, and make your first API call to Mercury
+- [API Token Security Policies](https://docs.mercury.com/docs/api-token-security-policies.md): Understand token security, automatic downgrades, IP whitelisting, and scope management for API tokens
+- [Using the Mercury Sandbox for Testing](https://docs.mercury.com/docs/using-mercury-sandbox.md): Our Sandbox environment is designed to make it easy for you to test API calls in a safe, simulated version of Mercury — no real money involved.
+- [Overview](https://docs.mercury.com/docs/products-overview.md): Guides for building on Mercury's product APIs.
+- [Invoicing](https://docs.mercury.com/docs/invoicing.md): Create invoices from your own systems, track who has paid, and learn how Mercury matches incoming payments.
+- [Send Money](https://docs.mercury.com/docs/send-money.md): Pay recipients from your Mercury accounts over ACH, check, domestic wire, and international wire, with optional approval controls.
+- [Integrations with OAuth2](https://docs.mercury.com/docs/integrations-with-oauth2.md)
+- [What is Mercury MCP?](https://docs.mercury.com/docs/what-is-mercury-mcp.md): Learn how to connect AI agents to your Mercury accounts.
+- [Connecting Mercury MCP](https://docs.mercury.com/docs/connecting-mercury-mcp.md): Learn how to get started and plug Mercury into your AI tool.
+- [Supported tools on Mercury's MCP](https://docs.mercury.com/docs/supported-tools-on-mercury-mcp.md): Learn what you can do with Mercury's MCP tools.
+- [Security best practices](https://docs.mercury.com/docs/security-best-practices.md): Learn how to keep your Mercury account secure when using Mercury's MCP
+
+## API Reference
+- [Get cards for account](https://docs.mercury.com/reference/getaccountcards.md): Retrieve all debit and credit cards associated with a specific account.
+- [Request to send money](https://docs.mercury.com/reference/requestsendmoney.md): Create a "request to send money" that will require approval based on your organization's approval policies.
+- [Get account statements](https://docs.mercury.com/reference/getaccountstatements.md): Retrieve a paginated list of monthly statements for a specific account. Supports cursor-based pagination with limit, order, start_after, and end_before query parameters, as well as date range filtering with start and end parameters.
+- [Get transaction by ID](https://docs.mercury.com/reference/gettransaction.md)
+- [List account transactions](https://docs.mercury.com/reference/listaccounttransactions.md): Retrieve a paginated list of transactions for a specific account. Supports filtering by date range, status, and search terms.
+- [Send money to a recipient](https://docs.mercury.com/reference/createtransaction.md): Send money from an account to a recipient. Creates a transaction that will be processed immediately or may require approval.
+- [Get all accounts](https://docs.mercury.com/reference/getaccounts.md): Retrieve a paginated list of accounts. Supports cursor-based pagination with limit, order, start_after, and end_before query parameters.
+- [Create an internal transfer](https://docs.mercury.com/reference/createinternaltransfer.md): Transfer funds between two accounts within the same organization. Supports transfers between depository accounts (checking/savings), from a depository account to a treasury/investment account, and from a treasury/investment account to a depository account. Creates paired debit and credit transactions.
+- [Get recipient by ID](https://docs.mercury.com/reference/getrecipient.md): Retrieve details of a specific recipient by ID
+- [Get all recipients](https://docs.mercury.com/reference/getrecipients.md): Retrieve a paginated list of all recipients. Use cursor parameters (start_after, end_before) for pagination.
+- [Edit information about a specific recipient](https://docs.mercury.com/reference/updaterecipient.md): Update an existing recipient's information
+- [Add a new recipient](https://docs.mercury.com/reference/createrecipient.md): Create a new recipient for making payments
+- [Upload a recipient attachment](https://docs.mercury.com/reference/uploadrecipientattachment.md): Upload a tax form attachment for a recipient. The file is uploaded via multipart/form-data. Supported file types include PDF, images (PNG, JPG, GIF), and common document formats. The attachment will be associated as a tax document for the recipient.
+- [List all recipient attachments](https://docs.mercury.com/reference/listrecipientsattachments.md): Retrieve a paginated list of all recipient tax form attachments across all recipients in the organization. Use cursor parameters (start_after, end_before) for pagination.
+- [Delete a recipient](https://docs.mercury.com/reference/deleterecipient.md): Delete a specific recipient by ID. Fails if the recipient is blocked by scheduled payments, pending approvals, or active ACH authorizations.
+- [Create a recipient invite](https://docs.mercury.com/reference/createrecipientinvite.md): Create an invite for a recipient to submit their payment details. Supply a recipientId to invite an existing recipient; omit it to invite someone new, in which case the recipient is created when the invitee completes onboarding.
+- [Get recipient invite by ID](https://docs.mercury.com/reference/getrecipientinvite.md): Retrieve details of a specific recipient invite by ID.
+- [List recipient invites](https://docs.mercury.com/reference/listrecipientinvites.md): Retrieve a paginated list of all recipient invites for your organization. Supports filtering by status.
+- [Delete a recipient invite](https://docs.mercury.com/reference/deleterecipientinvite.md): Delete an active recipient invite.
+- [List send money approval requests](https://docs.mercury.com/reference/listsendmoneyapprovalrequests.md): Retrieve a paginated list of send money approval requests for the authenticated organization. Supports filtering by account and status.
+- [Get send money approval request by ID](https://docs.mercury.com/reference/getsendmoneyapprovalrequest.md)
+- [Get all treasury accounts](https://docs.mercury.com/reference/gettreasury.md): Retrieve a paginated list of all treasury accounts associated with the authenticated organization. Use cursor parameters (start_after, end_before) for pagination.
+- [Get treasury transactions](https://docs.mercury.com/reference/gettreasurytransactions.md): Retrieve paginated treasury transactions for a specific treasury account.
+- [Get treasury account statements](https://docs.mercury.com/reference/gettreasurystatements.md): Retrieve a paginated list of statements for a specific treasury account. Supports cursor-based pagination and filtering by document type.
+- [Download account statement PDF](https://docs.mercury.com/reference/getstatementpdf.md): Downloads a PDF file for the specified account statement. The response includes a Content-Disposition header for proper file download handling. Returns binary PDF data.
+- [Update transaction metadata](https://docs.mercury.com/reference/updatetransaction.md): Update the note and/or category of an existing transaction. Use null values to clear existing data.
+- [List all transactions](https://docs.mercury.com/reference/listtransactions.md): Retrieve a paginated list of all transactions across all accounts. Supports advanced filtering by date ranges, status, categories, and cursor-based pagination.
+- [Get a transaction by ID](https://docs.mercury.com/reference/gettransactionbyid.md): Retrieve a single transaction by its ID. Returns full transaction details including attachments, check images, and related metadata.
+- [Upload a transaction attachment](https://docs.mercury.com/reference/uploadtransactionattachment.md): Upload a file attachment to a transaction. The file is uploaded via multipart/form-data. Supported file types include PDF, images (PNG, JPG, GIF), and common document formats.
+- [List all categories](https://docs.mercury.com/reference/listcategories.md): Retrieve a paginated list of all available custom expense categories for the organization. Supports cursor-based pagination with limit, order, start_after, and end_before query parameters.
+- [Create a new category](https://docs.mercury.com/reference/createcategory.md): Create a new custom expense category for the organization.
+- [Edit a category](https://docs.mercury.com/reference/editcategory.md): Update an existing custom expense category for the organization.
+- [Delete a category](https://docs.mercury.com/reference/deletecategory.md): Delete a custom expense category for the organization.
+- [List merchants](https://docs.mercury.com/reference/listmerchants.md): Retrieve a paginated list of priority merchants that can be used for spend controls like merchant locking. Supports cursor-based pagination with limit, order, start_after, and end_before query parameters, plus an optional case-insensitive search by merchant name.
+- [List all credit accounts](https://docs.mercury.com/reference/listcredit.md): Retrieve a list of all credit accounts for the organization.
+- [Get organization information](https://docs.mercury.com/reference/getorganization.md): Retrieve information about your organization including EIN, legal business name, and DBAs.
+- [Accounts Receivable](https://docs.mercury.com/reference/accounts_receivable.md): API for creating and managing invoices
+- [Get an attachment](https://docs.mercury.com/reference/getattachment.md): Retrieve attachment details including download URL
+- [List all customers](https://docs.mercury.com/reference/listcustomers.md): Retrieve a paginated list of customers. Supports cursor-based pagination with limit, order, start_after, and end_before query parameters.
+- [Create a customer](https://docs.mercury.com/reference/createcustomer.md): Create a new customer for the organization
+- [Delete a customer](https://docs.mercury.com/reference/deletecustomer.md): Delete a customer. This action cannot be undone.
+- [Get a customer](https://docs.mercury.com/reference/getcustomer.md): Retrieve details of a specific customer by their ID
+- [Update a customer](https://docs.mercury.com/reference/updatecustomer.md): Update an existing customer
+- [List all invoices](https://docs.mercury.com/reference/listinvoices.md): Retrieve a paginated list of invoices. Supports cursor-based pagination with limit, order, start_after, and end_before query parameters.
+- [Create an invoice](https://docs.mercury.com/reference/createinvoice.md): Create a new invoice for the organization
+- [Get an invoice](https://docs.mercury.com/reference/getinvoice.md): Retrieve details of an invoice by its ID
+- [Update an invoice](https://docs.mercury.com/reference/updateinvoice.md): Update an existing invoice
+- [Cancel an invoice](https://docs.mercury.com/reference/cancelinvoice.md): Cancel an invoice. This action cannot be undone.
+- [List invoice attachments](https://docs.mercury.com/reference/listinvoiceattachments.md): Retrieve a list of all attachments for a specific invoice
+- [Download invoice PDF](https://docs.mercury.com/reference/getinvoicepdf.md): Downloads a PDF file for the specified invoice. The response includes a Content-Disposition header set to 'attachment' with the filename.
+- [Events](https://docs.mercury.com/reference/events.md): Track changes to your Mercury resources in real-time with an auditable event stream that captures what changed, when it changed, and the before/after values.
+- [Get all events](https://docs.mercury.com/reference/getevents.md)
+- [Get event by ID](https://docs.mercury.com/reference/getevent.md)
+- [Webhooks](https://docs.mercury.com/reference/webhooks.md): Receive real-time notifications when resources in your Mercury account change by configuring webhook endpoints to listen for specific events.
+- [Create a new webhook endpoint](https://docs.mercury.com/reference/createwebhook.md): Register a new webhook endpoint to receive event notifications
+- [Update an existing webhook endpoint](https://docs.mercury.com/reference/updatewebhook.md): Update the configuration of an existing webhook endpoint. A webhook that has been disabled due to consecutive delivery failures can be reactivated by setting its status to 'active'.
+- [Verify a webhook endpoint](https://docs.mercury.com/reference/verifywebhook.md): Send a test event to verify the webhook endpoint is properly configured and reachable. The request body accepts an optional 'eventType' field to specify which event type to test (e.g., 'transaction.created', 'transaction.updated'). If omitted from the request body, defaults to 'transaction.created'.
+- [Get webhook endpoint by ID](https://docs.mercury.com/reference/getwebhook.md): Retrieve details of a specific webhook endpoint by ID
+- [Get webhook endpoints](https://docs.mercury.com/reference/getwebhooks.md): Retrieve a paginated list of all webhook endpoints for your organization. Supports filtering by status.
+- [Delete a webhook endpoint](https://docs.mercury.com/reference/deletewebhook.md): Delete a webhook endpoint
+- [Get user by ID](https://docs.mercury.com/reference/getuser.md)
+- [Get all users](https://docs.mercury.com/reference/getusers.md)
+- [Get all SAFEs](https://docs.mercury.com/reference/getsaferequests.md): Retrieve all SAFE (Simple Agreement for Future Equity) requests for your organization.
+- [Get SAFE by ID](https://docs.mercury.com/reference/getsaferequest.md): Retrieve a specific SAFE request by its ID.
+- [Download SAFE document](https://docs.mercury.com/reference/getsaferequestdocument.md): Download the PDF document for a specific SAFE request. Returns binary PDF data with a Content-Disposition header.
+- [Cards](https://docs.mercury.com/reference/cards.md): Issue and manage cards.
+- [List cards](https://docs.mercury.com/reference/listcards.md): Retrieve a paginated list of cards.
+- [Create a card](https://docs.mercury.com/reference/createcard.md): Issue a new virtual card.
+- [Get a card](https://docs.mercury.com/reference/getcard.md): Retrieve details of a specific card by its ID.
+- [Update a card](https://docs.mercury.com/reference/updatecard.md): Update a card's nickname or spending limits.
+- [Cancel a card](https://docs.mercury.com/reference/cancelcard.md): Permanently cancel a card. This action cannot be undone.
+- [Freeze a card](https://docs.mercury.com/reference/freezecard.md): Temporarily freeze a card. The card must be active.
+- [Unfreeze a card](https://docs.mercury.com/reference/unfreezecard.md): Unfreeze a previously frozen card, restoring it to active status.
+- [Vault](https://docs.mercury.com/reference/vault.md): Access sensitive card data for agent cards.
+- [Reveal card details](https://docs.mercury.com/reference/revealcardpan.md): Retrieve the full card number, expiration date, and CVC for a card. Available for agentic cards only.
+- [Request to transfer money](https://docs.mercury.com/reference/requesttransfermoney.md): Create a transfer between two accounts in your organization that will require approval based on your organization's approval policies.
+- [Start OAuth2 web flow](https://docs.mercury.com/reference/startoauth2flow.md): Initiates the OAuth2 authorization flow. Redirects the user to Mercury's consent page.
+- [Obtain an access token](https://docs.mercury.com/reference/obtainaccesstoken.md): Exchange an authorization code for an access token
+
+## Recipes
+- [Bulk upload receipts ](https://docs.mercury.com/recipes/bulk-upload-receipts.md)
+- [Bulk upload tax docs](https://docs.mercury.com/recipes/bulk-upload-tax-docs.md)
+- [Create a new payment recipient](https://docs.mercury.com/recipes/create-a-new-payment-recipient.md)
+- [Invite a recipient](https://docs.mercury.com/recipes/invite-a-recipient.md)
+- [Invoice your customers](https://docs.mercury.com/recipes/invoice-your-customers.md)
+- [Request a payment approval](https://docs.mercury.com/recipes/request-a-payment-approval.md)
+- [Retrieve information about all of your accounts](https://docs.mercury.com/recipes/retrieve-information-about-all-of-your-accounts.md)
+- [Retrieve information about all of your payment recipients](https://docs.mercury.com/recipes/retrieve-information-about-all-of-your-payment-recipients.md)
+- [Send an ACH payment](https://docs.mercury.com/recipes/send-an-ach-payment.md)
+
+## Changelog
+- [Vault API: Retrieve agent card credentials](https://docs.mercury.com/changelog/vault-api-retrieve-agent-card-credentials.md)
+- [Credit Statement Endpoint: Updated balance and transaction behavior](https://docs.mercury.com/changelog/credit-statement-endpoint-updated-balance-and-transaction-behavior.md)
+- [Issue and manage cards via API](https://docs.mercury.com/changelog/cards-api-now-available.md)
+- [Categories API now supports create, edit, and delete](https://docs.mercury.com/changelog/categories-api-now-available.md)
+- [Send Money API now supports checks and domestic wires as payment methods](https://docs.mercury.com/changelog/send-money-api-now-supports-checks-and-domestic-wires-as-payment-methods.md)
+- [n8n community node launch](https://docs.mercury.com/changelog/n8n-community-node-launch.md)
+- [Treasury API now supports statements](https://docs.mercury.com/changelog/treasury-statements-now-avaliable.md)
+- [SAFE API now available](https://docs.mercury.com/changelog/safe-api-now-available.md)
+- [Account Balance Events via Webhooks/Events endpoints now available](https://docs.mercury.com/changelog/account-balance-events-via-webhooksevents-endpoints-now-available.md)
+- [Attachment uploads API now available](https://docs.mercury.com/changelog/attachment-uploads-api-now-available.md)
