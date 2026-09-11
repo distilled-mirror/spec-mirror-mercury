@@ -150,7 +150,7 @@ Retrieve all debit and credit cards associated with a specific account.
             "type": "integer"
           },
           "atmAmountCents": {
-            "description": " Maximum ATM withdrawal allowed per interval, in cents. Null for virtual cards.",
+            "description": " Maximum ATM withdrawal allowed per interval, in cents. Null for virtual\n cards and credit cards.",
             "minimum": 0,
             "nullable": true,
             "type": "integer"

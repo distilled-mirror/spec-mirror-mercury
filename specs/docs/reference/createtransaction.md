@@ -943,7 +943,8 @@ Note that attempting to create a duplicate transaction (same recipient, same acc
         "enum": [
           "ach",
           "check",
-          "domesticWire"
+          "domesticWire",
+          "realTimePayment"
         ],
         "type": "string"
       },

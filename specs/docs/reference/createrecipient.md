@@ -67,6 +67,14 @@ Create a new recipient for making payments
           },
           "nickname": {
             "type": "string"
+          },
+          "realTimePaymentRoutingInfo": {
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/RealTimePaymentRoutingInfoRaw"
+              }
+            ],
+            "description": "Information needed to send a real-time payment."
           }
         },
         "required": [
@@ -779,6 +787,35 @@ Create a new recipient for making payments
         "required": [
           "accountNumber",
           "routingNumber"
+        ],
+        "type": "object"
+      },
+      "RealTimePaymentRoutingInfoRaw": {
+        "description": " Routing information for real-time payments.",
+        "properties": {
+          "accountNumber": {
+            "description": " The account number of the bank account to use for real-time payments.",
+            "type": "string"
+          },
+          "address": {
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/AddressWithoutName"
+              },
+              {
+                "description": " The address of the bank account to use for real-time payments."
+              }
+            ]
+          },
+          "routingNumber": {
+            "description": " The routing number of the bank account to use for real-time payments.",
+            "type": "string"
+          }
+        },
+        "required": [
+          "accountNumber",
+          "routingNumber",
+          "address"
         ],
         "type": "object"
       },

@@ -116,7 +116,7 @@ Issue a new virtual card.
                 "$ref": "#/components/schemas/SpendLimit"
               },
               {
-                "description": " Card-level spending controls. Omitted when budgets govern this card."
+                "description": " Card-level spending controls. This is null when card-level limits are\n unavailable, including for credit cards governed by budgets. For debit\n cards, this includes the underlying card limits even when budgets govern\n purchase spending. In budget mode, the transaction limit does not gate\n purchases, but the ATM or cash limit can still apply to cash withdrawals."
               }
             ],
             "nullable": true
@@ -127,7 +127,7 @@ Issue a new virtual card.
                 "$ref": "#/components/schemas/SpendLimitType"
               },
               {
-                "description": " Whether card-level limits or budgets govern this card."
+                "description": " Whether card-level limits or budgets govern purchase spending."
               }
             ]
           },
@@ -447,7 +447,7 @@ Issue a new virtual card.
             "type": "integer"
           },
           "atmAmountCents": {
-            "description": " Maximum ATM withdrawal allowed per interval, in cents. Null for virtual cards.",
+            "description": " Maximum ATM withdrawal allowed per interval, in cents. Null for virtual\n cards and credit cards.",
             "minimum": 0,
             "nullable": true,
             "type": "integer"

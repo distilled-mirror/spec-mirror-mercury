@@ -93,7 +93,8 @@ Since this endpoint requires approval to send money, an IP whitelist is not requ
           "ach",
           "check",
           "domesticWire",
-          "internationalWire"
+          "internationalWire",
+          "realTimePayment"
         ],
         "type": "string"
       },

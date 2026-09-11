@@ -27,6 +27,10 @@ Retrieve a paginated list of accounts. Supports cursor-based pagination with lim
             "nullable": true,
             "type": "boolean"
           },
+          "canSendRealTimePayments": {
+            "description": " Whether this account's partner bank supports sending real-time payments.\n Sending one also requires the recipient's routing number to be RTP-eligible.",
+            "type": "boolean"
+          },
           "createdAt": {
             "allOf": [
               {
@@ -90,6 +94,7 @@ Retrieve a paginated list of accounts. Supports cursor-based pagination with lim
           "availableBalance",
           "currentBalance",
           "kind",
+          "canSendRealTimePayments",
           "legalBusinessName",
           "dashboardLink"
         ],

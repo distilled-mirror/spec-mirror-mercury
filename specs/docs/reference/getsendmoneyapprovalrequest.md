@@ -66,7 +66,8 @@ Fetch the complete documentation index at: https://docs.mercury.com/llms.txt. Us
           "ach",
           "check",
           "domesticWire",
-          "internationalWire"
+          "internationalWire",
+          "realTimePayment"
         ],
         "type": "string"
       },

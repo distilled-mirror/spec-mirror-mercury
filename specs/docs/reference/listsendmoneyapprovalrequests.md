@@ -68,7 +68,8 @@ Retrieve a paginated list of send money approval requests for the authenticated 
           "ach",
           "check",
           "domesticWire",
-          "internationalWire"
+          "internationalWire",
+          "realTimePayment"
         ],
         "type": "string"
       },
