@@ -1,5 +1,5 @@
 ---
-updatedAt: 2026-04-22T13:48:46.000Z
+updatedAt: 2026-09-11T14:09:59.000Z
 ---
 
 Fetch the complete documentation index at: https://docs.mercury.com/llms.txt. Use this file to discover all available pages before exploring further. Append .md to any documentation page URL to get its markdown version.
@@ -10,68 +10,78 @@ Send money from an account to a recipient. Creates a transaction that will be pr
 
 **Scope:** Send Money (requires IP whitelist)
 
-> 🚧 Valid uses for the transaction API
->
-> You may not use the Mercury API for any activity that requires a license or registration from any governmental authority in the U.S., or any authority you are subject to, without Mercury's approval in advance. This includes but is not limited to any activity type described in the definition of a [Money Services Business](https://www.fincen.gov/money-services-business-definition), or any State-regulated financial services such as Money Transmission.
->
-> Here are some **acceptable** uses:
->
-> 1. Paying invoices for your company
-> 2. Automating bills and other payments
->
-> Here are some **unacceptable** uses:
->
-> 1. Providing cash advances
-> 2. Currency conversion services
-> 3. Escrow services
-> 4. Building out *marketplaces* to facilitate payments
->    1. Marketplace - Any business model that involves receiving currency (or other value that substitutes for currency), and transferring that currency to another person by any means, including through a mobile application, through a network of persons, or through an informal value transfer system
->
-> Contact <api@mercury.com> if you'd like to confirm your use case is allowed. We especially recommend this if you'd describe your company as a financial services company.
+<Callout icon="🚧" theme="warn">
+  ### Valid uses for the transaction API
+
+  You may not use the Mercury API for any activity that requires a license or registration from any governmental authority in the U.S., or any authority you are subject to, without Mercury's approval in advance. This includes but is not limited to any activity type described in the definition of a [Money Services Business](https://www.fincen.gov/money-services-business-definition), or any State-regulated financial services such as Money Transmission.
+
+  Here are some **acceptable** uses:
+
+  1. Paying invoices for your company
+  2. Automating bills and other payments
+
+  Here are some **unacceptable** uses:
+
+  1. Providing cash advances
+  2. Currency conversion services
+  3. Escrow services
+  4. Building out _marketplaces_ to facilitate payments
+     1. Marketplace - Any business model that involves receiving currency (or other value that substitutes for currency), and transferring that currency to another person by any means, including through a mobile application, through a network of persons, or through an informal value transfer system
+
+  Contact [api@mercury.com](mailto:api@mercury.com) if you'd like to confirm your use case is allowed. We especially recommend this if you'd describe your company as a financial services company.
+</Callout>
 
 Note that attempting to create a duplicate transaction (same recipient, same account, same amount) within 24 hours would result in an HTTP 400 error, even if you use different idempotency keys for each attempt. If you want this restriction removed, please reach out to support.
 
-> 📘 Idempotency Keys
->
-> Each request to create a transaction must provide an idempotency key which uniquely identifies the transaction. Repeated requests with the same idempotency key will not create a duplicate transaction, and will instead return HTTP 409 (conflict) with the normal API response for that transaction.
->
-> This approach makes it safe to retry creating a transaction, in case it is unclear that the transaction processed (for example, in case of a network error or your server crashing after the request is sent).
->
-> The idempotency key itself can be any value uniquely identifying the transaction. We recommend a UUID V4 or auto-incrementing database column for a general purpose solution.
->
-> Alternatively, you can also use a more semantic key. For example, if you pay "Recipient A" monthly, your idempotency key could be "Recipient A January". This would prevent duplicate transactions if you tried to pay Recipient A twice in January accidentally.
->
-> Your code should look something like this:
->
-> 1. Insert a record of attempting a transaction into your database. This should include your own metadata about the transaction (e.g. recipient ID, amount, etc.), plus an idempotency key and a value noting that the transaction hasn't been attempted. Example query using PostgreSQL:
->
-> ```mysql
-> INSERT INTO transactions (id, recipient_id, amount, attempted) VALUES 	(uuid_generate_v4(), recip1, 10.20, false) RETURNING id;
-> ```
->
-> 2. Make the HTTP request to Mercury to create the transaction
->
-> 3. Update the database record to note that the transaction was attempted. Example using PostgreSQL:
->
-> ```sql
-> UPDATE transactions SET attempted = true WHERE id = <id from step 1>;
-> ```
->
-> You can then set up an alert or retry logic to look for transactions that are in your database but not marked as attempted, which would suggest that either step 2 or 3 failed. The idempotency key will help prevent duplicate payments if only step 3 failed.
+<Callout icon="📘" theme="info">
+  ### Idempotency Keys
 
-> ℹ️ Payment Methods
->
-> When using `domesticWire` as a `paymentMethod`:
->
-> * `purpose.simple.category` is **required**.
-> * `purpose.simple.additionalInfo`:
->   * **Required** when `purpose.simple.category` is:
->     * `Vendor` (vendor name)
->     * `Contractor` (contractor name)
->     * `Other` (payment description)
->   * **Optional** for:
->     * `Subsidiary`
->   * **Not allowed** for all other categories
+  Each request to create a transaction must provide an idempotency key which uniquely identifies the transaction. Repeated requests with the same idempotency key will not create a duplicate transaction, and will instead return HTTP 409 (conflict) with the normal API response for that transaction.
+
+  This approach makes it safe to retry creating a transaction, in case it is unclear that the transaction processed (for example, in case of a network error or your server crashing after the request is sent).
+
+  The idempotency key itself can be any value uniquely identifying the transaction. We recommend a UUID V4 or auto-incrementing database column for a general purpose solution.
+
+  Alternatively, you can also use a more semantic key. For example, if you pay "Recipient A" monthly, your idempotency key could be "Recipient A January". This would prevent duplicate transactions if you tried to pay Recipient A twice in January accidentally.
+
+  Your code should look something like this:
+
+  1. Insert a record of attempting a transaction into your database. This should include your own metadata about the transaction (e.g. recipient ID, amount, etc.), plus an idempotency key and a value noting that the transaction hasn't been attempted. Example query using PostgreSQL:
+
+  ```mysql
+  INSERT INTO transactions (id, recipient_id, amount, attempted) VALUES 	(uuid_generate_v4(), recip1, 10.20, false) RETURNING id;
+  ```
+
+  2. Make the HTTP request to Mercury to create the transaction
+
+  3. Update the database record to note that the transaction was attempted. Example using PostgreSQL:
+
+  ```sql
+  UPDATE transactions SET attempted = true WHERE id = <id from step 1>;
+  ```
+
+  You can then set up an alert or retry logic to look for transactions that are in your database but not marked as attempted, which would suggest that either step 2 or 3 failed. The idempotency key will help prevent duplicate payments if only step 3 failed.
+</Callout>
+
+<Callout icon="ℹ️" theme="info">
+  ### Payment Methods
+
+  When using `domesticWire` as a `paymentMethod`:
+
+  * `purpose.simple.category` is **required**.
+  * `purpose.simple.additionalInfo`:
+    * **Required** when `purpose.simple.category` is:
+      * `Vendor` (vendor name)
+      * `Contractor` (contractor name)
+      * `Other` (payment description)
+    * **Optional** for:
+      * `Subsidiary`
+    * **Not allowed** for all other categories
+
+  When using `realTimePayment` as a `paymentMethod`:
+
+  - API support is in limited release. Requests return 403 unless your organization has been granted access. Contact <Anchor target="_blank" href="mailto:api@mercury.com">api\@mercury.com</Anchor> to request access.
+</Callout>
 
 # OpenAPI definition
 
