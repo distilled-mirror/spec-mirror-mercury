@@ -1,5 +1,5 @@
 ---
-updatedAt: 2026-09-11T14:09:59.000Z
+updatedAt: 2026-09-14T20:07:23.000Z
 ---
 
 Fetch the complete documentation index at: https://docs.mercury.com/llms.txt. Use this file to discover all available pages before exploring further. Append .md to any documentation page URL to get its markdown version.
