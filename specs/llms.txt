@@ -105,9 +105,10 @@ Append .md to any documentation page URL to get its markdown version.
 - [Invite a recipient](https://docs.mercury.com/recipes/invite-a-recipient.md)
 - [Invoice your customers](https://docs.mercury.com/recipes/invoice-your-customers.md)
 - [Request a payment approval](https://docs.mercury.com/recipes/request-a-payment-approval.md)
-- [Retrieve information about all of your accounts](https://docs.mercury.com/recipes/retrieve-information-about-all-of-your-accounts.md)
+- [List your accounts](https://docs.mercury.com/recipes/retrieve-information-about-all-of-your-accounts.md)
 - [Retrieve information about all of your payment recipients](https://docs.mercury.com/recipes/retrieve-information-about-all-of-your-payment-recipients.md)
 - [Send an ACH payment](https://docs.mercury.com/recipes/send-an-ach-payment.md)
+- [Send an international wire](https://docs.mercury.com/recipes/send-an-international-wire.md)
 
 ## Changelog
 - [Vault API: Retrieve agent card credentials](https://docs.mercury.com/changelog/vault-api-retrieve-agent-card-credentials.md)

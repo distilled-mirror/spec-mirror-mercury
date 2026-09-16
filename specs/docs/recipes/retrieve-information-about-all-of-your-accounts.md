@@ -1,14 +1,14 @@
 ---
-updatedAt: 2025-06-09T22:19:38.000Z
+updatedAt: 2026-09-11T19:32:16.000Z
 ---
 
 Fetch the complete documentation index at: https://docs.mercury.com/llms.txt. Use this file to discover all available pages before exploring further. Append .md to any documentation page URL to get its markdown version.
 
-# Retrieve information about all of your accounts
+# List your accounts
 
 ```curl cURL
 curl --request GET \
-  --url https://backend.mercury.com/api/v1/accounts \
+  --url https://api.mercury.com/api/v1/accounts \
   --header 'Accept: application/json' \
   --header 'Content-Type: application/json' \
   --header 'Authorization: Bearer <<apiKey>>'
@@ -17,7 +17,7 @@ curl --request GET \
 ```python Python
 import requests
 
-url = "https://backend.mercury.com/api/v1/accounts"
+url = "https://api.mercury.com/api/v1/accounts"
 
 headers = {
     "Accept": "application/json",
@@ -35,7 +35,7 @@ require 'uri'
 require 'net/http'
 require 'openssl'
 
-url = URI("https://backend.mercury.com/api/v1/accounts")
+url = URI("https://api.mercury.com/api/v1/accounts")
 
 http = Net::HTTP.new(url.host, url.port)
 http.use_ssl = true
@@ -52,7 +52,7 @@ puts response.read_body
 ```node Node
 const fetch = require('node-fetch');
 
-const url = 'https://backend.mercury.com/api/v1/accounts';
+const url = 'https://api.mercury.com/api/v1/accounts';
 
 const options = {
   method: 'GET',

@@ -1,5 +1,5 @@
 ---
-updatedAt: 2026-01-15T19:55:52.000Z
+updatedAt: 2026-09-11T19:32:16.000Z
 ---
 
 Fetch the complete documentation index at: https://docs.mercury.com/llms.txt. Use this file to discover all available pages before exploring further. Append .md to any documentation page URL to get its markdown version.
@@ -70,7 +70,7 @@ from typing import Dict, List, Tuple
 
 # Configuration
 API_KEY = "your_api_key_here"
-BASE_URL = "https://backend.mercury.com/api/v1"
+BASE_URL = "https://api.mercury.com/api/v1"
 
 # Recipient ID to tax document file path mapping
 recipients = {
@@ -156,7 +156,7 @@ require 'json'
 
 # Configuration
 API_KEY = 'your_api_key_here'
-BASE_URL = 'https://backend.mercury.com/api/v1'
+BASE_URL = 'https://api.mercury.com/api/v1'
 
 # Recipient ID to tax document file path mapping
 RECIPIENTS = {
@@ -256,7 +256,7 @@ const axios = require('axios');
 
 // Configuration
 const API_KEY = 'your_api_key_here';
-const BASE_URL = 'https://backend.mercury.com/api/v1';
+const BASE_URL = 'https://api.mercury.com/api/v1';
 
 // Recipient ID to tax document file path mapping
 const recipients = {

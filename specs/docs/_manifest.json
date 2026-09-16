@@ -1,6 +1,6 @@
 {
   "source": "https://docs.mercury.com/llms.txt",
-  "count": 109,
+  "count": 110,
   "pages": [
     {
       "page": "https://docs.mercury.com/changelog/account-balance-events-via-webhooksevents-endpoints-now-available",
@@ -156,6 +156,11 @@
       "page": "https://docs.mercury.com/recipes/send-an-ach-payment",
       "markdown": "https://docs.mercury.com/recipes/send-an-ach-payment.md",
       "file": "recipes/send-an-ach-payment.md"
+    },
+    {
+      "page": "https://docs.mercury.com/recipes/send-an-international-wire",
+      "markdown": "https://docs.mercury.com/recipes/send-an-international-wire.md",
+      "file": "recipes/send-an-international-wire.md"
     },
     {
       "page": "https://docs.mercury.com/reference/accounts_receivable",
