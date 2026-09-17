@@ -1414,7 +1414,7 @@ Retrieve a paginated list of all transactions across all accounts. Supports adva
             "name": "search",
             "required": false,
             "schema": {
-              "description": "Search term to look for in transaction descriptions.",
+              "description": "Search term to look for in transaction descriptions, notes, recipient memos, and counterparty names.",
               "type": "string"
             }
           },

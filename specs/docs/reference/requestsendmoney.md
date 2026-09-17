@@ -117,6 +117,14 @@ Since this endpoint requires approval to send money, an IP whitelist is not requ
             ],
             "description": "Amount of USD you want to send, must be a positive number."
           },
+          "chargeType": {
+            "description": "Who pays intermediary bank fees on a USD international wire. Pass 'ours' so the recipient receives the full amount (Mercury charges a $15 fee), or 'shared' to split those fees. If omitted on a USD international wire, this defaults to 'ours'. Do not include this field for other payment methods or accounts that are not charged international-wire fees.",
+            "enum": [
+              "ours",
+              "shared"
+            ],
+            "type": "string"
+          },
           "externalMemo": {
             "description": "Optional external memo",
             "type": "string"

@@ -1,5 +1,5 @@
 ---
-updatedAt: 2025-06-09T22:18:51.000Z
+updatedAt: 2026-09-16T17:54:42.000Z
 ---
 
 Fetch the complete documentation index at: https://docs.mercury.com/llms.txt. Use this file to discover all available pages before exploring further. Append .md to any documentation page URL to get its markdown version.
@@ -323,7 +323,7 @@ This includes specifying the right URL, HTTP method, as well as HTTP request hea
 <!-- ruby@15,35,63 -->
 <!-- node@11,62 -->
 
-You can generate one over at https://mercury.com/settings/tokens. The `POST /transactions` request would need a read-write API token.
+You can generate one over at <https://mercury.com/settings/tokens>. The `POST /transactions` request would need a read-write API token.
 
 # Get the relevant information about your recipients
 
@@ -354,7 +354,7 @@ Use the `ID`s you retrieved earlier to construct and send a request that would c
 
 You'd want to generate a unique string to use as an idempotency key which would stop you from accidentally sending multiple identical transactions.
 
-You can read more about idempotency keys here: https://docs.mercury.com/reference/transactions-2
+You can read more about idempotency keys here: <https://docs.mercury.com/reference/createtransaction>
 
 # Add the right data payload
 
@@ -363,4 +363,4 @@ You can read more about idempotency keys here: https://docs.mercury.com/referenc
 <!-- ruby@53-58,65,67 -->
 <!-- node@50-55,64 -->
 
-You can read about the payload fields here: https://docs.mercury.com/reference/transactions-2
+You can read about the payload fields here: <https://docs.mercury.com/reference/createtransaction>

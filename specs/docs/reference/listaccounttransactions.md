@@ -1426,7 +1426,7 @@ Retrieve a paginated list of transactions for a specific account. Supports filte
             "name": "search",
             "required": false,
             "schema": {
-              "description": "Search term to filter transactions by description or counterparty name",
+              "description": "Search term to filter transactions by description, note, recipient memo, or counterparty name",
               "type": "string"
             }
           },
