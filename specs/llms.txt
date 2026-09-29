@@ -2,23 +2,27 @@
 
 > Documentation for Mercury API
 
-Append .md to any documentation page URL to get its markdown version.
-
-## Guides
+## Guides: Mercury API
 - [Welcome to Mercury's API docs](https://docs.mercury.com/docs/welcome.md): Access your accounts, transaction histories, and make payments programmatically with the Mercury API
 - [Getting Started](https://docs.mercury.com/docs/getting-started.md): Learn how to authenticate, set up API tokens, and make your first API call to Mercury
 - [API Token Security Policies](https://docs.mercury.com/docs/api-token-security-policies.md): Understand token security, automatic downgrades, IP whitelisting, and scope management for API tokens
 - [Using the Mercury Sandbox for Testing](https://docs.mercury.com/docs/using-mercury-sandbox.md): Our Sandbox environment is designed to make it easy for you to test API calls in a safe, simulated version of Mercury — no real money involved.
+
+## Guides: Products
 - [Overview](https://docs.mercury.com/docs/products-overview.md): Guides for building on Mercury's product APIs.
 - [Invoicing](https://docs.mercury.com/docs/invoicing.md): Create invoices from your own systems, track who has paid, and learn how Mercury matches incoming payments.
 - [Send Money](https://docs.mercury.com/docs/send-money.md): Pay recipients from your Mercury accounts over ACH, check, domestic wire, and international wire, with optional approval controls.
+
+## Guides: OAuth2
 - [Integrations with OAuth2](https://docs.mercury.com/docs/integrations-with-oauth2.md)
+
+## Guides: Model Context Protocol (MCP) - Beta
 - [What is Mercury MCP?](https://docs.mercury.com/docs/what-is-mercury-mcp.md): Learn how to connect AI agents to your Mercury accounts.
 - [Connecting Mercury MCP](https://docs.mercury.com/docs/connecting-mercury-mcp.md): Learn how to get started and plug Mercury into your AI tool.
 - [Supported tools on Mercury's MCP](https://docs.mercury.com/docs/supported-tools-on-mercury-mcp.md): Learn what you can do with Mercury's MCP tools.
 - [Security best practices](https://docs.mercury.com/docs/security-best-practices.md): Learn how to keep your Mercury account secure when using Mercury's MCP
 
-## API Reference
+## API Reference: Mercury API
 - [Get cards for account](https://docs.mercury.com/reference/getaccountcards.md): Retrieve all debit and credit cards associated with a specific account.
 - [Request to send money](https://docs.mercury.com/reference/requestsendmoney.md): Create a "request to send money" that will require approval based on your organization's approval policies.
 - [Get account statements](https://docs.mercury.com/reference/getaccountstatements.md): Retrieve a paginated list of monthly statements for a specific account. Supports cursor-based pagination with limit, order, start_after, and end_before query parameters, as well as date range…
@@ -56,45 +60,47 @@ Append .md to any documentation page URL to get its markdown version.
 - [List all credit accounts](https://docs.mercury.com/reference/listcredit.md): Retrieve a list of all credit accounts for the organization.
 - [Get organization information](https://docs.mercury.com/reference/getorganization.md): Retrieve information about your organization including EIN, legal business name, and DBAs.
 - [Accounts Receivable](https://docs.mercury.com/reference/accounts_receivable.md): API for creating and managing invoices
-- [Get an attachment](https://docs.mercury.com/reference/getattachment.md): Retrieve attachment details including download URL
-- [List all customers](https://docs.mercury.com/reference/listcustomers.md): Retrieve a paginated list of customers. Supports cursor-based pagination with limit, order, start_after, and end_before query parameters.
-- [Create a customer](https://docs.mercury.com/reference/createcustomer.md): Create a new customer for the organization
-- [Delete a customer](https://docs.mercury.com/reference/deletecustomer.md): Delete a customer. This action cannot be undone.
-- [Get a customer](https://docs.mercury.com/reference/getcustomer.md): Retrieve details of a specific customer by their ID
-- [Update a customer](https://docs.mercury.com/reference/updatecustomer.md): Update an existing customer
-- [List all invoices](https://docs.mercury.com/reference/listinvoices.md): Retrieve a paginated list of invoices. Supports cursor-based pagination with limit, order, start_after, and end_before query parameters.
-- [Create an invoice](https://docs.mercury.com/reference/createinvoice.md): Create a new invoice for the organization
-- [Get an invoice](https://docs.mercury.com/reference/getinvoice.md): Retrieve details of an invoice by its ID
-- [Update an invoice](https://docs.mercury.com/reference/updateinvoice.md): Update an existing invoice
-- [Cancel an invoice](https://docs.mercury.com/reference/cancelinvoice.md): Cancel an invoice. This action cannot be undone.
-- [List invoice attachments](https://docs.mercury.com/reference/listinvoiceattachments.md): Retrieve a list of all attachments for a specific invoice
-- [Download invoice PDF](https://docs.mercury.com/reference/getinvoicepdf.md): Downloads a PDF file for the specified invoice. The response includes a Content-Disposition header set to 'attachment' with the filename.
+  - [Get an attachment](https://docs.mercury.com/reference/getattachment.md): Retrieve attachment details including download URL
+  - [List all customers](https://docs.mercury.com/reference/listcustomers.md): Retrieve a paginated list of customers. Supports cursor-based pagination with limit, order, start_after, and end_before query parameters.
+  - [Create a customer](https://docs.mercury.com/reference/createcustomer.md): Create a new customer for the organization
+  - [Delete a customer](https://docs.mercury.com/reference/deletecustomer.md): Delete a customer. This action cannot be undone.
+  - [Get a customer](https://docs.mercury.com/reference/getcustomer.md): Retrieve details of a specific customer by their ID
+  - [Update a customer](https://docs.mercury.com/reference/updatecustomer.md): Update an existing customer
+  - [List all invoices](https://docs.mercury.com/reference/listinvoices.md): Retrieve a paginated list of invoices. Supports cursor-based pagination with limit, order, start_after, and end_before query parameters.
+  - [Create an invoice](https://docs.mercury.com/reference/createinvoice.md): Create a new invoice for the organization
+  - [Get an invoice](https://docs.mercury.com/reference/getinvoice.md): Retrieve details of an invoice by its ID
+  - [Update an invoice](https://docs.mercury.com/reference/updateinvoice.md): Update an existing invoice
+  - [Cancel an invoice](https://docs.mercury.com/reference/cancelinvoice.md): Cancel an invoice. This action cannot be undone.
+  - [List invoice attachments](https://docs.mercury.com/reference/listinvoiceattachments.md): Retrieve a list of all attachments for a specific invoice
+  - [Download invoice PDF](https://docs.mercury.com/reference/getinvoicepdf.md): Downloads a PDF file for the specified invoice. The response includes a Content-Disposition header set to 'attachment' with the filename.
 - [Events](https://docs.mercury.com/reference/events.md): Track changes to your Mercury resources in real-time with an auditable event stream that captures what changed, when it changed, and the before/after values.
-- [Get all events](https://docs.mercury.com/reference/getevents.md)
-- [Get event by ID](https://docs.mercury.com/reference/getevent.md)
+  - [Get all events](https://docs.mercury.com/reference/getevents.md)
+  - [Get event by ID](https://docs.mercury.com/reference/getevent.md)
 - [Webhooks](https://docs.mercury.com/reference/webhooks.md): Receive real-time notifications when resources in your Mercury account change by configuring webhook endpoints to listen for specific events.
-- [Create a new webhook endpoint](https://docs.mercury.com/reference/createwebhook.md): Register a new webhook endpoint to receive event notifications
-- [Update an existing webhook endpoint](https://docs.mercury.com/reference/updatewebhook.md): Update the configuration of an existing webhook endpoint. A webhook that has been disabled due to consecutive delivery failures can be reactivated by setting its status to 'active'.
-- [Verify a webhook endpoint](https://docs.mercury.com/reference/verifywebhook.md): Send a test event to verify the webhook endpoint is properly configured and reachable. The request body accepts an optional 'eventType' field to specify which event type to test (e.g.,…
-- [Get webhook endpoint by ID](https://docs.mercury.com/reference/getwebhook.md): Retrieve details of a specific webhook endpoint by ID
-- [Get webhook endpoints](https://docs.mercury.com/reference/getwebhooks.md): Retrieve a paginated list of all webhook endpoints for your organization. Supports filtering by status.
-- [Delete a webhook endpoint](https://docs.mercury.com/reference/deletewebhook.md): Delete a webhook endpoint
+  - [Create a new webhook endpoint](https://docs.mercury.com/reference/createwebhook.md): Register a new webhook endpoint to receive event notifications
+  - [Update an existing webhook endpoint](https://docs.mercury.com/reference/updatewebhook.md): Update the configuration of an existing webhook endpoint. A webhook that has been disabled due to consecutive delivery failures can be reactivated by setting its status to 'active'.
+  - [Verify a webhook endpoint](https://docs.mercury.com/reference/verifywebhook.md): Send a test event to verify the webhook endpoint is properly configured and reachable. The request body accepts an optional 'eventType' field to specify which event type to test (e.g.,…
+  - [Get webhook endpoint by ID](https://docs.mercury.com/reference/getwebhook.md): Retrieve details of a specific webhook endpoint by ID
+  - [Get webhook endpoints](https://docs.mercury.com/reference/getwebhooks.md): Retrieve a paginated list of all webhook endpoints for your organization. Supports filtering by status.
+  - [Delete a webhook endpoint](https://docs.mercury.com/reference/deletewebhook.md): Delete a webhook endpoint
 - [Get user by ID](https://docs.mercury.com/reference/getuser.md)
 - [Get all users](https://docs.mercury.com/reference/getusers.md)
 - [Get all SAFEs](https://docs.mercury.com/reference/getsaferequests.md): Retrieve all SAFE (Simple Agreement for Future Equity) requests for your organization.
 - [Get SAFE by ID](https://docs.mercury.com/reference/getsaferequest.md): Retrieve a specific SAFE request by its ID.
 - [Download SAFE document](https://docs.mercury.com/reference/getsaferequestdocument.md): Download the PDF document for a specific SAFE request. Returns binary PDF data with a Content-Disposition header.
 - [Cards](https://docs.mercury.com/reference/cards.md): Issue and manage cards.
-- [List cards](https://docs.mercury.com/reference/listcards.md): Retrieve a paginated list of cards.
-- [Create a card](https://docs.mercury.com/reference/createcard.md): Issue a new virtual card.
-- [Get a card](https://docs.mercury.com/reference/getcard.md): Retrieve details of a specific card by its ID.
-- [Update a card](https://docs.mercury.com/reference/updatecard.md): Update a card's nickname or spending limits.
-- [Cancel a card](https://docs.mercury.com/reference/cancelcard.md): Permanently cancel a card. This action cannot be undone.
-- [Freeze a card](https://docs.mercury.com/reference/freezecard.md): Temporarily freeze a card. The card must be active.
-- [Unfreeze a card](https://docs.mercury.com/reference/unfreezecard.md): Unfreeze a previously frozen card, restoring it to active status.
+  - [List cards](https://docs.mercury.com/reference/listcards.md): Retrieve a paginated list of cards.
+  - [Create a card](https://docs.mercury.com/reference/createcard.md): Issue a new virtual card.
+  - [Get a card](https://docs.mercury.com/reference/getcard.md): Retrieve details of a specific card by its ID.
+  - [Update a card](https://docs.mercury.com/reference/updatecard.md): Update a card's nickname or spending limits.
+  - [Cancel a card](https://docs.mercury.com/reference/cancelcard.md): Permanently cancel a card. This action cannot be undone.
+  - [Freeze a card](https://docs.mercury.com/reference/freezecard.md): Temporarily freeze a card. The card must be active.
+  - [Unfreeze a card](https://docs.mercury.com/reference/unfreezecard.md): Unfreeze a previously frozen card, restoring it to active status.
 - [Vault](https://docs.mercury.com/reference/vault.md): Access sensitive card data for agent cards.
-- [Reveal card details](https://docs.mercury.com/reference/revealcardpan.md): Retrieve the full card number, expiration date, and CVC for a card. Available for agentic cards only.
+  - [Reveal card details](https://docs.mercury.com/reference/revealcardpan.md): Retrieve the full card number, expiration date, and CVC for a card. Available for agentic cards only.
 - [Request to transfer money](https://docs.mercury.com/reference/requesttransfermoney.md): Create a transfer between two accounts in your organization that will require approval based on your organization's approval policies.
+
+## API Reference: OAuth2 API
 - [Start OAuth2 web flow](https://docs.mercury.com/reference/startoauth2flow.md): Initiates the OAuth2 authorization flow. Redirects the user to Mercury's consent page.
 - [Obtain an access token](https://docs.mercury.com/reference/obtainaccesstoken.md): Exchange an authorization code for an access token
 

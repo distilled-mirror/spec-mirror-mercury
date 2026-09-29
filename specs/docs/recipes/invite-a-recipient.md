@@ -1,8 +1,8 @@
 ---
 updatedAt: 2026-08-24T22:06:42.000Z
+agentTools:
+  projectIndex: https://docs.mercury.com/llms.txt
 ---
-
-Fetch the complete documentation index at: https://docs.mercury.com/llms.txt. Use this file to discover all available pages before exploring further. Append .md to any documentation page URL to get its markdown version.
 
 # Invite a recipient
 
