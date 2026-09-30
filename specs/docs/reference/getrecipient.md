@@ -143,7 +143,11 @@ Retrieve details of a specific recipient by ID
           "businessChecking",
           "businessSavings",
           "personalChecking",
-          "personalSavings"
+          "personalSavings",
+          "businessGeneralLedger",
+          "personalGeneralLedger",
+          "businessLoan",
+          "personalLoan"
         ],
         "type": "string"
       },

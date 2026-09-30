@@ -272,7 +272,11 @@ Retrieve a paginated list of all transactions across all accounts. Supports adva
           "businessChecking",
           "businessSavings",
           "personalChecking",
-          "personalSavings"
+          "personalSavings",
+          "businessGeneralLedger",
+          "personalGeneralLedger",
+          "businessLoan",
+          "personalLoan"
         ],
         "type": "string"
       },

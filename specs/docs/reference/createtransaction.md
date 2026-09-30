@@ -347,7 +347,11 @@ Note that attempting to create a duplicate transaction (same recipient, same acc
           "businessChecking",
           "businessSavings",
           "personalChecking",
-          "personalSavings"
+          "personalSavings",
+          "businessGeneralLedger",
+          "personalGeneralLedger",
+          "businessLoan",
+          "personalLoan"
         ],
         "type": "string"
       },

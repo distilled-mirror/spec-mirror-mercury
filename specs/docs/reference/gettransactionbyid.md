@@ -272,7 +272,11 @@ Retrieve a single transaction by its ID. Returns full transaction details includ
           "businessChecking",
           "businessSavings",
           "personalChecking",
-          "personalSavings"
+          "personalSavings",
+          "businessGeneralLedger",
+          "personalGeneralLedger",
+          "businessLoan",
+          "personalLoan"
         ],
         "type": "string"
       },

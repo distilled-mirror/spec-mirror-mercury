@@ -285,7 +285,11 @@ Update an existing recipient's information
           "businessChecking",
           "businessSavings",
           "personalChecking",
-          "personalSavings"
+          "personalSavings",
+          "businessGeneralLedger",
+          "personalGeneralLedger",
+          "businessLoan",
+          "personalLoan"
         ],
         "type": "string"
       },
