@@ -1,5 +1,5 @@
 ---
-updatedAt: 2026-04-22T13:48:46.000Z
+updatedAt: 2026-09-16T20:58:40.000Z
 agentTools:
   projectIndex: https://docs.mercury.com/llms.txt
 ---
@@ -18,6 +18,32 @@ For an implementation guide and acceptable uses for this endpoint, refer to
 This endpoint provides a way to queue payments that require approval from the web interface. The user approving the payment will need to be different than the user who created the API Token, and the approving user will need to have proper send money permissions.
 
 Since this endpoint requires approval to send money, an IP whitelist is not required if using this endpoint with a Custom token. Thus, this endpoint may be useful in situations where a static IP is not available.
+
+<Callout icon="ℹ️" theme="info">
+  ### Payment Methods
+
+  When using `domesticWire` as a `paymentMethod`:
+
+  * `purpose.simple.category` is **required**.
+  * `purpose.simple.additionalInfo`:
+    * **Required** when `purpose.simple.category` is:
+      * `Vendor` (vendor name)
+      * `Contractor` (contractor name)
+      * `Other` (payment description)
+    * **Optional** for:
+      * `Subsidiary`
+    * **Not allowed** for all other categories
+
+  When using `realTimePayment` as a `paymentMethod`:
+
+  - **Note**: Real-time payments are designed to settle in seconds, and the network is open 24/7, including weekends and holidays. Real-time payments are designed to be final once submitted. Since settlement happens immediately, they generally cannot be canceled or reversed by the sender. Read more in <Anchor target="_blank" href="https://support.mercury.com/hc/en-us/articles/45122488964244-Sending-real-time-payments">Mercury's Help Center</Anchor>.
+
+  - The recipient's routing number must be eligible for Real-time payments, either through the RTP® network and/or the FedNow service. You can validate a routing number's eligibility when adding or updating a recipient's `realTimePaymentRoutingInfo`. Before sending, check with your recipient to make sure their bank can receive Real-time payments.
+
+  - Real-time payments are only available to Mercury accounts provided through our partner, Column N.A. You can check an account's eligibility to send Real-time payments with the `canSendRealTimePayments` attribute available in the <Anchor target="_blank" href="https://docs.mercury.com/reference/getaccounts">getAccounts</Anchor> response.
+
+  - $10,000,000 is the maximum amount for an individual transaction.
+</Callout>
 
 # OpenAPI definition
 

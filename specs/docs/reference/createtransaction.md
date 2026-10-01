@@ -1,5 +1,5 @@
 ---
-updatedAt: 2026-09-14T20:07:23.000Z
+updatedAt: 2026-09-16T21:04:08.000Z
 agentTools:
   projectIndex: https://docs.mercury.com/llms.txt
 ---
@@ -80,7 +80,13 @@ Note that attempting to create a duplicate transaction (same recipient, same acc
 
   When using `realTimePayment` as a `paymentMethod`:
 
-  - API support is in limited release. Requests return 403 unless your organization has been granted access. Contact <Anchor target="_blank" href="mailto:api@mercury.com">api\@mercury.com</Anchor> to request access.
+  - **Note**: Real-time payments are designed to settle in seconds, and the network is open 24/7, including weekends and holidays. Real-time payments are designed to be final once submitted. Since settlement happens immediately, they generally cannot be canceled or reversed by the sender. Read more in <Anchor target="_blank" href="https://support.mercury.com/hc/en-us/articles/45122488964244-Sending-real-time-payments">Mercury's Help Center</Anchor>.
+
+  - The recipient's routing number must be eligible for Real-time payments, either through the RTP® network and/or the FedNow service. You can validate a routing number's eligibility when adding or updating a recipient's `realTimePaymentRoutingInfo`. Before sending, check with your recipient to make sure their bank can receive Real-time payments.
+
+  - Real-time payments are only available to Mercury accounts provided through our partner, Column N.A. You can check an account's eligibility to send Real-time payments with the `canSendRealTimePayments` attribute available in the <Anchor target="_blank" href="https://docs.mercury.com/reference/getaccounts">getAccounts</Anchor> response.
+
+  - $10,000,000 is the maximum amount for an individual transaction.
 </Callout>
 
 # OpenAPI definition

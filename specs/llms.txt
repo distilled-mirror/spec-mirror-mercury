@@ -11,7 +11,7 @@
 ## Guides: Products
 - [Overview](https://docs.mercury.com/docs/products-overview.md): Guides for building on Mercury's product APIs.
 - [Invoicing](https://docs.mercury.com/docs/invoicing.md): Create invoices from your own systems, track who has paid, and learn how Mercury matches incoming payments.
-- [Send Money](https://docs.mercury.com/docs/send-money.md): Pay recipients from your Mercury accounts over ACH, check, domestic wire, and international wire, with optional approval controls.
+- [Send Money](https://docs.mercury.com/docs/send-money.md): Pay recipients from your Mercury accounts over ACH, check, domestic wire, international wire, and real-time payment, with optional approval controls.
 
 ## Guides: OAuth2
 - [Integrations with OAuth2](https://docs.mercury.com/docs/integrations-with-oauth2.md)
