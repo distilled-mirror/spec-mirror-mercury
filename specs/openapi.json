@@ -4890,7 +4890,7 @@
           "categoryId": {
             "allOf": [
               {
-                "$ref": "#/components/schemas/CategoryId"
+                "$ref": "#/components/schemas/CategoryUpdate"
               },
               {
                 "description": " How to update the transaction's category. Omit field to keep current, send null to clear, send ID to set."
@@ -4908,10 +4908,6 @@
             ]
           }
         },
-        "required": [
-          "note",
-          "categoryId"
-        ],
         "type": "object"
       },
       "ApiUserRole": {
@@ -6436,6 +6432,12 @@
         "type": "string"
       },
       "CategoryName": {
+        "type": "string"
+      },
+      "CategoryUpdate": {
+        "description": "Category update action. Omit field to keep current category, send null to clear category, send an ID to set category.",
+        "format": "uuid",
+        "nullable": true,
         "type": "string"
       },
       "CheckInfo": {
@@ -10346,9 +10348,6 @@
             "nullable": true
           }
         },
-        "required": [
-          "nickname"
-        ],
         "type": "object"
       },
       "UpdateWebhookParams": {

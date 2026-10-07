@@ -90,7 +90,7 @@ Update the note and/or category of an existing transaction. Use null values to c
           "categoryId": {
             "allOf": [
               {
-                "$ref": "#/components/schemas/CategoryId"
+                "$ref": "#/components/schemas/CategoryUpdate"
               },
               {
                 "description": " How to update the transaction's category. Omit field to keep current, send null to clear, send ID to set."
@@ -108,10 +108,6 @@ Update the note and/or category of an existing transaction. Use null values to c
             ]
           }
         },
-        "required": [
-          "note",
-          "categoryId"
-        ],
         "type": "object"
       },
       "CategoryData": {
@@ -156,6 +152,12 @@ Update the note and/or category of an existing transaction. Use null values to c
       "CategoryId": {
         "description": "ID for the category",
         "format": "uuid",
+        "type": "string"
+      },
+      "CategoryUpdate": {
+        "description": "Category update action. Omit field to keep current category, send null to clear category, send an ID to set category.",
+        "format": "uuid",
+        "nullable": true,
         "type": "string"
       },
       "CreditCardId": {

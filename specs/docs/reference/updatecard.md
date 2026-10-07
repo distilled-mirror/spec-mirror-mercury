@@ -423,9 +423,6 @@ Update a card's nickname or spending limits.
             "nullable": true
           }
         },
-        "required": [
-          "nickname"
-        ],
         "type": "object"
       }
     },
