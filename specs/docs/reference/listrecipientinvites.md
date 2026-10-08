@@ -166,7 +166,8 @@ Retrieve a paginated list of all recipient invites for your organization. Suppor
         "enum": [
           "created",
           "completed",
-          "expired"
+          "expired",
+          "declined"
         ],
         "type": "string"
       },
@@ -254,7 +255,8 @@ Retrieve a paginated list of all recipient invites for your organization. Suppor
               "enum": [
                 "created",
                 "completed",
-                "expired"
+                "expired",
+                "declined"
               ],
               "type": "string"
             }

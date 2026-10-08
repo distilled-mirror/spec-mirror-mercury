@@ -2604,7 +2604,8 @@
               "enum": [
                 "created",
                 "completed",
-                "expired"
+                "expired",
+                "declined"
               ],
               "type": "string"
             }
@@ -2847,6 +2848,122 @@
       }
     },
     "/request-transfer": {
+      "get": {
+        "description": "Retrieve a paginated list of transfer approval requests for the authenticated organization. Supports filtering by source account, destination account, and status.",
+        "operationId": "listTransferMoneyApprovalRequests",
+        "parameters": [
+          {
+            "in": "query",
+            "name": "sourceAccountId",
+            "required": false,
+            "schema": {
+              "description": "ID for a Mercury account.",
+              "format": "uuid",
+              "type": "string"
+            }
+          },
+          {
+            "in": "query",
+            "name": "destinationAccountId",
+            "required": false,
+            "schema": {
+              "description": "ID for a Mercury account.",
+              "format": "uuid",
+              "type": "string"
+            }
+          },
+          {
+            "in": "query",
+            "name": "status",
+            "required": false,
+            "schema": {
+              "enum": [
+                "pendingApproval",
+                "approved",
+                "rejected",
+                "cancelled"
+              ],
+              "type": "string"
+            }
+          },
+          {
+            "in": "query",
+            "name": "start_at",
+            "required": false,
+            "schema": {
+              "description": "The ID of the transfer approval request to start the page at (inclusive). Cannot be combined with start_after or end_before.",
+              "format": "uuid",
+              "type": "string"
+            }
+          },
+          {
+            "in": "query",
+            "name": "start_after",
+            "required": false,
+            "schema": {
+              "description": "The ID of the transfer approval request to start the page after (exclusive). When provided, results will begin with the transfer approval request immediately following this ID. Use this for standard forward pagination to get the next page of results. Cannot be combined with end_before.",
+              "format": "uuid",
+              "type": "string"
+            }
+          },
+          {
+            "in": "query",
+            "name": "end_before",
+            "required": false,
+            "schema": {
+              "description": "The ID of the transfer approval request to end the page before (exclusive). When provided, results will end just before this ID and work backwards. Use this for reverse pagination or to retrieve previous pages. Cannot be combined with start_after.",
+              "format": "uuid",
+              "type": "string"
+            }
+          },
+          {
+            "in": "query",
+            "name": "limit",
+            "required": false,
+            "schema": {
+              "default": 1000,
+              "description": "Maximum number of results to return. Allowed range: 1 to 1000. Defaults to 1000",
+              "format": "int64",
+              "maximum": 1000,
+              "minimum": 1,
+              "type": "integer"
+            }
+          },
+          {
+            "in": "query",
+            "name": "order",
+            "required": false,
+            "schema": {
+              "default": "asc",
+              "description": "Sort order. Can be 'asc' or 'desc'. Defaults to 'asc'",
+              "enum": [
+                "asc",
+                "desc"
+              ],
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/TransferMoneyApprovalRequestsPaginatedResponse"
+                }
+              }
+            },
+            "description": ""
+          },
+          "400": {
+            "description": "Invalid `order` or `limit` or `end_before` or `start_after` or `start_at` or `status` or `destinationAccountId` or `sourceAccountId`"
+          }
+        },
+        "summary": "List transfer approval requests",
+        "tags": [
+          "Transfer Money Requests"
+        ]
+      },
       "post": {
         "description": "Create a transfer between two accounts in your organization that will require approval based on your organization's approval policies.",
         "operationId": "requestTransferMoney",
@@ -2875,6 +2992,43 @@
           }
         },
         "summary": "Request to transfer money",
+        "tags": [
+          "Transfer Money Requests"
+        ]
+      }
+    },
+    "/request-transfer/{requestId}": {
+      "get": {
+        "description": "Retrieve a specific transfer approval request by ID.",
+        "operationId": "getTransferMoneyApprovalRequest",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "requestId",
+            "required": true,
+            "schema": {
+              "description": "ID for the transfer money approval request",
+              "format": "uuid",
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/TransferMoneyApprovalRequestResponse"
+                }
+              }
+            },
+            "description": ""
+          },
+          "404": {
+            "description": "`requestId` not found"
+          }
+        },
+        "summary": "Get transfer approval request by ID",
         "tags": [
           "Transfer Money Requests"
         ]
@@ -8630,7 +8784,8 @@
         "enum": [
           "created",
           "completed",
-          "expired"
+          "expired",
+          "declined"
         ],
         "type": "string"
       },
@@ -9650,6 +9805,11 @@
         ],
         "type": "object"
       },
+      "TransferMoneyApprovalRequestId": {
+        "description": "ID for the transfer money approval request",
+        "format": "uuid",
+        "type": "string"
+      },
       "TransferMoneyApprovalRequestResponse": {
         "description": " An approval request for a transfer between accounts.",
         "properties": {
@@ -9749,6 +9909,33 @@
           "requestedByUserId",
           "reviews",
           "createdAt"
+        ],
+        "type": "object"
+      },
+      "TransferMoneyApprovalRequestsPaginatedResponse": {
+        "description": " A page of transfer approval requests.",
+        "properties": {
+          "page": {
+            "properties": {
+              "nextPage": {
+                "$ref": "#/components/schemas/TransferMoneyApprovalRequestId"
+              },
+              "previousPage": {
+                "$ref": "#/components/schemas/TransferMoneyApprovalRequestId"
+              }
+            },
+            "type": "object"
+          },
+          "requests": {
+            "items": {
+              "$ref": "#/components/schemas/TransferMoneyApprovalRequestResponse"
+            },
+            "type": "array"
+          }
+        },
+        "required": [
+          "requests",
+          "page"
         ],
         "type": "object"
       },

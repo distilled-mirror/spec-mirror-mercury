@@ -137,7 +137,8 @@ Retrieve details of a specific recipient invite by ID.
         "enum": [
           "created",
           "completed",
-          "expired"
+          "expired",
+          "declined"
         ],
         "type": "string"
       },

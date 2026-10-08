@@ -44,6 +44,9 @@
 - [Delete a recipient invite](https://docs.mercury.com/reference/deleterecipientinvite.md): Delete an active recipient invite.
 - [List send money approval requests](https://docs.mercury.com/reference/listsendmoneyapprovalrequests.md): Retrieve a paginated list of send money approval requests for the authenticated organization. Supports filtering by account and status.
 - [Get send money approval request by ID](https://docs.mercury.com/reference/getsendmoneyapprovalrequest.md)
+- [Request to transfer money](https://docs.mercury.com/reference/requesttransfermoney.md): Create a transfer between two accounts in your organization that will require approval based on your organization's approval policies.
+- [List transfer approval requests](https://docs.mercury.com/reference/listtransfermoneyapprovalrequests.md): Retrieve a paginated list of transfer approval requests for the authenticated organization. Supports filtering by source account, destination account, and status.
+- [Get transfer approval request by ID](https://docs.mercury.com/reference/gettransfermoneyapprovalrequest.md): Retrieve a specific transfer approval request by ID.
 - [Get all treasury accounts](https://docs.mercury.com/reference/gettreasury.md): Retrieve a paginated list of all treasury accounts associated with the authenticated organization. Use cursor parameters (start_after, end_before) for pagination.
 - [Get treasury transactions](https://docs.mercury.com/reference/gettreasurytransactions.md): Retrieve paginated treasury transactions for a specific treasury account.
 - [Get treasury account statements](https://docs.mercury.com/reference/gettreasurystatements.md): Retrieve a paginated list of statements for a specific treasury account. Supports cursor-based pagination and filtering by document type.
@@ -98,7 +101,6 @@
   - [Unfreeze a card](https://docs.mercury.com/reference/unfreezecard.md): Unfreeze a previously frozen card, restoring it to active status.
 - [Vault](https://docs.mercury.com/reference/vault.md): Access sensitive card data for agent cards.
   - [Reveal card details](https://docs.mercury.com/reference/revealcardpan.md): Retrieve the full card number, expiration date, and CVC for a card. Available for agentic cards only.
-- [Request to transfer money](https://docs.mercury.com/reference/requesttransfermoney.md): Create a transfer between two accounts in your organization that will require approval based on your organization's approval policies.
 
 ## API Reference: OAuth2 API
 - [Start OAuth2 web flow](https://docs.mercury.com/reference/startoauth2flow.md): Initiates the OAuth2 authorization flow. Redirects the user to Mercury's consent page.

@@ -201,7 +201,8 @@ Create an invite for a recipient to submit their payment details. Supply a recip
         "enum": [
           "created",
           "completed",
-          "expired"
+          "expired",
+          "declined"
         ],
         "type": "string"
       },

@@ -1,6 +1,6 @@
 {
   "source": "https://docs.mercury.com/llms.txt",
-  "count": 110,
+  "count": 112,
   "pages": [
     {
       "page": "https://docs.mercury.com/changelog/account-balance-events-via-webhooksevents-endpoints-now-available",
@@ -373,6 +373,11 @@
       "file": "reference/gettransactionbyid.md"
     },
     {
+      "page": "https://docs.mercury.com/reference/gettransfermoneyapprovalrequest",
+      "markdown": "https://docs.mercury.com/reference/gettransfermoneyapprovalrequest.md",
+      "file": "reference/gettransfermoneyapprovalrequest.md"
+    },
+    {
       "page": "https://docs.mercury.com/reference/gettreasury",
       "markdown": "https://docs.mercury.com/reference/gettreasury.md",
       "file": "reference/gettreasury.md"
@@ -466,6 +471,11 @@
       "page": "https://docs.mercury.com/reference/listtransactions",
       "markdown": "https://docs.mercury.com/reference/listtransactions.md",
       "file": "reference/listtransactions.md"
+    },
+    {
+      "page": "https://docs.mercury.com/reference/listtransfermoneyapprovalrequests",
+      "markdown": "https://docs.mercury.com/reference/listtransfermoneyapprovalrequests.md",
+      "file": "reference/listtransfermoneyapprovalrequests.md"
     },
     {
       "page": "https://docs.mercury.com/reference/obtainaccesstoken",
