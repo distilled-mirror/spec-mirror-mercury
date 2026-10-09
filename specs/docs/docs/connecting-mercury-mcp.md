@@ -1,5 +1,5 @@
 ---
-updatedAt: 2026-07-27T23:27:31.000Z
+updatedAt: 2026-10-08T13:49:59.000Z
 agentTools:
   projectIndex: https://docs.mercury.com/llms.txt
 ---
@@ -12,33 +12,35 @@ This guide shows how to connect your AI tool to Mercury with the Model Context P
 
 The Mercury MCP server URL is `https://mcp.mercury.com/mcp`.
 
-<br />
-
 ## Before you start
 
 Nothing to set up on Mercury's side. Your AI tool registers itself the first time it connects.
 
-Adding the server grants no access on its own. Your browser opens Mercury's sign-in page and you select **Allow**. Mercury then issues that tool a read-only token, for the account you signed in to. Cancel at the sign-in screen and the tool gets nothing.
+Adding the server grants no access on its own. Your browser opens Mercury's sign-in page. Review the account and requested permissions before selecting **Allow**. Mercury issues a token with the permissions you grant for that account. Cancel at the sign-in screen and the tool gets nothing.
+
+Write permissions let your AI tool request payments and internal transfers, create or edit custom categories, and update transaction notes and categories. Payments and transfers still require approval in Mercury. Category and note changes apply immediately. See [Supported tools](https://docs.mercury.com/docs/supported-tools-on-mercury-mcp) for the scope and behavior of each action.
 
 Find your tool below. To write your own client, read [Build your own client](#build-your-own-client).
 
-<br />
+## Connect through an official integration
 
-## Claude and ChatGPT
+Mercury MCP is available as an official integration on:
 
-1. Open **[Add Connectors](https://claude.ai/settings/connectors?modal=add-custom-connector)** in Claude or **[Apps & Connectors](https://chatgpt.com/#settings/Connectors)** in ChatGPT.
+* [ChatGPT](https://chatgpt.com/plugins/plugin_asdk_app_6a17ae803744819187a3079d37479dae)
+* [Claude](https://claude.com/marketplace/connectors/mercury)
+* [Cursor](https://cursor.com/marketplace/mercury)
+* [Perplexity](https://www.perplexity.ai/computer/connectors?connector=mercury)
+* [Gemini Enterprise](https://docs.cloud.google.com/gemini/enterprise/docs/connectors/mercury-mcp)
+* Grok Bot
+* Microsoft 365 Copilot
+* Notion
+* Replit
 
-   <Image src="https://files.readme.io/f23289fbbf2c7dae41cb175cc40d61e87eba699e835e2d8c824026ca75d9ca23-image.png" align="center" width="500px" />
+<br />Click a link above to add the Mercury MCP or search for Mercury in your platform's connectors, plugins, or integrations directory, then follow the prompts to connect your account.
 
-2. Create a new custom connection. Set the MCP server URL to `https://mcp.mercury.com/mcp`.
+If you use Claude Code, Codex CLI, or another MCP client, follow the client-specific or manual setup instructions below.
 
-   <Image src="https://files.readme.io/e139c4cb1ac8e50b0cf6adc4b9dfbd542802ec941d37d7e8ce52df501bc6bbc3-image.png" align="center" width="500px" />
-
-3. Start a chat about your Mercury data. The tool asks you to sign in through OAuth. Sign in and select **Allow**.
-
-<br />
-
-## Claude Code
+### Claude Code
 
 1. Add the server.
 
@@ -78,7 +80,7 @@ Now ask Claude a question about your accounts.
 
 <br />
 
-## Codex CLI
+### Codex CLI
 
 1. Add the server.
 
@@ -113,7 +115,7 @@ Now ask Claude a question about your accounts.
 
 <br />
 
-## Other MCP clients
+### Other MCP clients
 
 Set the server URL to `https://mcp.mercury.com/mcp` over streamable HTTP and let the client run the OAuth flow.
 
@@ -125,13 +127,34 @@ https://mcp.mercury.com/.well-known/oauth-protected-resource
 
 <br />
 
+## Enable actions on an existing connection
+
+Existing read-only connections do not gain write access automatically. You must sign in again and explicitly grant the write permissions on Mercury's consent screen.
+
+1. Open the Mercury connection in your AI tool's settings.
+2. Use its reconnect or reauthorize option. If it has neither, disconnect and add Mercury again.
+3. Sign in to Mercury.
+4. Review the account and requested permissions.
+5. Select **Allow** to grant access.
+6. Refresh the tool list or start a new chat if the new actions do not appear.
+
+Connection controls differ by client. Asking for a write action in chat does not by itself grant write access. Your Mercury permissions and the capabilities available to your account still apply.
+
 ## Troubleshooting
 
-**`! Needs authentication` in `claude mcp list`**
+**I can read data, but write actions are missing**
+
+Follow [Enable actions on an existing connection](#enable-actions-on-an-existing-connection). The connection must have each action's required scope. If the actions are still missing after reauthorization, check that you connected the intended account and contact <api@mercury.com>.
+
+**My AI tool created a payment request, but the money has not moved**
+
+Open Mercury and look for the request under **Needs approval** in Tasks or Payments. Complete the required approval there. Creating a request, or confirming it in your AI tool, does not mean the payment has been sent.
+
+`! Needs authentication`**&#x20;in&#x20;**`claude mcp list`
 
 You added the server but did not sign in. Run `claude mcp login mercury`.
 
-**`claude mcp login` exits without opening a browser**
+`claude mcp login`**&#x20;exits without opening a browser**
 
 The command needs a terminal. Over SSH, connect with `ssh -t` so it can prompt.
 
@@ -164,9 +187,21 @@ Mercury supports [OAuth 2.0 Dynamic Client Registration (RFC 7591)](https://data
 ### Rules Mercury enforces
 
 * Mercury requires PKCE with the `S256` method and rejects `plain`.
-* Request the `read` scope. Add `offline_access` only if you want to refresh without sending the user back to the browser.
+* Request the `read` scope for read tools. For write actions, request the specific scopes listed below and obtain the user's consent. Add `offline_access` only if you want to refresh without sending the user back to the browser.
 * Token endpoint authentication is `client_secret_basic` or `none`. Use `none` for a command line or native app.
 * The `client_name` must not begin with the word "Mercury", or registration fails with `client_name must not begin with "Mercury"`. That reserved prefix stops a third-party client presenting itself as Mercury on the consent screen. Mercury stores your client as `Mercury MCP for { Your App Name }`.
+
+### Write permission scopes
+
+| Scope                  | Tool                   | Effect                                                                 |
+| :--------------------- | :--------------------- | :--------------------------------------------------------------------- |
+| `transactions:request` | `requestSendMoney`     | Create a payment request that requires approval in Mercury.            |
+| `transfers:request`    | `requestTransferMoney` | Create an internal transfer request that requires approval in Mercury. |
+| `categories:create`    | `createCategory`       | Create a custom expense category immediately.                          |
+| `categories:edit`      | `editCategory`         | Edit a custom expense category immediately.                            |
+| `transactions:update`  | `updateTransaction`    | Update or clear a transaction's note or category immediately.          |
+
+A connection without a tool's required scope cannot use that write tool. A write scope does not grant permission to approve a payment or bypass Mercury's approval policies. Request only the permissions your client needs.
 
 ### Discovering the endpoints
 
@@ -214,8 +249,6 @@ For a web app, use an `https` redirect URI and leave `token_endpoint_auth_method
 
 ## Notes
 
-* Mercury's hosted MCP has read-only access to certain types of information. This limit prevents unintended actions on your behalf. You decide whether to connect your Mercury data to a third party.
+* You decide whether to connect your Mercury data to a third party and grant supported write permissions. Payment and transfer requests require approval in Mercury; custom category and transaction metadata changes apply immediately.
 * Mercury does **not** offer a non-hosted MCP at this time.
 * We verified the command line steps on this page with Claude Code 2.1.220 and codex-cli 0.145.0.
-
-<br />
