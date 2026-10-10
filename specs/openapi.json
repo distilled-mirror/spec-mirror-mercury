@@ -10343,7 +10343,9 @@
           "oemsMutualFundOrderRejected",
           "oemsFixedIncomeOrderSettled",
           "oemsFixedIncomeOrderCanceled",
-          "oemsFixedIncomeOrderRejected"
+          "oemsFixedIncomeOrderRejected",
+          "couponPosted",
+          "couponCanceled"
         ],
         "type": "string"
       },
