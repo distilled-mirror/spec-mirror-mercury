@@ -10345,7 +10345,9 @@
           "oemsFixedIncomeOrderCanceled",
           "oemsFixedIncomeOrderRejected",
           "couponPosted",
-          "couponCanceled"
+          "couponCanceled",
+          "maturityPosted",
+          "maturityCanceled"
         ],
         "type": "string"
       },

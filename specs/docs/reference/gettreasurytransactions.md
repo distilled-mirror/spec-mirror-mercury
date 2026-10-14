@@ -115,7 +115,9 @@ Retrieve paginated treasury transactions for a specific treasury account.
           "oemsFixedIncomeOrderCanceled",
           "oemsFixedIncomeOrderRejected",
           "couponPosted",
-          "couponCanceled"
+          "couponCanceled",
+          "maturityPosted",
+          "maturityCanceled"
         ],
         "type": "string"
       },
