@@ -22,6 +22,11 @@
       "name": "Accounts"
     },
     {
+      "description": "Manage Spend Management budgets",
+      "name": "Budgets",
+      "x-business-only": true
+    },
+    {
       "description": "Manage cards",
       "name": "Cards"
     },
@@ -3143,6 +3148,517 @@
         "x-business-only": true
       }
     },
+    "/spend/budgets": {
+      "get": {
+        "description": "Retrieve the organization's non-deleted budgets ordered by creation time, ascending (oldest first) by default. Supports cursor-based pagination with limit, order, start_at, start_after, and end_before query parameters.",
+        "operationId": "listBudgets",
+        "parameters": [
+          {
+            "in": "query",
+            "name": "limit",
+            "required": false,
+            "schema": {
+              "default": 1000,
+              "description": "Maximum number of results to return. Allowed range: 1 to 1000. Defaults to 1000",
+              "format": "int64",
+              "maximum": 1000,
+              "minimum": 1,
+              "type": "integer"
+            }
+          },
+          {
+            "in": "query",
+            "name": "start_at",
+            "required": false,
+            "schema": {
+              "description": "The ID of the budget to start the page at (inclusive). Cannot be combined with start_after or end_before.",
+              "format": "uuid",
+              "type": "string"
+            }
+          },
+          {
+            "in": "query",
+            "name": "start_after",
+            "required": false,
+            "schema": {
+              "description": "The ID of the budget to start the page after (exclusive). When provided, results will begin with the budget immediately following this ID. Use this for standard forward pagination to get the next page of results. Cannot be combined with end_before.",
+              "format": "uuid",
+              "type": "string"
+            }
+          },
+          {
+            "in": "query",
+            "name": "end_before",
+            "required": false,
+            "schema": {
+              "description": "The ID of the budget to end the page before (exclusive). When provided, results will end just before this ID and work backwards. Use this for reverse pagination or to retrieve previous pages. Cannot be combined with start_after.",
+              "format": "uuid",
+              "type": "string"
+            }
+          },
+          {
+            "in": "query",
+            "name": "order",
+            "required": false,
+            "schema": {
+              "default": "asc",
+              "description": "Sort order. Can be 'asc' or 'desc'. Defaults to 'asc'",
+              "enum": [
+                "asc",
+                "desc"
+              ],
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiV1SpendBudgetsResponse"
+                }
+              }
+            },
+            "description": ""
+          },
+          "400": {
+            "description": "Invalid `order` or `end_before` or `start_after` or `start_at` or `limit`"
+          }
+        },
+        "summary": "List budgets",
+        "tags": [
+          "Budgets"
+        ],
+        "x-business-only": true
+      },
+      "post": {
+        "description": "Create a budget as a draft. Add members and publish it from the Mercury dashboard.",
+        "operationId": "createBudget",
+        "parameters": [
+          {
+            "in": "header",
+            "name": "Idempotency-Key",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ApiV1CreateBudgetRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiV1BudgetIdResponse"
+                }
+              }
+            },
+            "description": ""
+          },
+          "400": {
+            "description": "Invalid `body` or `Idempotency-Key`"
+          }
+        },
+        "summary": "Create a budget",
+        "tags": [
+          "Budgets"
+        ],
+        "x-business-only": true
+      }
+    },
+    "/spend/budgets/{budgetId}": {
+      "get": {
+        "description": "Retrieve a budget by id, including its lifecycle status, per-user limit, cadence, and effective window.",
+        "operationId": "getBudget",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "budgetId",
+            "required": true,
+            "schema": {
+              "description": "ID for the budget",
+              "format": "uuid",
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiV1SpendBudgetResponse"
+                }
+              }
+            },
+            "description": ""
+          },
+          "404": {
+            "description": "`budgetId` not found"
+          }
+        },
+        "summary": "Get a budget",
+        "tags": [
+          "Budgets"
+        ],
+        "x-business-only": true
+      },
+      "post": {
+        "description": "Update a budget's fields. A draft is edited in place; a published budget gets a new version. Omitted or null fields keep their current value. Frequency cannot change after publication. Effective changes to amountPerUserPerPeriod, frequency, startDate, or endDate return 409 when the budget has an active Agentic Card link; name and description updates remain allowed.",
+        "operationId": "updateBudget",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "budgetId",
+            "required": true,
+            "schema": {
+              "description": "ID for the budget",
+              "format": "uuid",
+              "type": "string"
+            }
+          },
+          {
+            "in": "header",
+            "name": "Idempotency-Key",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ApiV1UpdateBudgetRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiV1BudgetIdResponse"
+                }
+              }
+            },
+            "description": ""
+          },
+          "400": {
+            "description": "Invalid `body` or `Idempotency-Key`"
+          },
+          "404": {
+            "description": "`budgetId` not found"
+          }
+        },
+        "summary": "Update a budget",
+        "tags": [
+          "Budgets"
+        ],
+        "x-business-only": true
+      }
+    },
+    "/spend/budgets/{budgetId}/archive": {
+      "post": {
+        "description": "Archive a budget (a published budget becomes archived; a draft becomes deleted). Returns 409 when the budget has an active Agentic Card link.",
+        "operationId": "archiveBudget",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "budgetId",
+            "required": true,
+            "schema": {
+              "description": "ID for the budget",
+              "format": "uuid",
+              "type": "string"
+            }
+          },
+          {
+            "in": "header",
+            "name": "Idempotency-Key",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": ""
+          },
+          "400": {
+            "description": "Invalid `Idempotency-Key`"
+          },
+          "404": {
+            "description": "`budgetId` not found"
+          }
+        },
+        "summary": "Archive a budget",
+        "tags": [
+          "Budgets"
+        ],
+        "x-business-only": true
+      }
+    },
+    "/spend/budgets/{budgetId}/assign-transaction": {
+      "post": {
+        "description": "Assign a transaction to a budget so its spend counts against the cycle containing the transaction's date. If the assignment would overspend the budget, set allowOverspend to true; omitted and false values enforce the spend limit.",
+        "operationId": "assignTransactionToBudget",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "budgetId",
+            "required": true,
+            "schema": {
+              "description": "ID for the budget",
+              "format": "uuid",
+              "type": "string"
+            }
+          },
+          {
+            "in": "header",
+            "name": "Idempotency-Key",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ApiV1AssignTransactionRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "204": {
+            "description": ""
+          },
+          "400": {
+            "description": "Invalid `body` or `Idempotency-Key`"
+          },
+          "404": {
+            "description": "`budgetId` not found"
+          }
+        },
+        "summary": "Assign a transaction to a budget",
+        "tags": [
+          "Budgets"
+        ],
+        "x-business-only": true
+      }
+    },
+    "/spend/budgets/{budgetId}/expenditures": {
+      "get": {
+        "description": "List the non-deleted expenditures assigned to a budget, ordered by expenditure creation time, ascending (oldest first) by default. Supports cursor-based pagination with limit, order, start_at, start_after, and end_before query parameters.",
+        "operationId": "getBudgetExpenditures",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "budgetId",
+            "required": true,
+            "schema": {
+              "description": "ID for the budget",
+              "format": "uuid",
+              "type": "string"
+            }
+          },
+          {
+            "in": "query",
+            "name": "limit",
+            "required": false,
+            "schema": {
+              "default": 1000,
+              "description": "Maximum number of results to return. Allowed range: 1 to 1000. Defaults to 1000",
+              "format": "int64",
+              "maximum": 1000,
+              "minimum": 1,
+              "type": "integer"
+            }
+          },
+          {
+            "in": "query",
+            "name": "start_at",
+            "required": false,
+            "schema": {
+              "description": "The ID of the budget expenditure to start the page at (inclusive). Cannot be combined with start_after or end_before.",
+              "format": "uuid",
+              "type": "string"
+            }
+          },
+          {
+            "in": "query",
+            "name": "start_after",
+            "required": false,
+            "schema": {
+              "description": "The ID of the budget expenditure to start the page after (exclusive). When provided, results will begin with the budget expenditure immediately following this ID. Use this for standard forward pagination to get the next page of results. Cannot be combined with end_before.",
+              "format": "uuid",
+              "type": "string"
+            }
+          },
+          {
+            "in": "query",
+            "name": "end_before",
+            "required": false,
+            "schema": {
+              "description": "The ID of the budget expenditure to end the page before (exclusive). When provided, results will end just before this ID and work backwards. Use this for reverse pagination or to retrieve previous pages. Cannot be combined with start_after.",
+              "format": "uuid",
+              "type": "string"
+            }
+          },
+          {
+            "in": "query",
+            "name": "order",
+            "required": false,
+            "schema": {
+              "default": "asc",
+              "description": "Sort order. Can be 'asc' or 'desc'. Defaults to 'asc'",
+              "enum": [
+                "asc",
+                "desc"
+              ],
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiV1BudgetExpendituresResponse"
+                }
+              }
+            },
+            "description": ""
+          },
+          "400": {
+            "description": "Invalid `order` or `end_before` or `start_after` or `start_at` or `limit`"
+          },
+          "404": {
+            "description": "`budgetId` not found"
+          }
+        },
+        "summary": "List a budget's expenditures",
+        "tags": [
+          "Budgets"
+        ],
+        "x-business-only": true
+      }
+    },
+    "/spend/budgets/{budgetId}/members": {
+      "get": {
+        "description": "List the members of a budget and their current or final cycle spend, ordered by the creation time of each budget member's assignment record, ascending (oldest first) by default. Supports cursor-based pagination with limit, order, start_at, start_after, and end_before query parameters.",
+        "operationId": "getBudgetMembers",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "budgetId",
+            "required": true,
+            "schema": {
+              "description": "ID for the budget",
+              "format": "uuid",
+              "type": "string"
+            }
+          },
+          {
+            "in": "query",
+            "name": "limit",
+            "required": false,
+            "schema": {
+              "default": 1000,
+              "description": "Maximum number of results to return. Allowed range: 1 to 1000. Defaults to 1000",
+              "format": "int64",
+              "maximum": 1000,
+              "minimum": 1,
+              "type": "integer"
+            }
+          },
+          {
+            "in": "query",
+            "name": "start_at",
+            "required": false,
+            "schema": {
+              "description": "The ID of the organization user to start the page at (inclusive). Cannot be combined with start_after or end_before.",
+              "format": "uuid",
+              "type": "string"
+            }
+          },
+          {
+            "in": "query",
+            "name": "start_after",
+            "required": false,
+            "schema": {
+              "description": "The ID of the organization user to start the page after (exclusive). When provided, results will begin with the organization user immediately following this ID. Use this for standard forward pagination to get the next page of results. Cannot be combined with end_before.",
+              "format": "uuid",
+              "type": "string"
+            }
+          },
+          {
+            "in": "query",
+            "name": "end_before",
+            "required": false,
+            "schema": {
+              "description": "The ID of the organization user to end the page before (exclusive). When provided, results will end just before this ID and work backwards. Use this for reverse pagination or to retrieve previous pages. Cannot be combined with start_after.",
+              "format": "uuid",
+              "type": "string"
+            }
+          },
+          {
+            "in": "query",
+            "name": "order",
+            "required": false,
+            "schema": {
+              "default": "asc",
+              "description": "Sort order. Can be 'asc' or 'desc'. Defaults to 'asc'",
+              "enum": [
+                "asc",
+                "desc"
+              ],
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiV1BudgetMembersResponse"
+                }
+              }
+            },
+            "description": ""
+          },
+          "400": {
+            "description": "Invalid `order` or `end_before` or `start_after` or `start_at` or `limit`"
+          },
+          "404": {
+            "description": "`budgetId` not found"
+          }
+        },
+        "summary": "List a budget's members",
+        "tags": [
+          "Budgets"
+        ],
+        "x-business-only": true
+      }
+    },
     "/statements/{statementId}/pdf": {
       "get": {
         "description": "Downloads a PDF file for the specified account statement. The response includes a Content-Disposition header for proper file download handling. Returns binary PDF data.",
@@ -6069,6 +6585,381 @@
         ],
         "type": "object"
       },
+      "ApiV1AssignTransactionRequest": {
+        "properties": {
+          "allowOverspend": {
+            "description": " Whether to allow this assignment to exceed the budget. Defaults to false.",
+            "nullable": true,
+            "type": "boolean"
+          },
+          "transactionId": {
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/TransactionMetadataId"
+              }
+            ]
+          }
+        },
+        "required": [
+          "transactionId"
+        ],
+        "type": "object"
+      },
+      "ApiV1BudgetExpenditure": {
+        "properties": {
+          "assignedAmount": {
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/Dollar"
+              },
+              {
+                "description": " Absent when the full underlying spend is assigned."
+              }
+            ],
+            "nullable": true
+          },
+          "expenseId": {
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/ExpenseId"
+              }
+            ],
+            "nullable": true
+          },
+          "id": {
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/BudgetExpenditureId"
+              }
+            ]
+          },
+          "transactionId": {
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/TransactionMetadataId"
+              }
+            ],
+            "nullable": true
+          }
+        },
+        "required": [
+          "id"
+        ],
+        "type": "object"
+      },
+      "ApiV1BudgetExpendituresResponse": {
+        "properties": {
+          "expenditures": {
+            "items": {
+              "$ref": "#/components/schemas/ApiV1BudgetExpenditure"
+            },
+            "type": "array"
+          },
+          "page": {
+            "properties": {
+              "nextPage": {
+                "$ref": "#/components/schemas/BudgetExpenditureId"
+              },
+              "previousPage": {
+                "$ref": "#/components/schemas/BudgetExpenditureId"
+              }
+            },
+            "type": "object"
+          }
+        },
+        "required": [
+          "expenditures",
+          "page"
+        ],
+        "type": "object"
+      },
+      "ApiV1BudgetFrequency": {
+        "enum": [
+          "oneTime",
+          "daily",
+          "weekly",
+          "monthly",
+          "yearly"
+        ],
+        "type": "string"
+      },
+      "ApiV1BudgetIdResponse": {
+        "properties": {
+          "id": {
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/BudgetId"
+              }
+            ]
+          }
+        },
+        "required": [
+          "id"
+        ],
+        "type": "object"
+      },
+      "ApiV1BudgetMember": {
+        "properties": {
+          "cycleRemaining": {
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/NonNegativeDollar"
+              }
+            ]
+          },
+          "cycleSpent": {
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/NonNegativeDollar"
+              }
+            ]
+          },
+          "email": {
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/Email"
+              }
+            ]
+          },
+          "firstName": {
+            "type": "string"
+          },
+          "lastName": {
+            "type": "string"
+          },
+          "orgUserId": {
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/OrganizationUserId"
+              }
+            ]
+          }
+        },
+        "required": [
+          "orgUserId",
+          "email",
+          "firstName",
+          "lastName",
+          "cycleSpent",
+          "cycleRemaining"
+        ],
+        "type": "object"
+      },
+      "ApiV1BudgetMembersResponse": {
+        "properties": {
+          "members": {
+            "items": {
+              "$ref": "#/components/schemas/ApiV1BudgetMember"
+            },
+            "type": "array"
+          },
+          "page": {
+            "properties": {
+              "nextPage": {
+                "$ref": "#/components/schemas/OrganizationUserId"
+              },
+              "previousPage": {
+                "$ref": "#/components/schemas/OrganizationUserId"
+              }
+            },
+            "type": "object"
+          }
+        },
+        "required": [
+          "members",
+          "page"
+        ],
+        "type": "object"
+      },
+      "ApiV1BudgetPublishStatus": {
+        "enum": [
+          "draft",
+          "published",
+          "archived"
+        ],
+        "type": "string"
+      },
+      "ApiV1CreateBudgetRequest": {
+        "properties": {
+          "amountPerUserPerPeriod": {
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/NonNegativeDollar"
+              }
+            ],
+            "nullable": true
+          },
+          "description": {
+            "nullable": true,
+            "type": "string"
+          },
+          "endDate": {
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/Day"
+              }
+            ],
+            "nullable": true
+          },
+          "frequency": {
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/ApiV1BudgetFrequency"
+              }
+            ]
+          },
+          "name": {
+            "nullable": true,
+            "type": "string"
+          },
+          "startDate": {
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/Day"
+              }
+            ],
+            "nullable": true
+          }
+        },
+        "required": [
+          "frequency"
+        ],
+        "type": "object"
+      },
+      "ApiV1SpendBudgetResponse": {
+        "properties": {
+          "amountPerUserPerPeriod": {
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/NonNegativeDollar"
+              }
+            ],
+            "nullable": true
+          },
+          "description": {
+            "nullable": true,
+            "type": "string"
+          },
+          "endDate": {
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/Day"
+              }
+            ],
+            "nullable": true
+          },
+          "frequency": {
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/ApiV1BudgetFrequency"
+              }
+            ]
+          },
+          "id": {
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/BudgetId"
+              }
+            ]
+          },
+          "name": {
+            "nullable": true,
+            "type": "string"
+          },
+          "startDate": {
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/Day"
+              }
+            ],
+            "nullable": true
+          },
+          "status": {
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/ApiV1BudgetPublishStatus"
+              }
+            ]
+          }
+        },
+        "required": [
+          "id",
+          "status",
+          "frequency"
+        ],
+        "type": "object"
+      },
+      "ApiV1SpendBudgetsResponse": {
+        "properties": {
+          "budgets": {
+            "items": {
+              "$ref": "#/components/schemas/ApiV1SpendBudgetResponse"
+            },
+            "type": "array"
+          },
+          "page": {
+            "properties": {
+              "nextPage": {
+                "$ref": "#/components/schemas/BudgetId"
+              },
+              "previousPage": {
+                "$ref": "#/components/schemas/BudgetId"
+              }
+            },
+            "type": "object"
+          }
+        },
+        "required": [
+          "budgets",
+          "page"
+        ],
+        "type": "object"
+      },
+      "ApiV1UpdateBudgetRequest": {
+        "properties": {
+          "amountPerUserPerPeriod": {
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/NonNegativeDollar"
+              }
+            ],
+            "nullable": true
+          },
+          "description": {
+            "nullable": true,
+            "type": "string"
+          },
+          "endDate": {
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/Day"
+              }
+            ],
+            "nullable": true
+          },
+          "frequency": {
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/ApiV1BudgetFrequency"
+              }
+            ],
+            "nullable": true
+          },
+          "name": {
+            "nullable": true,
+            "type": "string"
+          },
+          "startDate": {
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/Day"
+              }
+            ],
+            "nullable": true
+          }
+        },
+        "type": "object"
+      },
       "ApiWebhookEndpointId": {
         "description": "ID for the webhook",
         "format": "uuid",
@@ -6192,6 +7083,16 @@
       },
       "AttachmentId": {
         "description": "ID for the attachment.",
+        "format": "uuid",
+        "type": "string"
+      },
+      "BudgetExpenditureId": {
+        "description": "ID for the budget expenditure",
+        "format": "uuid",
+        "type": "string"
+      },
+      "BudgetId": {
+        "description": "ID for the budget",
         "format": "uuid",
         "type": "string"
       },
@@ -7376,6 +8277,11 @@
       "Email": {
         "type": "string"
       },
+      "ExpenseId": {
+        "description": "ID for the expense",
+        "format": "uuid",
+        "type": "string"
+      },
       "GlAllocation": {
         "description": " A GL code allocation on a transaction — a GL code name paired with the amount\n allocated to it. When a transaction is fully categorized, the amounts across all\n allocations sum to the transaction total.",
         "properties": {
@@ -7994,6 +8900,12 @@
         "nullable": true,
         "type": "string"
       },
+      "NonNegativeDollar": {
+        "description": "A non-negative dollar amount",
+        "format": "double",
+        "minimum": 0,
+        "type": "number"
+      },
       "NoteUpdate": {
         "description": "Note update action. Omit field to keep current note, send null or empty string to clear note, send text to set note.",
         "nullable": true,
@@ -8178,6 +9090,11 @@
           "organization"
         ],
         "type": "object"
+      },
+      "OrganizationUserId": {
+        "description": "ID for the organization user",
+        "format": "uuid",
+        "type": "string"
       },
       "PDFDocument": {
         "format": "binary",
