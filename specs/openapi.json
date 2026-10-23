@@ -201,7 +201,7 @@
     },
     "/account/{accountId}/statements": {
       "get": {
-        "description": "Retrieve a paginated list of monthly statements for a specific account. Supports cursor-based pagination with limit, order, start_after, and end_before query parameters, as well as date range filtering with start and end parameters.",
+        "description": "Retrieve a paginated list of monthly statements for a depository account. For IO credit accounts, use getCreditAccountStatements. Supports cursor-based pagination with limit, order, start_after, and end_before query parameters, as well as date range filtering with start and end parameters.",
         "operationId": "getAccountStatements",
         "parameters": [
           {
@@ -1822,6 +1822,112 @@
           }
         },
         "summary": "List all credit accounts",
+        "tags": [
+          "Credit"
+        ],
+        "x-business-only": true
+      }
+    },
+    "/credit/{accountId}/statements": {
+      "get": {
+        "description": "Retrieve historical IO credit statements with cursor-based pagination. Each statement includes its billing period (startDate and endDate), closing balance (endingBalance), and opening balance (details.accountDetails.startingBalance), calculated using the same strict posting-date boundaries as the PDF. Balances use signed account amounts: amounts owed are negative. Filter by statement start date with start and end. Use getAccountStatements for depository accounts.",
+        "operationId": "getCreditAccountStatements",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "accountId",
+            "required": true,
+            "schema": {
+              "description": "ID for a Mercury account.",
+              "format": "uuid",
+              "type": "string"
+            }
+          },
+          {
+            "in": "query",
+            "name": "limit",
+            "required": false,
+            "schema": {
+              "default": 25,
+              "description": "Maximum number of results to return. Allowed range: 1 to 100. Defaults to 25",
+              "format": "int64",
+              "maximum": 100,
+              "minimum": 1,
+              "type": "integer"
+            }
+          },
+          {
+            "in": "query",
+            "name": "order",
+            "required": false,
+            "schema": {
+              "default": "desc",
+              "description": "Sort order. Can be 'asc' or 'desc'. Defaults to 'desc'",
+              "enum": [
+                "asc",
+                "desc"
+              ],
+              "type": "string"
+            }
+          },
+          {
+            "in": "query",
+            "name": "start_after",
+            "required": false,
+            "schema": {
+              "description": "The ID of the statement to start the page after (exclusive). When provided, results will begin with the statement immediately following this ID. Use this for standard forward pagination to get the next page of results. Cannot be combined with end_before.",
+              "format": "uuid",
+              "type": "string"
+            }
+          },
+          {
+            "in": "query",
+            "name": "end_before",
+            "required": false,
+            "schema": {
+              "description": "The ID of the statement to end the page before (exclusive). When provided, results will end just before this ID and work backwards. Use this for reverse pagination or to retrieve previous pages. Cannot be combined with start_after.",
+              "format": "uuid",
+              "type": "string"
+            }
+          },
+          {
+            "in": "query",
+            "name": "start",
+            "required": false,
+            "schema": {
+              "description": "Filter statements where the period start date is on or after this date. Format: YYYY-MM-DD",
+              "type": "string"
+            }
+          },
+          {
+            "in": "query",
+            "name": "end",
+            "required": false,
+            "schema": {
+              "description": "Filter statements where the period start date is on or before this date. If the date is in the future, defaults to the current date. Format: YYYY-MM-DD",
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/CreditAccountStatementsPaginatedResponse"
+                }
+              }
+            },
+            "description": ""
+          },
+          "400": {
+            "description": "Invalid `end` or `start` or `end_before` or `start_after` or `order` or `limit`"
+          },
+          "404": {
+            "description": "`accountId` not found"
+          }
+        },
+        "summary": "Get credit account statements",
         "tags": [
           "Credit"
         ],
@@ -5114,10 +5220,112 @@
         ],
         "type": "object"
       },
+      "AccountStatement": {
+        "properties": {
+          "companyLegalAddress": {
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/Address"
+              }
+            ]
+          },
+          "companyLegalName": {
+            "type": "string"
+          },
+          "details": {
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/AccountStatementPayload"
+              }
+            ]
+          },
+          "downloadUrl": {
+            "type": "string"
+          },
+          "ein": {
+            "nullable": true,
+            "type": "string"
+          },
+          "endDate": {
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/UTCTime"
+              }
+            ]
+          },
+          "endingBalance": {
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/Dollar"
+              }
+            ]
+          },
+          "id": {
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/AccountStatementId"
+              }
+            ]
+          },
+          "startDate": {
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/UTCTime"
+              }
+            ]
+          },
+          "transactions": {
+            "items": {
+              "$ref": "#/components/schemas/AccountStatementTransaction"
+            },
+            "type": "array"
+          }
+        },
+        "required": [
+          "startDate",
+          "endDate",
+          "companyLegalName",
+          "companyLegalAddress",
+          "endingBalance",
+          "details",
+          "downloadUrl",
+          "id",
+          "transactions"
+        ],
+        "type": "object"
+      },
       "AccountStatementId": {
         "description": "ID for the account statement",
         "format": "uuid",
         "type": "string"
+      },
+      "AccountStatementPayload": {
+        "description": "Account statement payload with type discriminator",
+        "properties": {
+          "accountDetails": {
+            "description": "Account-specific details based on accountType",
+            "oneOf": [
+              {
+                "$ref": "#/components/schemas/DepositoryAccountStatementPayload"
+              },
+              {
+                "$ref": "#/components/schemas/CreditAccountStatementPayload"
+              }
+            ]
+          },
+          "accountType": {
+            "enum": [
+              "depository",
+              "credit"
+            ],
+            "type": "string"
+          }
+        },
+        "required": [
+          "accountType",
+          "accountDetails"
+        ],
+        "type": "object"
       },
       "AccountStatementTransaction": {
         "properties": {
@@ -7793,6 +8001,99 @@
         ],
         "type": "object"
       },
+      "CreditAccountStatementPayload": {
+        "properties": {
+          "creditLimit": {
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/Dollar"
+              }
+            ]
+          },
+          "creditPeriodId": {
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/MercuryCreditAccountStatementPeriodId"
+              }
+            ]
+          },
+          "dueDate": {
+            "type": "string"
+          },
+          "startingBalance": {
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/Dollar"
+              }
+            ]
+          },
+          "totalAutopayPayments": {
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/Dollar"
+              }
+            ]
+          },
+          "totalCashbackEarned": {
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/Dollar"
+              }
+            ]
+          },
+          "totalOneTimePayments": {
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/Dollar"
+              }
+            ]
+          },
+          "totalTransactions": {
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/Dollar"
+              }
+            ]
+          }
+        },
+        "required": [
+          "creditLimit",
+          "totalTransactions",
+          "totalOneTimePayments",
+          "totalAutopayPayments",
+          "totalCashbackEarned",
+          "dueDate",
+          "creditPeriodId",
+          "startingBalance"
+        ],
+        "type": "object"
+      },
+      "CreditAccountStatementsPaginatedResponse": {
+        "properties": {
+          "page": {
+            "properties": {
+              "nextPage": {
+                "$ref": "#/components/schemas/AccountStatementId"
+              },
+              "previousPage": {
+                "$ref": "#/components/schemas/AccountStatementId"
+              }
+            },
+            "type": "object"
+          },
+          "statements": {
+            "items": {
+              "$ref": "#/components/schemas/AccountStatement"
+            },
+            "type": "array"
+          }
+        },
+        "required": [
+          "statements",
+          "page"
+        ],
+        "type": "object"
+      },
       "CreditAccountsResponse": {
         "properties": {
           "accounts": {
@@ -8000,6 +8301,21 @@
           "downloadUrl",
           "id",
           "transactions"
+        ],
+        "type": "object"
+      },
+      "DepositoryAccountStatementPayload": {
+        "properties": {
+          "accountNumber": {
+            "type": "string"
+          },
+          "routingNumber": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "accountNumber",
+          "routingNumber"
         ],
         "type": "object"
       },
@@ -8289,6 +8605,16 @@
             "description": " The amount allocated to this GL code",
             "multipleOf": 0.01,
             "type": "number"
+          },
+          "className": {
+            "description": " The name of the class from the connected accounting integration, if assigned",
+            "nullable": true,
+            "type": "string"
+          },
+          "departmentName": {
+            "description": " The name of the department from the connected accounting integration, if assigned",
+            "nullable": true,
+            "type": "string"
           },
           "description": {
             "description": " Optional user-provided description for this allocation",

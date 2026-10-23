@@ -355,6 +355,16 @@ Update the note and/or category of an existing transaction. Use null values to c
             "multipleOf": 0.01,
             "type": "number"
           },
+          "className": {
+            "description": " The name of the class from the connected accounting integration, if assigned",
+            "nullable": true,
+            "type": "string"
+          },
+          "departmentName": {
+            "description": " The name of the department from the connected accounting integration, if assigned",
+            "nullable": true,
+            "type": "string"
+          },
           "description": {
             "description": " Optional user-provided description for this allocation",
             "nullable": true,

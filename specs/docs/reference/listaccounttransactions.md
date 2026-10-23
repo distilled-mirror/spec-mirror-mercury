@@ -323,6 +323,16 @@ Retrieve a paginated list of transactions for a specific account. Supports filte
             "multipleOf": 0.01,
             "type": "number"
           },
+          "className": {
+            "description": " The name of the class from the connected accounting integration, if assigned",
+            "nullable": true,
+            "type": "string"
+          },
+          "departmentName": {
+            "description": " The name of the department from the connected accounting integration, if assigned",
+            "nullable": true,
+            "type": "string"
+          },
           "description": {
             "description": " Optional user-provided description for this allocation",
             "nullable": true,

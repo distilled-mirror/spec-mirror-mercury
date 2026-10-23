@@ -6,7 +6,7 @@ agentTools:
 
 # Get account statements
 
-Retrieve a paginated list of monthly statements for a specific account. Supports cursor-based pagination with limit, order, start_after, and end_before query parameters, as well as date range filtering with start and end parameters.
+Retrieve a paginated list of monthly statements for a depository account. For IO credit accounts, use getCreditAccountStatements. Supports cursor-based pagination with limit, order, start_after, and end_before query parameters, as well as date range filtering with start and end parameters.
 
 <Callout icon="🚧" theme="warn">
   For now, treasury and credit accounts are not supported on this endpoint.
@@ -239,7 +239,7 @@ The maximum date range that may be supplied via the start and end parameters is 
   "paths": {
     "/account/{accountId}/statements": {
       "get": {
-        "description": "Retrieve a paginated list of monthly statements for a specific account. Supports cursor-based pagination with limit, order, start_after, and end_before query parameters, as well as date range filtering with start and end parameters.",
+        "description": "Retrieve a paginated list of monthly statements for a depository account. For IO credit accounts, use getCreditAccountStatements. Supports cursor-based pagination with limit, order, start_after, and end_before query parameters, as well as date range filtering with start and end parameters.",
         "operationId": "getAccountStatements",
         "parameters": [
           {

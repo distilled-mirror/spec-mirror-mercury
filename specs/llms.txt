@@ -26,7 +26,7 @@
 - Accounts
   - [Get cards for account](https://docs.mercury.com/reference/getaccountcards.md): Retrieve all debit and credit cards associated with a specific account.
   - [Request to send money](https://docs.mercury.com/reference/requestsendmoney.md): Create a "request to send money" that will require approval based on your organization's approval policies.
-  - [Get account statements](https://docs.mercury.com/reference/getaccountstatements.md): Retrieve a paginated list of monthly statements for a specific account. Supports cursor-based pagination with limit, order, start_after, and end_before query parameters, as well as date range…
+  - [Get account statements](https://docs.mercury.com/reference/getaccountstatements.md): Retrieve a paginated list of monthly statements for a depository account. For IO credit accounts, use getCreditAccountStatements. Supports cursor-based pagination with limit, order, start_after, and…
   - [Get transaction by ID](https://docs.mercury.com/reference/gettransaction.md)
   - [List account transactions](https://docs.mercury.com/reference/listaccounttransactions.md): Retrieve a paginated list of transactions for a specific account. Supports filtering by date range, status, and search terms.
   - [Send money to a recipient](https://docs.mercury.com/reference/createtransaction.md): Send money from an account to a recipient. Creates a transaction that will be processed immediately or may require approval.
@@ -72,6 +72,7 @@
   - [List merchants](https://docs.mercury.com/reference/listmerchants.md): Retrieve a paginated list of priority merchants that can be used for spend controls like merchant locking. Supports cursor-based pagination with limit, order, start_after, and end_before query…
 - Credit
   - [List all credit accounts](https://docs.mercury.com/reference/listcredit.md): Retrieve a list of all credit accounts for the organization.
+  - [Get credit account statements](https://docs.mercury.com/reference/getcreditaccountstatements.md): Retrieve historical IO credit statements with cursor-based pagination. Each statement includes its billing period (startDate and endDate), closing balance (endingBalance), and opening balance…
 - Organization
   - [Get organization information](https://docs.mercury.com/reference/getorganization.md): Retrieve information about your organization including EIN, legal business name, and DBAs.
 - [Accounts Receivable](https://docs.mercury.com/reference/accounts_receivable.md): API for creating and managing invoices
