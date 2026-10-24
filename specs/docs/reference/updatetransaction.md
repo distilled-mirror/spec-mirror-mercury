@@ -14,6 +14,17 @@ Update the note and/or category of an existing transaction. Use null values to c
 {
   "components": {
     "schemas": {
+      "AccountingSyncStatus": {
+        "enum": [
+          "pending",
+          "reviewed",
+          "syncing",
+          "synced",
+          "errored",
+          "excluded"
+        ],
+        "type": "string"
+      },
       "AddressData": {
         "properties": {
           "address1": {
@@ -946,6 +957,17 @@ Update the note and/or category of an existing transaction. Use null values to c
               }
             ]
           },
+          "accountingStatus": {
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/TransactionAccountingStatus"
+              },
+              {
+                "description": " Review and sync status of this transaction for the connected accounting integration (e.g.\n QuickBooks, Xero, NetSuite). A transaction with no accounting activity is pending with no\n timestamps. Null if the caller is not authorized to read accounting status, if the\n organization has no active general ledger (no active Books or third-party ERP ledger), and\n on the responses of endpoints that create transactions or transfers."
+              }
+            ],
+            "nullable": true
+          },
           "amount": {
             "multipleOf": 0.01,
             "type": "number"
@@ -1160,6 +1182,80 @@ Update the note and/or category of an existing transaction. Use null values to c
           "attachments",
           "relatedTransactions",
           "accountId"
+        ],
+        "type": "object"
+      },
+      "TransactionAccountingStatus": {
+        "description": " A transaction's accounting review and sync status, for the accounting integration connected\n to the organization (e.g. QuickBooks, Xero, NetSuite).",
+        "properties": {
+          "erroredAt": {
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/UTCTime"
+              },
+              {
+                "description": " When the sync of the transaction to the accounting integration failed. Null if it has not\n failed."
+              }
+            ],
+            "nullable": true
+          },
+          "excludedAt": {
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/UTCTime"
+              },
+              {
+                "description": " When the transaction was excluded from accounting sync. Null if it is not excluded."
+              }
+            ],
+            "nullable": true
+          },
+          "reviewedAt": {
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/UTCTime"
+              },
+              {
+                "description": " When the transaction was last marked as reviewed. Null if it has not been reviewed."
+              }
+            ],
+            "nullable": true
+          },
+          "status": {
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/AccountingSyncStatus"
+              },
+              {
+                "description": " Current review and sync status of the transaction. pending: not reviewed or synced yet,\n including transactions with no accounting activity. reviewed: marked as reviewed and ready to\n sync. syncing: a sync has started but not finished. synced: synced successfully. errored: the\n sync failed. excluded: excluded from accounting sync. When more than one applies, the first of\n excluded, errored, synced, syncing and reviewed wins."
+              }
+            ]
+          },
+          "syncStartedAt": {
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/UTCTime"
+              },
+              {
+                "description": " When a sync of the transaction to the accounting integration was started. This is the\n start of the sync, not its completion (see syncedAt). Null if no sync has been started."
+              }
+            ],
+            "nullable": true
+          },
+          "syncedAt": {
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/UTCTime"
+              },
+              {
+                "description": " When the transaction finished syncing to the accounting integration successfully. Null if\n it has not finished syncing."
+              }
+            ],
+            "nullable": true
+          }
+        },
+        "required": [
+          "status"
         ],
         "type": "object"
       },
