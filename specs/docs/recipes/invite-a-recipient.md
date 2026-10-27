@@ -236,8 +236,8 @@ main().catch((err) => console.error(err));
 This recipe invites someone to become a recipient by entering their own payment details, rather than you collecting and typing in their bank account or routing information yourself. Sensitive routing details never touch your system.
 
 - **Base URL:** `https://api.mercury.com/api/v1`
-- **Authentication:** Replace `<<apiKey>>` with your Mercury API token (see [Getting Started](/docs/getting-started)).
-- **Next Step:** Once the recipient is active, pay them with [Request a payment approval](/recipes/request-a-payment-approval) or [Send an ACH payment](/recipes/send-an-ach-payment). See the [Send Money guide](/docs/send-money) for how invited recipients fit into the rest of the API.
+- **Authentication:** Replace `<<apiKey>>` with your Mercury API token (see [Getting Started](https://docs.mercury.com/docs/getting-started)).
+- **Next Step:** Once the recipient is active, pay them with [Request a payment approval](https://docs.mercury.com/recipes/request-a-payment-approval) or [Send an ACH payment](https://docs.mercury.com/recipes/send-an-ach-payment). See the [Send Money guide](https://docs.mercury.com/docs/send-money) for how invited recipients fit into the rest of the API.
 
 # Create the Invite
 
@@ -266,4 +266,4 @@ Call `GET /recipients/invites/{inviteId}` and read `status`. It starts at `creat
 <!-- ruby@60-67 -->
 <!-- node@46-55 -->
 
-Once `status` reaches `completed`, the invite response carries a `recipientId`. Call `GET /recipient/{recipientId}` to read the recipient the invitee just created, including the payment method details they entered. From there, pay them the same way you would any other recipient, covered in [Request a payment approval](/recipes/request-a-payment-approval) and [Send an ACH payment](/recipes/send-an-ach-payment).
+Once `status` reaches `completed`, the invite response carries a `recipientId`. Call `GET /recipient/{recipientId}` to read the recipient the invitee just created, including the payment method details they entered. From there, pay them the same way you would any other recipient, covered in [Request a payment approval](https://docs.mercury.com/recipes/request-a-payment-approval) and [Send an ACH payment](https://docs.mercury.com/recipes/send-an-ach-payment).

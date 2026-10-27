@@ -10,7 +10,7 @@ Create invoices from your own systems, track who has paid, and learn how Mercury
 
 Mercury's Accounts Receivable API lets you raise invoices from your own systems, collect by card or ACH debit, and know when each one is paid.
 
-For working code, see the [Invoice your customers](/recipes/invoice-your-customers) recipe. For every field, parameter, and response, see our [Accounts Receivable](/reference/accounts_receivable) API reference.
+For working code, see the [Invoice your customers](https://docs.mercury.com/recipes/invoice-your-customers) recipe. For every field, parameter, and response, see our [Accounts Receivable](https://docs.mercury.com/reference/accounts_receivable) API reference.
 
 ## What You Can Build
 
@@ -47,7 +47,7 @@ The API enables payment methods on an invoice and reports what arrives. It does 
 | Enable ACH debit on an invoice          | Supported   | Set `achDebitEnabled: true`. USD only, and a non-USD invoice with ACH debit enabled returns `400`                                                                                                                                               |
 | Show virtual payment instructions       | Supported   | Set `useRealAccountNumber: false`                                                                                                                                                                                                               |
 | Match an incoming payment to an invoice | Supported   | Automatic matching applies to bank transfers sent to the invoice's virtual account. Card, ACH debit, and invoices marked paid by other means settle through their own flow. See [Confirm Payment and Reconcile](#confirm-payment-and-reconcile) |
-| Know when an invoice is paid            | Client-Side | Listen for the `transaction.created` event, then poll `GET /ar/invoices` to read invoice status. There is no invoice event. See [Webhooks](/reference/webhooks)                                                                                 |
+| Know when an invoice is paid            | Client-Side | Listen for the `transaction.created` event, then poll `GET /ar/invoices` to read invoice status. There is no invoice event. See [Webhooks](https://docs.mercury.com/reference/webhooks)                                                                                 |
 
 ### Customers
 
@@ -60,15 +60,15 @@ The API enables payment methods on an invoice and reports what arrives. It does 
 
 | Step                     | Detail                                                                                                                                                                                                                                                                                                                                                                                                                                               |
 | ------------------------ | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| **API Token Scopes**     | Read actions require a read-only token. Create actions require a read-write token bound to an allowlisted IP address (see [Getting Started](/docs/getting-started) and [API token security policies](/docs/api-token-security-policies))                                                                                                                                                                                                             |
-| **Test in Sandbox**      | The Accounts Receivable API is available in Mercury's sandbox, so you can run the full invoicing flow before going live. See [Using the Mercury Sandbox](/docs/using-mercury-sandbox)                                                                                                                                                                                                                                                                |
+| **API Token Scopes**     | Read actions require a read-only token. Create actions require a read-write token bound to an allowlisted IP address (see [Getting Started](https://docs.mercury.com/docs/getting-started) and [API token security policies](https://docs.mercury.com/docs/api-token-security-policies))                                                                                                                                                                                                             |
+| **Test in Sandbox**      | The Accounts Receivable API is available in Mercury's sandbox, so you can run the full invoicing flow before going live. See [Using the Mercury Sandbox](https://docs.mercury.com/docs/using-mercury-sandbox)                                                                                                                                                                                                                                                                |
 | **Destination Account**  | Call `GET /accounts` and note the `id` of the checking or savings account where payments should land                                                                                                                                                                                                                                                                                                                                                 |
 | **Accept Card Payments** | `creditCardEnabled: true` requires a connected Stripe account, and create returns `400` without one. Connect Stripe in your dashboard, not through the API. See <Anchor label="Accepting Credit Card, Apple, and Google Pay payments on invoices via Stripe" target="_blank" href="https://support.mercury.com/hc/en-us/articles/29648131615508-Accepting-Credit-Card-Apple-and-Google-Pay-payments-on-invoices-via-Stripe">Mercury Support</Anchor> |
 | **ACH Debit**            | `achDebitEnabled` is a required field when creating an invoice via API. It lets your customer pay by an Automated Clearing House pull from their bank account. ACH debit is USD only, and enabling it on a non-USD invoice returns a `400`. See <Anchor label="Mercury pricing" target="_blank" href="https://mercury.com/pricing">Mercury pricing</Anchor> for more details on per transaction costs                                                |
 
 ## Send Your First Invoice
 
-Review the [Invoice your customers](/recipes/invoice-your-customers) recipe for example formatting of each request.
+Review the [Invoice your customers](https://docs.mercury.com/recipes/invoice-your-customers) recipe for example formatting of each request.
 
 1. **Find the Account Where Payments Land**: `GET /accounts`. Note the `id` of a checking or savings account. You send it as `destinationAccountId` on every invoice.
 2. **Look for the Customer**: `GET /ar/customers`. The list takes pagination parameters only, so match on email in your own code.
@@ -118,7 +118,7 @@ Invoices transition to `Paid` strictly from an `Unpaid` state. Virtual account b
 
 ## Objects and Endpoints
 
-Parameters and response schemas are in [Accounts Receivable](/reference/accounts_receivable). For the base URL and the auth header, see [Getting Started](/docs/getting-started).
+Parameters and response schemas are in [Accounts Receivable](https://docs.mercury.com/reference/accounts_receivable). For the base URL and the auth header, see [Getting Started](https://docs.mercury.com/docs/getting-started).
 
 | Object          | What It Holds                                                                                | Endpoints                                                                                                                                                                            |
 | --------------- | -------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |

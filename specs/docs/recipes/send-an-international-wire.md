@@ -336,7 +336,7 @@ This recipe sends an international wire in two parts. First you invite the recip
 International wires go through `request-send-money` only. Direct send (`POST /account/{accountId}/transactions`) does not support them. Because `request-send-money` queues the payment for approval in the Mercury dashboard, no IP allowlist is required.
 
 - **Base URL:** `https://api.mercury.com/api/v1`
-- **Authentication:** Replace `<<apiKey>>` with your Mercury API token (see [Getting Started](/docs/getting-started)).
+- **Authentication:** Replace `<<apiKey>>` with your Mercury API token (see [Getting Started](https://docs.mercury.com/docs/getting-started)).
 - **Recipient Setup:** Add an international wire recipient by inviting them to enter their own details, or in the Mercury dashboard. The direct `createRecipient` call has no international-wire field, so it cannot set one up. The invitee enters the destination-country routing details in the hosted onboarding flow, so this recipe never constructs country-specific fields.
 - **Who Can Send:** International wires have their own eligibility and supported locations. See [Sending international payments](https://support.mercury.com/hc/en-us/articles/28773219548180-Sending-international-payments).
 
@@ -358,7 +358,7 @@ Call `GET /accounts` and note the `id` of the account you want to send from.
 
 Call `POST /recipients/invites` with `contactEmail`, `paymentMethods` set to `["internationalWire"]`, `requireTaxDocument`, and `sendEmail`. Because this recipient does not exist yet, also send `name`. The response comes back with `status: "created"`, an `id` for the invite, and an `onboardingUrl`. Send that URL to the recipient, or let us email it by setting `sendEmail: true`.
 
-The recipient enters their own international-wire details in the hosted flow, so your integration never builds routing fields itself. For the full invite reference, including inviting a recipient already on file, see [Invite a recipient](/recipes/invite-a-recipient).
+The recipient enters their own international-wire details in the hosted flow, so your integration never builds routing fields itself. For the full invite reference, including inviting a recipient already on file, see [Invite a recipient](https://docs.mercury.com/recipes/invite-a-recipient).
 
 # Track the Invite to Completion
 
@@ -400,4 +400,4 @@ By default, Mercury requires dual admin approval: the approver must be someone o
 
 Call `GET /request-send-money/{requestId}` and read `status`. It starts at `pendingApproval` and moves to `approved`, `rejected`, or `cancelled` once the approver acts in the dashboard. Poll on an interval that suits your integration rather than continuously. Approval depends on a person, so give it time and space out your checks. If the request is still pending after a reasonable window, pause and flag it for follow-up rather than polling on.
 
-Once `status` reaches `approved`, the wire proceeds like any other transaction. Track it through to completion the same way as a direct send, covered in [Send an ACH payment](/recipes/send-an-ach-payment). To compare the send paths, see [Choose a Send Path](/docs/send-money#choose-a-send-path) in the Send Money guide.
+Once `status` reaches `approved`, the wire proceeds like any other transaction. Track it through to completion the same way as a direct send, covered in [Send an ACH payment](https://docs.mercury.com/recipes/send-an-ach-payment). To compare the send paths, see [Choose a Send Path](https://docs.mercury.com/docs/send-money#choose-a-send-path) in the Send Money guide.

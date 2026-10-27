@@ -30,7 +30,7 @@ If your integration is approved, please be prepared to provide technical set up 
 * Links to your app’s terms of service, privacy policy, and logo
 * Your GPG public key so we can securely send client credentials
 
-Once your OAuth2 client is created, we will securely share your client ID and client secret as well as credentials for a test client that can be used in our [sandbox](/reference/using-mercury-sandbox).
+Once your OAuth2 client is created, we will securely share your client ID and client secret as well as credentials for a test client that can be used in our [sandbox](https://docs.mercury.com/reference/using-mercury-sandbox).
 
 ## OAuth2 Authorization Flow
 

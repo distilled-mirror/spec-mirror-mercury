@@ -232,9 +232,9 @@ main().catch((err) => console.error(err));
 This endpoint queues payments for Mercury dashboard approval rather than sending them immediately. Because dashboard approval acts as the security control, no IP allowlist is required, making this path ideal for systems without a fixed IP. This is also the only send flow that supports international wires, using `paymentMethod: internationalWire` and a `purpose`.
 
 - **Base URL:** `https://api.mercury.com/api/v1`
-- **Authentication:** Replace `<<apiKey>>` with your Mercury API token (see [Getting Started](/docs/getting-started)).
-- **Workflow Selection:** Review [Choose a Send Path](/docs/send-money#choose-a-send-path) in the Send Money guide to compare options.
-- **Direct Send Alternative:** For immediate execution, use `POST /account/{accountId}/transactions` (see [Send an ACH payment](/recipes/send-an-ach-payment)).
+- **Authentication:** Replace `<<apiKey>>` with your Mercury API token (see [Getting Started](https://docs.mercury.com/docs/getting-started)).
+- **Workflow Selection:** Review [Choose a Send Path](https://docs.mercury.com/docs/send-money#choose-a-send-path) in the Send Money guide to compare options.
+- **Direct Send Alternative:** For immediate execution, use `POST /account/{accountId}/transactions` (see [Send an ACH payment](https://docs.mercury.com/recipes/send-an-ach-payment)).
 
 # Find Your Source Account
 
@@ -274,4 +274,4 @@ An authorized user with send-money permission approves the payment in the Mercur
 
 Call `GET /request-send-money/{requestId}` and read `status`. It starts at `pendingApproval` and moves to `approved`, `rejected`, or `cancelled` once the approver acts in the dashboard. Poll on an interval that suits your integration rather than continuously. Approval depends on a person, so give it time and space out your checks. If the request is still pending after a reasonable window, pause and flag it for follow-up rather than polling on.
 
-Once `status` reaches `approved`, the payment proceeds like any other transaction. Track it through to completion the same way as a direct send, covered in [Send an ACH payment](/recipes/send-an-ach-payment).
+Once `status` reaches `approved`, the payment proceeds like any other transaction. Track it through to completion the same way as a direct send, covered in [Send an ACH payment](https://docs.mercury.com/recipes/send-an-ach-payment).

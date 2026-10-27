@@ -725,18 +725,18 @@ main().catch((err) => console.error(err));
 
 This recipe raises invoices from your own system and confirms who has paid. The product is called Accounts Receivable in our API reference.
 
-For an overview of what the invoicing endpoints support, start with the [Invoicing guide](/docs/invoicing).
+For an overview of what the invoicing endpoints support, start with the [Invoicing guide](https://docs.mercury.com/docs/invoicing).
 
 Every sample uses the documented base URL `https://api.mercury.com/api/v1`. In each `Authorization` header, `<<apiKey>>` stands for your Mercury API token.
 
-See [Getting Started](/docs/getting-started) to generate one.
+See [Getting Started](https://docs.mercury.com/docs/getting-started) to generate one.
 
 Set these up before your first request:
 
-- **API Token Scopes**: Read actions require a read-only token. Create actions require a read-write token bound to an allowlisted IP address (see [Getting Started](/docs/getting-started) and [API token security policies](/docs/api-token-security-policies)).
-- **Plan, Cards, and ACH Setup**: Invoicing requires a paid plan, and card payments need a connected Stripe account. The [Invoicing guide](/docs/invoicing) covers the plan, Stripe, and ACH prerequisites in full.
+- **API Token Scopes**: Read actions require a read-only token. Create actions require a read-write token bound to an allowlisted IP address (see [Getting Started](https://docs.mercury.com/docs/getting-started) and [API token security policies](https://docs.mercury.com/docs/api-token-security-policies)).
+- **Plan, Cards, and ACH Setup**: Invoicing requires a paid plan, and card payments need a connected Stripe account. The [Invoicing guide](https://docs.mercury.com/docs/invoicing) covers the plan, Stripe, and ACH prerequisites in full.
 - **Destination Account**: Call `GET /accounts` and note the `id` of the checking or savings account where invoice payments should land.
-- **Test in Sandbox**: The Accounts Receivable API works in Mercury's sandbox. Point requests at `https://api-sandbox.mercury.com/api/v1` with a sandbox-created token to test the full flow before going live. See [Using the Mercury Sandbox](/docs/using-mercury-sandbox).
+- **Test in Sandbox**: The Accounts Receivable API works in Mercury's sandbox. Point requests at `https://api-sandbox.mercury.com/api/v1` with a sandbox-created token to test the full flow before going live. See [Using the Mercury Sandbox](https://docs.mercury.com/docs/using-mercury-sandbox).
 
 # Find or Create the Customer
 
@@ -778,7 +778,7 @@ Two optional fields are worth setting deliberately.
 - **`invoiceNumber`**: Pass a unique value on creation. Reused numbers return an error, so retries are safe from duplicate invoicing. When omitted, Mercury assigns a number, which is not guaranteed to be sequential and can skip values. Set it yourself for predictable numbering, as covered in step 3.
 - **`sendEmailOption`**: Accepts `DontSend` or `SendNow`, and we send immediately when it is omitted. Sending a `DontSend` invoice at a later time is not available through the API today.
 
-Setting `useRealAccountNumber: false` adds virtual payment instructions to the invoice. The virtual account number behind them belongs to the customer and is shared across all of that customer's invoices, so it does not identify a single invoice. See the [Invoicing guide](/docs/invoicing) for more details on reconciliation.
+Setting `useRealAccountNumber: false` adds virtual payment instructions to the invoice. The virtual account number behind them belongs to the customer and is shared across all of that customer's invoices, so it does not identify a single invoice. See the [Invoicing guide](https://docs.mercury.com/docs/invoicing) for more details on reconciliation.
 
 # Invoice Many Customers
 
@@ -816,8 +816,8 @@ Mercury does not store a recurring series through the API, so two details matter
 <!-- ruby@181-197 -->
 <!-- node@174-186 -->
 
-Track payment status by polling `GET /ar/invoices` and reading the `status` field (`Unpaid`, `Processing`, `Paid`, or `Cancelled`). There is no invoice-specific webhook event today, so listen for the `transaction.created` event to detect an incoming payment, then poll to confirm the invoice's status has updated. See [Webhooks](/reference/webhooks).
+Track payment status by polling `GET /ar/invoices` and reading the `status` field (`Unpaid`, `Processing`, `Paid`, or `Cancelled`). There is no invoice-specific webhook event today, so listen for the `transaction.created` event to detect an incoming payment, then poll to confirm the invoice's status has updated. See [Webhooks](https://docs.mercury.com/reference/webhooks).
 
 Store the `id` of every invoice you create, and check the ones that matter on an interval that suits your close process.
 
-**Payer Reference (`externalMemo`)**: Read `externalMemo` via `GET /transaction/{transactionId}`. It lives on the transaction, not the invoice, and is often absent, so treat it as optional. The [Invoicing guide](/docs/invoicing) explains where it applies.
+**Payer Reference (`externalMemo`)**: Read `externalMemo` via `GET /transaction/{transactionId}`. It lives on the transaction, not the invoice, and is often absent, so treat it as optional. The [Invoicing guide](https://docs.mercury.com/docs/invoicing) explains where it applies.

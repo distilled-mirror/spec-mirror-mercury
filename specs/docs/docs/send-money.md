@@ -12,12 +12,12 @@ Initiate payouts directly from your systems via Mercury's API across ACH, check,
 
 For working code, see these recipes:
 
-* [Send an ACH payment](/recipes/send-an-ach-payment)
-* [Request a payment approval](/recipes/request-a-payment-approval)
-* [Send an international wire](/recipes/send-an-international-wire)
-* [Invite a recipient](/recipes/invite-a-recipient)
+* [Send an ACH payment](https://docs.mercury.com/recipes/send-an-ach-payment)
+* [Request a payment approval](https://docs.mercury.com/recipes/request-a-payment-approval)
+* [Send an international wire](https://docs.mercury.com/recipes/send-an-international-wire)
+* [Invite a recipient](https://docs.mercury.com/recipes/invite-a-recipient)
 
-For every field and response, see the [Accounts](/reference/accounts), [Recipients](/reference/recipients), and [Send Money Requests](/reference/sendmoney) API reference.
+For every field and response, see the [Accounts](https://docs.mercury.com/reference/accounts), [Recipients](https://docs.mercury.com/reference/recipients), and [Send Money Requests](https://docs.mercury.com/reference/sendmoney) API reference.
 
 ## What You Can Build
 
@@ -46,7 +46,7 @@ For every field and response, see the [Accounts](/reference/accounts), [Recipien
 | Send a payment directly      | Supported   | `POST /account/{accountId}/transactions` sends ACH, check, domestic wire, or real-time payment                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                             |
 | Queue a payment for approval | Supported   | `POST /account/{accountId}/request-send-money` holds the payment for approval in the Mercury dashboard before release of funds                                                                                                                                                                                                                                                                                                                                                                                                                                                                             |
 | Pay many recipients at once  | Client-Side | To pay multiple recipients, cycle through your recipient list and send one payment per recipient from your own system                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      |
-| Send an international wire   | Supported   | Queue it for approval with `POST /account/{accountId}/request-send-money` using `paymentMethod: internationalWire` and a `purpose`. Direct send does not support it. Set up the recipient through a [recipient invite](/recipes/invite-a-recipient) or the dashboard. See [Send an international wire](/recipes/send-an-international-wire) for the full walkthrough, and <Anchor target="_blank" href="https://support.mercury.com/hc/en-us/articles/28773219548180-Sending-international-payments">Sending international payments</Anchor> for who can send international wires and supported locations. |
+| Send an international wire   | Supported   | Queue it for approval with `POST /account/{accountId}/request-send-money` using `paymentMethod: internationalWire` and a `purpose`. Direct send does not support it. Set up the recipient through a [recipient invite](https://docs.mercury.com/recipes/invite-a-recipient) or the dashboard. See [Send an international wire](https://docs.mercury.com/recipes/send-an-international-wire) for the full walkthrough, and <Anchor target="_blank" href="https://support.mercury.com/hc/en-us/articles/28773219548180-Sending-international-payments">Sending international payments</Anchor> for who can send international wires and supported locations. |
 
 ### Approvals and Tracking
 
@@ -57,7 +57,7 @@ For every field and response, see the [Accounts](/reference/accounts), [Recipien
 
 ### Events
 
-Subscribe to webhooks to follow payouts as they move, and poll for status when you need it. See [Webhooks](/reference/webhooks) to set up delivery.
+Subscribe to webhooks to follow payouts as they move, and poll for status when you need it. See [Webhooks](https://docs.mercury.com/reference/webhooks) to set up delivery.
 
 | Event                 | Fires When                       | Use It To                                                        |
 | --------------------- | -------------------------------- | ---------------------------------------------------------------- |
@@ -80,9 +80,9 @@ Subscribe to webhooks to follow payouts as they move, and poll for status when y
 
 | Step                         | Detail                                                                                                                                                                                                                                                                                                                                        |
 | ---------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| **API Token Scopes**         | Read actions require a read-only token. Sending money and managing recipients require a read-write token, or a `Custom` token scoped to the endpoint you call. See [Getting Started](/docs/getting-started)                                                                                                                                   |
-| **Pick Your Send Path**      | `POST /account/{accountId}/transactions` only accepts requests from an IP address you have allowlisted. `POST /account/{accountId}/request-send-money` has no such requirement, because dashboard approval is the control. See [API token security policies](/docs/api-token-security-policies) and [Choose a Send Path](#choose-a-send-path) |
-| **Test in Sandbox**          | Test recipient creation and transactions in Mercury's sandbox before going live. See [Using the Mercury Sandbox](/docs/using-mercury-sandbox)                                                                                                                                                                                                 |
+| **API Token Scopes**         | Read actions require a read-only token. Sending money and managing recipients require a read-write token, or a `Custom` token scoped to the endpoint you call. See [Getting Started](https://docs.mercury.com/docs/getting-started)                                                                                                                                   |
+| **Pick Your Send Path**      | `POST /account/{accountId}/transactions` only accepts requests from an IP address you have allowlisted. `POST /account/{accountId}/request-send-money` has no such requirement, because dashboard approval is the control. See [API token security policies](https://docs.mercury.com/docs/api-token-security-policies) and [Choose a Send Path](#choose-a-send-path) |
+| **Test in Sandbox**          | Test recipient creation and transactions in Mercury's sandbox before going live. See [Using the Mercury Sandbox](https://docs.mercury.com/docs/using-mercury-sandbox)                                                                                                                                                                                                 |
 | **Find Your Source Account** | Call `GET /accounts` and note the `id` of the account you want to send money from                                                                                                                                                                                                                                                             |
 
 ## Choose a Send Path
@@ -102,9 +102,9 @@ There are two ways to send money, each with its own account-level endpoint.
 A couple of things to keep in mind when you choose:
 
 * **No fixed IP address? Use&#x20;**`requestSendMoney`**.** It relies on dashboard approval instead of an IP allowlist, so there is no allowlist to maintain.
-* **International wires go through&#x20;**`requestSendMoney`**&#x20;only**, not direct send. Set up the recipient with a [recipient invite](/recipes/invite-a-recipient) or in the dashboard first, then send with `paymentMethod: internationalWire` and a `purpose`.
+* **International wires go through&#x20;**`requestSendMoney`**&#x20;only**, not direct send. Set up the recipient with a [recipient invite](https://docs.mercury.com/recipes/invite-a-recipient) or in the dashboard first, then send with `paymentMethod: internationalWire` and a `purpose`.
 
-Refer to [Send an ACH payment](/recipes/send-an-ach-payment) for direct routing, or [Request a payment approval](/recipes/request-a-payment-approval) for gated workflows.
+Refer to [Send an ACH payment](https://docs.mercury.com/recipes/send-an-ach-payment) for direct routing, or [Request a payment approval](https://docs.mercury.com/recipes/request-a-payment-approval) for gated workflows.
 
 ## Common Workflows
 
@@ -122,7 +122,7 @@ Best practices for paying many recipients at once and for tracking a payment thr
 
 Track a sent payment two ways:
 
-* **Webhooks (event-driven)**: Subscribe to `transaction.created` and `transaction.updated` for status changes. See [Webhooks](/reference/webhooks).
+* **Webhooks (event-driven)**: Subscribe to `transaction.created` and `transaction.updated` for status changes. See [Webhooks](https://docs.mercury.com/reference/webhooks).
 * **Polling**: Query `GET /account/{accountId}/transaction/{transactionId}` on your own schedule.
 
 **Status:** Successful payments move from `pending` to `sent`. Otherwise they land on `cancelled`, `failed`, `reversed`, or `blocked`.
@@ -136,7 +136,7 @@ A queued request is not a transaction until it clears approval.
 
 ## Objects and Endpoints
 
-Parameters and response schemas are in [Accounts](/reference/accounts), [Recipients](/reference/recipients), and [Send Money Requests](/reference/sendmoney). For the base URL and the auth header, see [Getting Started](/docs/getting-started).
+Parameters and response schemas are in [Accounts](https://docs.mercury.com/reference/accounts), [Recipients](https://docs.mercury.com/reference/recipients), and [Send Money Requests](https://docs.mercury.com/reference/sendmoney). For the base URL and the auth header, see [Getting Started](https://docs.mercury.com/docs/getting-started).
 
 | Object                | What It Holds                                                                            | Endpoints                                                                                                                               |
 | --------------------- | ---------------------------------------------------------------------------------------- | --------------------------------------------------------------------------------------------------------------------------------------- |
