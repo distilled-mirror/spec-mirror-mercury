@@ -1,5 +1,5 @@
 ---
-updatedAt: 2026-09-11T19:32:16.000Z
+updatedAt: 2026-10-28T18:48:49.000Z
 agentTools:
   projectIndex: https://docs.mercury.com/llms.txt
 ---
@@ -234,6 +234,7 @@ This endpoint queues payments for Mercury dashboard approval rather than sending
 - **Base URL:** `https://api.mercury.com/api/v1`
 - **Authentication:** Replace `<<apiKey>>` with your Mercury API token (see [Getting Started](https://docs.mercury.com/docs/getting-started)).
 - **Workflow Selection:** Review [Choose a Send Path](https://docs.mercury.com/docs/send-money#choose-a-send-path) in the Send Money guide to compare options.
+- **Approver:** Someone other than the user whose API token creates the request must approve it in the Mercury dashboard. Approval rules and the separation-of-duties setting do not change this. If you are the only user with send-money permission, invite a second user before you start, or use direct send from an allowlisted IP
 - **Direct Send Alternative:** For immediate execution, use `POST /account/{accountId}/transactions` (see [Send an ACH payment](https://docs.mercury.com/recipes/send-an-ach-payment)).
 
 # Find Your Source Account
@@ -263,7 +264,8 @@ Call `GET /recipients` and note the `id` of the recipient you want to pay.
 
 Call `POST /account/{accountId}/request-send-money` with the recipient, amount, payment method, and a unique `idempotencyKey`. The response comes back with `status: "pendingApproval"` and a `requestId`.
 
-An authorized user with send-money permission approves the payment in the Mercury dashboard. By default that must be someone other than the user who created the API token, though your org's approval rules can allow the requester to approve their own payment. Read `requesterMayApprove` on the response to know which applies. The payment stays in `pendingApproval` until an approver acts.
+An authorized user with send-money permission approves the payment in the Mercury dashboard. That approver must be someone other than the user who created the API token, on every request, so requesterMayApprove is false in the response. The payment stays in
+pendingApproval until an approver acts.
 
 # Track the Request to a Decision
 

@@ -1,5 +1,5 @@
 ---
-updatedAt: 2026-09-15T13:22:01.000Z
+updatedAt: 2026-10-28T18:51:45.000Z
 agentTools:
   projectIndex: https://docs.mercury.com/llms.txt
 ---
@@ -338,6 +338,7 @@ International wires go through `request-send-money` only. Direct send (`POST /ac
 - **Base URL:** `https://api.mercury.com/api/v1`
 - **Authentication:** Replace `<<apiKey>>` with your Mercury API token (see [Getting Started](https://docs.mercury.com/docs/getting-started)).
 - **Recipient Setup:** Add an international wire recipient by inviting them to enter their own details, or in the Mercury dashboard. The direct `createRecipient` call has no international-wire field, so it cannot set one up. The invitee enters the destination-country routing details in the hosted onboarding flow, so this recipe never constructs country-specific fields.
+- **Approver:** Someone other than the user whose API token creates the request must approve it in the Mercury dashboard. Approval rules and the separation-of-duties setting do not change this. Direct send does not support international wires, so if you are the only user with send-money permission, invite a second user before you start.
 - **Who Can Send:** International wires have their own eligibility and supported locations. See [Sending international payments](https://support.mercury.com/hc/en-us/articles/28773219548180-Sending-international-payments).
 
 # Find Your Source Account
@@ -387,9 +388,7 @@ Call `POST /account/{accountId}/request-send-money` with the `recipientId`, `amo
 - **`category`** classifies the payment. Values are `employee`, `landlord`, `vendor`, `contractor`, `subsidiary`, `transferToMyExternalAccount`, `familyMemberOrFriend`, `forGoodsOrServices`, `angelInvestment`, `savingsOrInvestments`, `expenses`, `travel`, and `other`.
 - **`additionalInfo`** is a free-text detail. It is required for `vendor` (the vendor name), `contractor` (the contractor name), and `other` (a payment description). It is optional for `subsidiary` (the subsidiary name) and is not accepted for any other category.
 
-An authorized user with send-money permission approves the wire in the Mercury dashboard, and it stays in `pendingApproval` until they act.
-
-By default, Mercury requires dual admin approval: the approver must be someone other than the user whose API token created the request. Your org can turn this off in the dashboard so the requester may approve their own payment. Read `requesterMayApprove` on the response to know which applies to a given request.
+An authorized user with send-money permission approves the wire in the Mercury dashboard, and it stays in pendingApproval until they act. That approver must be someone other than the user whose API token created the request, so requesterMayApprove is false in the response. Approval rules and the separation-of-duties setting do not change this.
 
 # Track the Request to a Decision
 
