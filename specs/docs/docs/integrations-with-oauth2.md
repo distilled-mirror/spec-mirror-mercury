@@ -1,5 +1,5 @@
 ---
-updatedAt: 2025-11-20T20:14:32.000Z
+updatedAt: 2026-11-02T18:05:09.000Z
 agentTools:
   projectIndex: https://docs.mercury.com/llms.txt
 ---
@@ -13,7 +13,7 @@ Typical examples include accounting tools, financial dashboards, or payment proc
 
 ## Requesting Access
 
-OAuth access to Mercury’s API **requires prior approval.** To start the integration process, please submit [this form](https://mercurytechnologies.notion.site/2b1951a7f2158076b600db0ce173317c) with the following information:
+OAuth access to Mercury’s API **requires prior approval.** To start the integration process, please submit <Anchor target="_blank" href="https://mercury.com/partnerships#form">this form</Anchor> with the following information:
 
 * Your company name and website
 * Company address
@@ -42,5 +42,3 @@ Authorizing users through OAuth2 involves four high-level steps:
 2. Mercury redirects users back to your app.
 3. Your app exchanges the returned data for an access token.
 4. Your app uses the access token to make API requests to Mercury.
-
-<br />
