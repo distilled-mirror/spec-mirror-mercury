@@ -63,6 +63,10 @@ Unfreeze a previously frozen card, restoring it to active status.
             "description": " Whether the card is managed by the agentic spend-management agent. Only agent\n cards can have their full details revealed.",
             "type": "boolean"
           },
+          "isSingleUse": {
+            "description": " Whether the card closes automatically after its first approved purchase. A used\n single-use card reports a @singleUseConsumed@ status.",
+            "type": "boolean"
+          },
           "kind": {
             "allOf": [
               {
@@ -179,7 +183,8 @@ Unfreeze a previously frozen card, restoring it to active status.
           "spendLimitType",
           "budgets",
           "categoryLocks",
-          "isAgentCard"
+          "isAgentCard",
+          "isSingleUse"
         ],
         "type": "object"
       },
@@ -252,7 +257,8 @@ Unfreeze a previously frozen card, restoring it to active status.
           "cancelled",
           "inactive",
           "expired",
-          "suspended"
+          "suspended",
+          "singleUseConsumed"
         ],
         "type": "string"
       },

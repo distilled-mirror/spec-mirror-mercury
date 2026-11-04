@@ -65,6 +65,10 @@ Issue a new virtual card.
             "description": " Whether the card is managed by the agentic spend-management agent. Only agent\n cards can have their full details revealed.",
             "type": "boolean"
           },
+          "isSingleUse": {
+            "description": " Whether the card closes automatically after its first approved purchase. A used\n single-use card reports a @singleUseConsumed@ status.",
+            "type": "boolean"
+          },
           "kind": {
             "allOf": [
               {
@@ -181,7 +185,8 @@ Issue a new virtual card.
           "spendLimitType",
           "budgets",
           "categoryLocks",
-          "isAgentCard"
+          "isAgentCard",
+          "isSingleUse"
         ],
         "type": "object"
       },
@@ -213,6 +218,19 @@ Issue a new virtual card.
           "name",
           "amountCents",
           "remainingAmountCents"
+        ],
+        "type": "object"
+      },
+      "CardConfiguration": {
+        "description": " The configuration of a card. Used both as the read-side response\n alongside @cardConfiguration@ and as an alternative input at issuance\n time.",
+        "properties": {
+          "singleUse": {
+            "description": " Whether this card auto-cancels itself on the first approved non-zero\n authorization. Must be 'False' for physical cards.",
+            "type": "boolean"
+          }
+        },
+        "required": [
+          "singleUse"
         ],
         "type": "object"
       },
@@ -254,7 +272,8 @@ Issue a new virtual card.
           "cancelled",
           "inactive",
           "expired",
-          "suspended"
+          "suspended",
+          "singleUseConsumed"
         ],
         "type": "string"
       },
@@ -274,6 +293,17 @@ Issue a new virtual card.
               },
               {
                 "description": " The account the new card will draw funds from. Required when @kind@ is\n @debit@; list available account IDs via @GET https:\\/\\/api.mercury.com\\/api\\/v1\\/accounts@\n (for debit card creation, the accountId must be associated with a checking account).\n Optional when @kind@ is @credit@; omit to use your organization's Mercury\n credit account, or pass the credit accountId from @GET https:\\/\\/api.mercury.com\\/api\\/v1\\/credit@."
+              }
+            ],
+            "nullable": true
+          },
+          "cardConfiguration": {
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/CardConfiguration"
+              },
+              {
+                "description": " Optional card configuration (single-use, agent, etc.)"
               }
             ],
             "nullable": true

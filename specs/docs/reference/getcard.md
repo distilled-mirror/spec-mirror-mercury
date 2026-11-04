@@ -65,6 +65,10 @@ Retrieve details of a specific card by its ID.
             "description": " Whether the card is managed by the agentic spend-management agent. Only agent\n cards can have their full details revealed.",
             "type": "boolean"
           },
+          "isSingleUse": {
+            "description": " Whether the card closes automatically after its first approved purchase. A used\n single-use card reports a @singleUseConsumed@ status.",
+            "type": "boolean"
+          },
           "kind": {
             "allOf": [
               {
@@ -181,7 +185,8 @@ Retrieve details of a specific card by its ID.
           "spendLimitType",
           "budgets",
           "categoryLocks",
-          "isAgentCard"
+          "isAgentCard",
+          "isSingleUse"
         ],
         "type": "object"
       },
@@ -254,7 +259,8 @@ Retrieve details of a specific card by its ID.
           "cancelled",
           "inactive",
           "expired",
-          "suspended"
+          "suspended",
+          "singleUseConsumed"
         ],
         "type": "string"
       },

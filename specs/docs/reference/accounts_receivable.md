@@ -1,5 +1,5 @@
 ---
-updatedAt: 2026-09-02T03:47:50.000Z
+updatedAt: 2026-11-03T16:09:22.000Z
 agentTools:
   projectIndex: https://docs.mercury.com/llms.txt
 ---
@@ -8,8 +8,10 @@ agentTools:
 
 API for creating and managing invoices
 
-### Authorization
+### Getting Started
 
-This API uses standard API tokens, which can be managed in the UI at <https://app.mercury.com/settings/tokens>
+<Anchor target="_blank" href="https://docs.mercury.com/docs/getting-started">**Authorization**</Anchor>**:** Learn how to authenticate, set up API tokens, and make your first API call to Mercury&#x20;
+
+<Anchor target="_blank" href="https://docs.mercury.com/docs/invoicing">**Setup**</Anchor>**:** Review our Invoicing guide for full details on workflows and capabilities.&#x20;
 
 <br />

@@ -122,7 +122,8 @@ Retrieve all debit and credit cards associated with a specific account.
           "cancelled",
           "inactive",
           "expired",
-          "suspended"
+          "suspended",
+          "singleUseConsumed"
         ],
         "type": "string"
       },

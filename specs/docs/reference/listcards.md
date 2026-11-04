@@ -67,6 +67,10 @@ Retrieve a paginated list of cards.
             "description": " Whether the card is managed by the agentic spend-management agent. Only agent\n cards can have their full details revealed.",
             "type": "boolean"
           },
+          "isSingleUse": {
+            "description": " Whether the card closes automatically after its first approved purchase. A used\n single-use card reports a @singleUseConsumed@ status.",
+            "type": "boolean"
+          },
           "kind": {
             "allOf": [
               {
@@ -183,7 +187,8 @@ Retrieve a paginated list of cards.
           "spendLimitType",
           "budgets",
           "categoryLocks",
-          "isAgentCard"
+          "isAgentCard",
+          "isSingleUse"
         ],
         "type": "object"
       },
@@ -288,7 +293,8 @@ Retrieve a paginated list of cards.
           "cancelled",
           "inactive",
           "expired",
-          "suspended"
+          "suspended",
+          "singleUseConsumed"
         ],
         "type": "string"
       },
@@ -473,7 +479,8 @@ Retrieve a paginated list of cards.
                   "cancelled",
                   "inactive",
                   "expired",
-                  "suspended"
+                  "suspended",
+                  "singleUseConsumed"
                 ],
                 "type": "string"
               },
@@ -527,6 +534,15 @@ Retrieve a paginated list of cards.
             "required": false,
             "schema": {
               "description": "Filter cards by whether they are for Agent use.",
+              "type": "boolean"
+            }
+          },
+          {
+            "in": "query",
+            "name": "isSingleUse",
+            "required": false,
+            "schema": {
+              "description": "Filter cards by whether they are Single-use",
               "type": "boolean"
             }
           },
@@ -590,7 +606,7 @@ Retrieve a paginated list of cards.
             "description": ""
           },
           "400": {
-            "description": "Invalid `end_before` or `start_after` or `order` or `limit` or `isAgentCard` or `userId` or `kind` or `type` or `status` or `accountId`"
+            "description": "Invalid `end_before` or `start_after` or `order` or `limit` or `isSingleUse` or `isAgentCard` or `userId` or `kind` or `type` or `status` or `accountId`"
           }
         },
         "summary": "List cards",
