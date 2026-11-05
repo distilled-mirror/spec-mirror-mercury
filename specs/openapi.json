@@ -66,6 +66,11 @@
       "name": "Organization"
     },
     {
+      "description": "Manage Spend Management receipts",
+      "name": "Receipts",
+      "x-business-only": true
+    },
+    {
       "description": "Manage recipient invites",
       "name": "Recipient Invites"
     },
@@ -3775,6 +3780,214 @@
         "x-business-only": true
       }
     },
+    "/spend/receipts": {
+      "get": {
+        "description": "Retrieve directly uploaded receipts whose matching result is pending, ordered by creation time, ascending (oldest first) by default. Upload URL requests do not appear until matching starts. Requires see-all expense permission. Use GET /spend/receipts/{receiptId} to poll terminal outcomes. Supports cursor-based pagination with limit, order, start_at, start_after, and end_before query parameters.",
+        "operationId": "listReceipts",
+        "parameters": [
+          {
+            "in": "query",
+            "name": "limit",
+            "required": false,
+            "schema": {
+              "default": 1000,
+              "description": "Maximum number of results to return. Allowed range: 1 to 1000. Defaults to 1000",
+              "format": "int64",
+              "maximum": 1000,
+              "minimum": 1,
+              "type": "integer"
+            }
+          },
+          {
+            "in": "query",
+            "name": "start_at",
+            "required": false,
+            "schema": {
+              "description": "The ID of the receipt to start the page at (inclusive). Cannot be combined with start_after or end_before.",
+              "format": "uuid",
+              "type": "string"
+            }
+          },
+          {
+            "in": "query",
+            "name": "start_after",
+            "required": false,
+            "schema": {
+              "description": "The ID of the receipt to start the page after (exclusive). When provided, results will begin with the receipt immediately following this ID. Use this for standard forward pagination to get the next page of results. Cannot be combined with end_before.",
+              "format": "uuid",
+              "type": "string"
+            }
+          },
+          {
+            "in": "query",
+            "name": "end_before",
+            "required": false,
+            "schema": {
+              "description": "The ID of the receipt to end the page before (exclusive). When provided, results will end just before this ID and work backwards. Use this for reverse pagination or to retrieve previous pages. Cannot be combined with start_after.",
+              "format": "uuid",
+              "type": "string"
+            }
+          },
+          {
+            "in": "query",
+            "name": "order",
+            "required": false,
+            "schema": {
+              "default": "asc",
+              "description": "Sort order. Can be 'asc' or 'desc'. Defaults to 'asc'",
+              "enum": [
+                "asc",
+                "desc"
+              ],
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiV1ReceiptsPaginatedResponse"
+                }
+              }
+            },
+            "description": ""
+          },
+          "400": {
+            "description": "Invalid `order` or `end_before` or `start_after` or `start_at` or `limit`"
+          }
+        },
+        "summary": "List receipts",
+        "tags": [
+          "Receipts"
+        ],
+        "x-business-only": true
+      },
+      "post": {
+        "description": "Request a presigned URL to upload a receipt file. The URL expires after five minutes; replay the request with the same Idempotency-Key to receive a fresh URL for the same receipt. Upload the file, then start matching via the match endpoint.",
+        "operationId": "createReceiptUploadUrl",
+        "parameters": [
+          {
+            "in": "header",
+            "name": "Idempotency-Key",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ApiV1ReceiptUploadUrlRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiV1ReceiptUploadUrlResponse"
+                }
+              }
+            },
+            "description": ""
+          },
+          "400": {
+            "description": "Invalid `body` or `Idempotency-Key`"
+          }
+        },
+        "summary": "Request a receipt upload URL",
+        "tags": [
+          "Receipts"
+        ],
+        "x-business-only": true
+      }
+    },
+    "/spend/receipts/{receiptId}": {
+      "get": {
+        "description": "Retrieve a directly uploaded receipt and its auto-matching status by id. Uploaders can retrieve their own receipts; reading another uploader's receipt requires see-all expense permission.",
+        "operationId": "getReceipt",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "receiptId",
+            "required": true,
+            "schema": {
+              "description": "ID for the receipt",
+              "format": "uuid",
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiV1ReceiptResponse"
+                }
+              }
+            },
+            "description": ""
+          },
+          "404": {
+            "description": "`receiptId` not found"
+          }
+        },
+        "summary": "Get a receipt",
+        "tags": [
+          "Receipts"
+        ],
+        "x-business-only": true
+      }
+    },
+    "/spend/receipts/{receiptId}/match": {
+      "post": {
+        "description": "Start matching an uploaded receipt against the organization's transactions (OCR + matcher). Only the uploader can start matching. Poll GET /spend/receipts/{receiptId} for the outcome. Returns 409 when matching has already started. Returns 409 when another request restarted matching, and 502 when processing fails; retry both with a new Idempotency-Key.",
+        "operationId": "matchReceipt",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "receiptId",
+            "required": true,
+            "schema": {
+              "description": "ID for the receipt",
+              "format": "uuid",
+              "type": "string"
+            }
+          },
+          {
+            "in": "header",
+            "name": "Idempotency-Key",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": ""
+          },
+          "400": {
+            "description": "Invalid `Idempotency-Key`"
+          },
+          "404": {
+            "description": "`receiptId` not found"
+          }
+        },
+        "summary": "Match a receipt",
+        "tags": [
+          "Receipts"
+        ],
+        "x-business-only": true
+      }
+    },
     "/statements/{statementId}/pdf": {
       "get": {
         "description": "Downloads a PDF file for the specified account statement. The response includes a Content-Disposition header for proper file download handling. Returns binary PDF data.",
@@ -7055,6 +7268,134 @@
         ],
         "type": "object"
       },
+      "ApiV1ReceiptResponse": {
+        "description": " Public view of a receipt and its matching state.",
+        "properties": {
+          "createdAt": {
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/UTCTime"
+              }
+            ]
+          },
+          "fileName": {
+            "type": "string"
+          },
+          "id": {
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/ReceiptId"
+              }
+            ]
+          },
+          "matchedTransactionId": {
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/TransactionMetadataId"
+              },
+              {
+                "description": " The transaction this receipt was matched to, once matched."
+              }
+            ],
+            "nullable": true
+          },
+          "status": {
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/ApiV1ReceiptStatus"
+              }
+            ]
+          },
+          "uploadedAt": {
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/UTCTime"
+              },
+              {
+                "description": " When Mercury began processing the direct upload; absent until matching starts."
+              }
+            ],
+            "nullable": true
+          }
+        },
+        "required": [
+          "id",
+          "fileName",
+          "status",
+          "createdAt"
+        ],
+        "type": "object"
+      },
+      "ApiV1ReceiptStatus": {
+        "enum": [
+          "pending",
+          "matched",
+          "unmatched",
+          "notAttempted",
+          "failed"
+        ],
+        "type": "string"
+      },
+      "ApiV1ReceiptUploadUrlRequest": {
+        "description": " Request a presigned URL to upload a receipt file.",
+        "properties": {
+          "fileName": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "fileName"
+        ],
+        "type": "object"
+      },
+      "ApiV1ReceiptUploadUrlResponse": {
+        "description": " The presigned upload URL plus the id of the receipt now being tracked. Upload\n the file to @upload@, then start matching via the match endpoint.",
+        "properties": {
+          "id": {
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/ReceiptId"
+              }
+            ]
+          },
+          "upload": {
+            "description": " The presigned URL to upload the receipt file to.",
+            "type": "string"
+          }
+        },
+        "required": [
+          "id",
+          "upload"
+        ],
+        "type": "object"
+      },
+      "ApiV1ReceiptsPaginatedResponse": {
+        "description": " A page of receipts plus the cursor for the next page.",
+        "properties": {
+          "page": {
+            "properties": {
+              "nextPage": {
+                "$ref": "#/components/schemas/ReceiptId"
+              },
+              "previousPage": {
+                "$ref": "#/components/schemas/ReceiptId"
+              }
+            },
+            "type": "object"
+          },
+          "receipts": {
+            "items": {
+              "$ref": "#/components/schemas/ApiV1ReceiptResponse"
+            },
+            "type": "array"
+          }
+        },
+        "required": [
+          "receipts",
+          "page"
+        ],
+        "type": "object"
+      },
       "ApiV1SpendBudgetResponse": {
         "properties": {
           "amountPerUserPerPeriod": {
@@ -9696,6 +10037,11 @@
           "address"
         ],
         "type": "object"
+      },
+      "ReceiptId": {
+        "description": "ID for the receipt",
+        "format": "uuid",
+        "type": "string"
       },
       "RecipientAttachment": {
         "properties": {

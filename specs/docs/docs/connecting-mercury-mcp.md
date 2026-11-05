@@ -1,5 +1,5 @@
 ---
-updatedAt: 2026-10-08T13:49:59.000Z
+updatedAt: 2026-11-04T22:42:08.000Z
 agentTools:
   projectIndex: https://docs.mercury.com/llms.txt
 ---
@@ -31,6 +31,7 @@ Mercury MCP is available as an official integration on:
 * [Cursor](https://cursor.com/marketplace/mercury)
 * [Perplexity](https://www.perplexity.ai/computer/connectors?connector=mercury)
 * [Gemini Enterprise](https://docs.cloud.google.com/gemini/enterprise/docs/connectors/mercury-mcp)
+* <Anchor target="_blank" href="https://www.town.com/integrations/mercury">Town</Anchor>
 * Grok Bot
 * Microsoft 365 Copilot
 * Notion

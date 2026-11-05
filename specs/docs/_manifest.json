@@ -1,6 +1,6 @@
 {
   "source": "https://docs.mercury.com/llms.txt",
-  "count": 121,
+  "count": 125,
   "pages": [
     {
       "page": "https://docs.mercury.com/changelog/account-balance-events-via-webhooksevents-endpoints-now-available",
@@ -223,6 +223,11 @@
       "file": "reference/createinvoice.md"
     },
     {
+      "page": "https://docs.mercury.com/reference/createreceiptuploadurl",
+      "markdown": "https://docs.mercury.com/reference/createreceiptuploadurl.md",
+      "file": "reference/createreceiptuploadurl.md"
+    },
+    {
       "page": "https://docs.mercury.com/reference/createrecipient",
       "markdown": "https://docs.mercury.com/reference/createrecipient.md",
       "file": "reference/createrecipient.md"
@@ -356,6 +361,11 @@
       "page": "https://docs.mercury.com/reference/getorganization",
       "markdown": "https://docs.mercury.com/reference/getorganization.md",
       "file": "reference/getorganization.md"
+    },
+    {
+      "page": "https://docs.mercury.com/reference/getreceipt",
+      "markdown": "https://docs.mercury.com/reference/getreceipt.md",
+      "file": "reference/getreceipt.md"
     },
     {
       "page": "https://docs.mercury.com/reference/getrecipient",
@@ -493,6 +503,11 @@
       "file": "reference/listmerchants.md"
     },
     {
+      "page": "https://docs.mercury.com/reference/listreceipts",
+      "markdown": "https://docs.mercury.com/reference/listreceipts.md",
+      "file": "reference/listreceipts.md"
+    },
+    {
       "page": "https://docs.mercury.com/reference/listrecipientinvites",
       "markdown": "https://docs.mercury.com/reference/listrecipientinvites.md",
       "file": "reference/listrecipientinvites.md"
@@ -516,6 +531,11 @@
       "page": "https://docs.mercury.com/reference/listtransfermoneyapprovalrequests",
       "markdown": "https://docs.mercury.com/reference/listtransfermoneyapprovalrequests.md",
       "file": "reference/listtransfermoneyapprovalrequests.md"
+    },
+    {
+      "page": "https://docs.mercury.com/reference/matchreceipt",
+      "markdown": "https://docs.mercury.com/reference/matchreceipt.md",
+      "file": "reference/matchreceipt.md"
     },
     {
       "page": "https://docs.mercury.com/reference/obtainaccesstoken",
