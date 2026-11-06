@@ -133,6 +133,8 @@
   - [Unfreeze a card](https://docs.mercury.com/reference/unfreezecard.md): Unfreeze a previously frozen card, restoring it to active status.
 - [Vault](https://docs.mercury.com/reference/vault.md): Access sensitive card data for agent cards.
   - [Reveal card details](https://docs.mercury.com/reference/revealcardpan.md): Retrieve the full card number, expiration date, and CVC for a card. Available for agentic cards only.
+- Auto Transfer Rules
+  - [Get all auto-transfer rules](https://docs.mercury.com/reference/getautotransferrules.md): Retrieve a paginated list of the organization's active auto-transfer rules: rules that distribute fixed amounts or percentages of an account's balance to other accounts, and rules that keep an…
 
 ## API Reference: OAuth2 API
 - [Start OAuth2 web flow](https://docs.mercury.com/reference/startoauth2flow.md): Initiates the OAuth2 authorization flow. Redirects the user to Mercury's consent page.
