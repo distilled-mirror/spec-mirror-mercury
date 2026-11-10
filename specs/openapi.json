@@ -70,6 +70,11 @@
       "name": "Organization"
     },
     {
+      "description": "Manage invoicing products",
+      "name": "Products",
+      "x-business-only": true
+    },
+    {
       "description": "Manage Spend Management receipts",
       "name": "Receipts",
       "x-business-only": true
@@ -1201,6 +1206,114 @@
         "summary": "Download invoice PDF",
         "tags": [
           "Invoices"
+        ],
+        "x-business-only": true
+      }
+    },
+    "/ar/products": {
+      "get": {
+        "description": "Retrieve a paginated list of invoicing products (product catalog items). Supports cursor-based pagination with limit, order, start_after, and end_before query parameters.",
+        "operationId": "listProducts",
+        "parameters": [
+          {
+            "in": "query",
+            "name": "limit",
+            "required": false,
+            "schema": {
+              "default": 1000,
+              "description": "Maximum number of results to return. Allowed range: 1 to 1000. Defaults to 1000",
+              "format": "int64",
+              "maximum": 1000,
+              "minimum": 1,
+              "type": "integer"
+            }
+          },
+          {
+            "in": "query",
+            "name": "start_after",
+            "required": false,
+            "schema": {
+              "description": "The ID of the product to start the page after (exclusive). When provided, results will begin with the product immediately following this ID. Use this for standard forward pagination to get the next page of results. Cannot be combined with end_before.",
+              "format": "uuid",
+              "type": "string"
+            }
+          },
+          {
+            "in": "query",
+            "name": "end_before",
+            "required": false,
+            "schema": {
+              "description": "The ID of the product to end the page before (exclusive). When provided, results will end just before this ID and work backwards. Use this for reverse pagination or to retrieve previous pages. Cannot be combined with start_after.",
+              "format": "uuid",
+              "type": "string"
+            }
+          },
+          {
+            "in": "query",
+            "name": "order",
+            "required": false,
+            "schema": {
+              "default": "asc",
+              "description": "Sort order. Can be 'asc' or 'desc'. Defaults to 'asc'",
+              "enum": [
+                "asc",
+                "desc"
+              ],
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiV1ArProductPaginatedResponseData"
+                }
+              }
+            },
+            "description": ""
+          },
+          "400": {
+            "description": "Invalid `order` or `end_before` or `start_after` or `limit`"
+          }
+        },
+        "summary": "List all products",
+        "tags": [
+          "Products"
+        ],
+        "x-business-only": true
+      },
+      "post": {
+        "description": "Create a new invoicing product (product catalog item). The combination of name and unit price must be unique within the organization.",
+        "operationId": "createProduct",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ApiV1ArProductCreateRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiV1ArProductResponseData"
+                }
+              }
+            },
+            "description": ""
+          },
+          "400": {
+            "description": "Invalid `body`"
+          }
+        },
+        "summary": "Create a product",
+        "tags": [
+          "Products"
         ],
         "x-business-only": true
       }
@@ -7115,6 +7228,115 @@
         ],
         "type": "object"
       },
+      "ApiV1ArProductCreateRequest": {
+        "description": " Request data to create a product catalog item using the public API",
+        "properties": {
+          "description": {
+            "description": " Optional description of the product.",
+            "nullable": true,
+            "type": "string"
+          },
+          "name": {
+            "description": " Name of the product. Must be unique per organization in combination with the unit price.",
+            "type": "string"
+          },
+          "unitPrice": {
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/Dollar"
+              },
+              {
+                "description": " Unit price of the product, in dollars."
+              }
+            ]
+          }
+        },
+        "required": [
+          "name",
+          "unitPrice"
+        ],
+        "type": "object"
+      },
+      "ApiV1ArProductPaginatedResponseData": {
+        "description": " Paginated response data for Accounts Receivable products API endpoint",
+        "properties": {
+          "page": {
+            "description": " Pagination cursors for navigating to next/previous pages",
+            "properties": {
+              "nextPage": {
+                "$ref": "#/components/schemas/ProductId"
+              },
+              "previousPage": {
+                "$ref": "#/components/schemas/ProductId"
+              }
+            },
+            "type": "object"
+          },
+          "products": {
+            "description": " The list of products for this page",
+            "items": {
+              "$ref": "#/components/schemas/ApiV1ArProductResponseData"
+            },
+            "type": "array"
+          }
+        },
+        "required": [
+          "products",
+          "page"
+        ],
+        "type": "object"
+      },
+      "ApiV1ArProductResponseData": {
+        "description": " A product catalog item for Accounts Receivable API endpoints",
+        "properties": {
+          "description": {
+            "description": " Description of the product, if any.",
+            "nullable": true,
+            "type": "string"
+          },
+          "id": {
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/ProductId"
+              },
+              {
+                "description": " ID of the product."
+              }
+            ]
+          },
+          "name": {
+            "description": " Name of the product.",
+            "type": "string"
+          },
+          "unitPrice": {
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/Dollar"
+              },
+              {
+                "description": " Unit price of the product, in dollars."
+              }
+            ]
+          },
+          "updatedAt": {
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/UTCTime"
+              },
+              {
+                "description": " The time the product's current details were last set."
+              }
+            ]
+          }
+        },
+        "required": [
+          "id",
+          "name",
+          "unitPrice",
+          "updatedAt"
+        ],
+        "type": "object"
+      },
       "ApiV1AssignTransactionRequest": {
         "properties": {
           "allowOverspend": {
@@ -10308,6 +10530,10 @@
             ],
             "description": "Amount of USD you want to send, must be a positive number."
           },
+          "duplicateCheckOverride": {
+            "description": "Set to true to skip the duplicate payment check. By default, payments are blocked if the same account sent the same amount to the same recipient with the same payment method in the last 24 hours, even when the idempotency key is different. Use this field only when you intentionally send a repeat payment.",
+            "type": "boolean"
+          },
           "externalMemo": {
             "description": "Optional external memo",
             "type": "string"
@@ -10375,6 +10601,11 @@
           }
         },
         "type": "object"
+      },
+      "ProductId": {
+        "description": "The ID of an invoicing product. Use the /api/v1/ar/products endpoint to list your products.",
+        "format": "uuid",
+        "type": "string"
       },
       "RealTimePaymentRoutingInfo": {
         "properties": {
@@ -11047,6 +11278,10 @@
               "shared"
             ],
             "type": "string"
+          },
+          "duplicateCheckOverride": {
+            "description": "Set to true to skip the duplicate payment check. By default, payments are blocked if the same account sent the same amount to the same recipient with the same payment method in the last 24 hours, even when the idempotency key is different. Use this field only when you intentionally send a repeat payment. The check occurs when you create the request. When an approver approves the request, the check does not occur again.",
+            "type": "boolean"
           },
           "externalMemo": {
             "description": "Optional external memo",

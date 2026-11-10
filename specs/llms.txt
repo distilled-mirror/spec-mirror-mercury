@@ -92,6 +92,9 @@
     - [Cancel an invoice](https://docs.mercury.com/reference/cancelinvoice.md): Cancel an invoice. This action cannot be undone.
     - [List invoice attachments](https://docs.mercury.com/reference/listinvoiceattachments.md): Retrieve a list of all attachments for a specific invoice
     - [Download invoice PDF](https://docs.mercury.com/reference/getinvoicepdf.md): Downloads a PDF file for the specified invoice. The response includes a Content-Disposition header set to 'attachment' with the filename.
+- Products
+  - [List all products](https://docs.mercury.com/reference/listproducts.md): Retrieve a paginated list of invoicing products (product catalog items). Supports cursor-based pagination with limit, order, start_after, and end_before query parameters.
+  - [Create a product](https://docs.mercury.com/reference/createproduct.md): Create a new invoicing product (product catalog item). The combination of name and unit price must be unique within the organization.
 - [Events](https://docs.mercury.com/reference/events.md): Track changes to your Mercury resources in real-time with an auditable event stream that captures what changed, when it changed, and the before/after values.
   - [Get all events](https://docs.mercury.com/reference/getevents.md)
   - [Get event by ID](https://docs.mercury.com/reference/getevent.md)

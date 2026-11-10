@@ -935,6 +935,10 @@ Note that attempting to create a duplicate transaction (same recipient, same acc
             ],
             "description": "Amount of USD you want to send, must be a positive number."
           },
+          "duplicateCheckOverride": {
+            "description": "Set to true to skip the duplicate payment check. By default, payments are blocked if the same account sent the same amount to the same recipient with the same payment method in the last 24 hours, even when the idempotency key is different. Use this field only when you intentionally send a repeat payment.",
+            "type": "boolean"
+          },
           "externalMemo": {
             "description": "Optional external memo",
             "type": "string"

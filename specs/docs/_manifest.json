@@ -1,6 +1,6 @@
 {
   "source": "https://docs.mercury.com/llms.txt",
-  "count": 126,
+  "count": 128,
   "pages": [
     {
       "page": "https://docs.mercury.com/changelog/account-balance-events-via-webhooksevents-endpoints-now-available",
@@ -221,6 +221,11 @@
       "page": "https://docs.mercury.com/reference/createinvoice",
       "markdown": "https://docs.mercury.com/reference/createinvoice.md",
       "file": "reference/createinvoice.md"
+    },
+    {
+      "page": "https://docs.mercury.com/reference/createproduct",
+      "markdown": "https://docs.mercury.com/reference/createproduct.md",
+      "file": "reference/createproduct.md"
     },
     {
       "page": "https://docs.mercury.com/reference/createreceiptuploadurl",
@@ -506,6 +511,11 @@
       "page": "https://docs.mercury.com/reference/listmerchants",
       "markdown": "https://docs.mercury.com/reference/listmerchants.md",
       "file": "reference/listmerchants.md"
+    },
+    {
+      "page": "https://docs.mercury.com/reference/listproducts",
+      "markdown": "https://docs.mercury.com/reference/listproducts.md",
+      "file": "reference/listproducts.md"
     },
     {
       "page": "https://docs.mercury.com/reference/listreceipts",
