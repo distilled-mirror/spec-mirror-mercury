@@ -19,6 +19,8 @@ Retrieve a list of all attachments for a specific invoice
         "properties": {
           "fileName": {
             "description": " The filename for the file.",
+            "maxLength": 299,
+            "minLength": 1,
             "type": "string"
           },
           "id": {

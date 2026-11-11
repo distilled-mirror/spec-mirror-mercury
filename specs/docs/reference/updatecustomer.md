@@ -23,15 +23,21 @@ Update an existing customer
         "properties": {
           "address1": {
             "description": " Primary street address line.",
+            "maxLength": 299,
+            "minLength": 1,
             "type": "string"
           },
           "address2": {
             "description": " Secondary street address line (optional).",
+            "maxLength": 299,
+            "minLength": 1,
             "nullable": true,
             "type": "string"
           },
           "city": {
             "description": " City name.",
+            "maxLength": 299,
+            "minLength": 1,
             "type": "string"
           },
           "country": {
@@ -46,6 +52,8 @@ Update an existing customer
           },
           "postalCode": {
             "description": " Postal or ZIP code",
+            "maxLength": 299,
+            "minLength": 1,
             "type": "string"
           },
           "region": {
@@ -73,15 +81,21 @@ Update an existing customer
         "properties": {
           "address1": {
             "description": " Primary street address line.",
+            "maxLength": 299,
+            "minLength": 1,
             "type": "string"
           },
           "address2": {
             "description": " Secondary street address line (optional).",
+            "maxLength": 299,
+            "minLength": 1,
             "nullable": true,
             "type": "string"
           },
           "city": {
             "description": " City name.",
+            "maxLength": 299,
+            "minLength": 1,
             "type": "string"
           },
           "country": {
@@ -100,6 +114,8 @@ Update an existing customer
           },
           "postalCode": {
             "description": " Postal or ZIP code.",
+            "maxLength": 299,
+            "minLength": 1,
             "type": "string"
           },
           "region": {
@@ -170,6 +186,8 @@ Update an existing customer
           },
           "name": {
             "description": " Name of customer.",
+            "maxLength": 5000,
+            "minLength": 1,
             "type": "string"
           }
         },
@@ -206,6 +224,8 @@ Update an existing customer
           },
           "name": {
             "description": " The name of the customer.",
+            "maxLength": 5000,
+            "minLength": 1,
             "type": "string"
           },
           "resendOpenInvoices": {

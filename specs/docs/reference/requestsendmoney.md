@@ -157,6 +157,7 @@ Since this endpoint requires approval to send money, an IP whitelist is not requ
           },
           "externalMemo": {
             "description": "Optional external memo",
+            "maxLength": 299,
             "type": "string"
           },
           "idempotencyKey": {
@@ -228,6 +229,8 @@ Since this endpoint requires approval to send money, an IP whitelist is not requ
             ]
           },
           "memo": {
+            "maxLength": 299,
+            "minLength": 1,
             "nullable": true,
             "type": "string"
           },

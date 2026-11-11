@@ -115,6 +115,8 @@ Retrieve a paginated list of send money approval requests for the authenticated 
             ]
           },
           "memo": {
+            "maxLength": 299,
+            "minLength": 1,
             "nullable": true,
             "type": "string"
           },

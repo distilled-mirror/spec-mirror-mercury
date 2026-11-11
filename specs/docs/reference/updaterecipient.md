@@ -17,13 +17,19 @@ Update an existing recipient's information
       "Address": {
         "properties": {
           "address1": {
+            "maxLength": 299,
+            "minLength": 1,
             "type": "string"
           },
           "address2": {
+            "maxLength": 299,
+            "minLength": 1,
             "nullable": true,
             "type": "string"
           },
           "city": {
+            "maxLength": 299,
+            "minLength": 1,
             "type": "string"
           },
           "country": {
@@ -37,6 +43,8 @@ Update an existing recipient's information
             "type": "string"
           },
           "postalCode": {
+            "maxLength": 299,
+            "minLength": 1,
             "type": "string"
           },
           "region": {
@@ -264,6 +272,8 @@ Update an existing recipient's information
             "type": "array"
           },
           "name": {
+            "maxLength": 299,
+            "minLength": 1,
             "type": "string"
           },
           "nickname": {

@@ -63,6 +63,8 @@ Retrieve a paginated list of invoicing products (product catalog items). Support
           },
           "name": {
             "description": " Name of the product.",
+            "maxLength": 299,
+            "minLength": 1,
             "type": "string"
           },
           "unitPrice": {

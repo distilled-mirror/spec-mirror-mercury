@@ -147,10 +147,14 @@ Retrieve all SAFE (Simple Agreement for Future Equity) requests for your organiz
         "description": " Details about the investor buying the equity.",
         "properties": {
           "additionalBylines": {
+            "maxLength": 299,
+            "minLength": 1,
             "nullable": true,
             "type": "string"
           },
           "address": {
+            "maxLength": 299,
+            "minLength": 1,
             "nullable": true,
             "type": "string"
           },
@@ -162,6 +166,8 @@ Retrieve all SAFE (Simple Agreement for Future Equity) requests for your organiz
             ]
           },
           "legalEntityName": {
+            "maxLength": 299,
+            "minLength": 1,
             "type": "string"
           },
           "signatoryEmail": {
@@ -172,9 +178,13 @@ Retrieve all SAFE (Simple Agreement for Future Equity) requests for your organiz
             ]
           },
           "signatoryName": {
+            "maxLength": 5000,
+            "minLength": 1,
             "type": "string"
           },
           "signatoryTitle": {
+            "maxLength": 299,
+            "minLength": 1,
             "nullable": true,
             "type": "string"
           }
@@ -191,6 +201,8 @@ Retrieve all SAFE (Simple Agreement for Future Equity) requests for your organiz
         "description": " Details about the organization selling the equity",
         "properties": {
           "legalEntityName": {
+            "maxLength": 299,
+            "minLength": 1,
             "type": "string"
           },
           "signatoryEmail": {
@@ -201,9 +213,13 @@ Retrieve all SAFE (Simple Agreement for Future Equity) requests for your organiz
             ]
           },
           "signatoryName": {
+            "maxLength": 5000,
+            "minLength": 1,
             "type": "string"
           },
           "signatoryTitle": {
+            "maxLength": 299,
+            "minLength": 1,
             "type": "string"
           }
         },

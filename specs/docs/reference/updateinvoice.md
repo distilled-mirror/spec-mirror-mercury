@@ -114,6 +114,8 @@ Update an existing invoice
           },
           "internalNote": {
             "description": " Internal note for the invoice, visible by users in the\n mercury organization but not visible to payers.",
+            "maxLength": 5000,
+            "minLength": 1,
             "nullable": true,
             "type": "string"
           },
@@ -129,6 +131,8 @@ Update an existing invoice
           },
           "invoiceNumber": {
             "description": " The payer facing invoice number/identifier.",
+            "maxLength": 299,
+            "minLength": 1,
             "type": "string"
           },
           "lineItems": {
@@ -140,11 +144,15 @@ Update an existing invoice
           },
           "payerMemo": {
             "description": " Memo for the payer of the invoice.",
+            "maxLength": 5000,
+            "minLength": 1,
             "nullable": true,
             "type": "string"
           },
           "poNumber": {
             "description": " Purchase order number for the invoice if applicable.",
+            "maxLength": 299,
+            "minLength": 1,
             "nullable": true,
             "type": "string"
           },
@@ -250,6 +258,8 @@ Update an existing invoice
           },
           "internalNote": {
             "description": " Internal note for the invoice, visible by users in the organization but not visible to payers.",
+            "maxLength": 5000,
+            "minLength": 1,
             "nullable": true,
             "type": "string"
           },
@@ -265,6 +275,8 @@ Update an existing invoice
           },
           "invoiceNumber": {
             "description": " The invoice number.",
+            "maxLength": 299,
+            "minLength": 1,
             "type": "string"
           },
           "lineItems": {
@@ -276,11 +288,15 @@ Update an existing invoice
           },
           "payerMemo": {
             "description": " Memo for the payer of the invoice.",
+            "maxLength": 5000,
+            "minLength": 1,
             "nullable": true,
             "type": "string"
           },
           "poNumber": {
             "description": " The purchase order number for the invoice if applicable.",
+            "maxLength": 299,
+            "minLength": 1,
             "nullable": true,
             "type": "string"
           },
@@ -328,6 +344,8 @@ Update an existing invoice
         "properties": {
           "name": {
             "description": " the name of the line item",
+            "maxLength": 299,
+            "minLength": 1,
             "type": "string"
           },
           "quantity": {

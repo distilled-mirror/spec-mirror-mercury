@@ -69,6 +69,8 @@ Create a budget as a draft. Add members and publish it from the Mercury dashboar
             ]
           },
           "name": {
+            "maxLength": 299,
+            "minLength": 1,
             "nullable": true,
             "type": "string"
           },

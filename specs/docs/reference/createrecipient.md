@@ -63,9 +63,12 @@ Create a new recipient for making payments
             "type": "array"
           },
           "name": {
+            "maxLength": 299,
+            "minLength": 1,
             "type": "string"
           },
           "nickname": {
+            "maxLength": 299,
             "type": "string"
           },
           "realTimePaymentRoutingInfo": {
@@ -86,13 +89,19 @@ Create a new recipient for making payments
       "Address": {
         "properties": {
           "address1": {
+            "maxLength": 299,
+            "minLength": 1,
             "type": "string"
           },
           "address2": {
+            "maxLength": 299,
+            "minLength": 1,
             "nullable": true,
             "type": "string"
           },
           "city": {
+            "maxLength": 299,
+            "minLength": 1,
             "type": "string"
           },
           "country": {
@@ -106,6 +115,8 @@ Create a new recipient for making payments
             "type": "string"
           },
           "postalCode": {
+            "maxLength": 299,
+            "minLength": 1,
             "type": "string"
           },
           "region": {

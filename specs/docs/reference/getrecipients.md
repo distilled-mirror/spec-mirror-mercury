@@ -17,13 +17,19 @@ Retrieve a paginated list of all recipients. Use cursor parameters (start_after,
       "Address": {
         "properties": {
           "address1": {
+            "maxLength": 299,
+            "minLength": 1,
             "type": "string"
           },
           "address2": {
+            "maxLength": 299,
+            "minLength": 1,
             "nullable": true,
             "type": "string"
           },
           "city": {
+            "maxLength": 299,
+            "minLength": 1,
             "type": "string"
           },
           "country": {
@@ -37,6 +43,8 @@ Retrieve a paginated list of all recipients. Use cursor parameters (start_after,
             "type": "string"
           },
           "postalCode": {
+            "maxLength": 299,
+            "minLength": 1,
             "type": "string"
           },
           "region": {

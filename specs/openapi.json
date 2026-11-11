@@ -1318,6 +1318,40 @@
         "x-business-only": true
       }
     },
+    "/ar/products/{productId}": {
+      "delete": {
+        "description": "Delete an invoicing product (product catalog item). The product is unlinked from line items on open, pending, and recurring invoices.",
+        "operationId": "deleteProduct",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "productId",
+            "required": true,
+            "schema": {
+              "description": "The ID of an invoicing product. Use the /api/v1/ar/products endpoint to list your products.",
+              "format": "uuid",
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {}
+            },
+            "description": ""
+          },
+          "404": {
+            "description": "`productId` not found"
+          }
+        },
+        "summary": "Delete a product",
+        "tags": [
+          "Products"
+        ],
+        "x-business-only": true
+      }
+    },
     "/auto-transfer-rules": {
       "get": {
         "description": "Retrieve a paginated list of the organization's active auto-transfer rules: rules that distribute fixed amounts or percentages of an account's balance to other accounts, and rules that keep an account at a target balance. Pass accountId to return only the rules that manage that account's balance.",
@@ -5396,10 +5430,14 @@
         "description": " Details about the investor buying the equity.",
         "properties": {
           "additionalBylines": {
+            "maxLength": 299,
+            "minLength": 1,
             "nullable": true,
             "type": "string"
           },
           "address": {
+            "maxLength": 299,
+            "minLength": 1,
             "nullable": true,
             "type": "string"
           },
@@ -5411,6 +5449,8 @@
             ]
           },
           "legalEntityName": {
+            "maxLength": 299,
+            "minLength": 1,
             "type": "string"
           },
           "signatoryEmail": {
@@ -5421,9 +5461,13 @@
             ]
           },
           "signatoryName": {
+            "maxLength": 5000,
+            "minLength": 1,
             "type": "string"
           },
           "signatoryTitle": {
+            "maxLength": 299,
+            "minLength": 1,
             "nullable": true,
             "type": "string"
           }
@@ -5440,6 +5484,8 @@
         "description": " Details about the organization selling the equity",
         "properties": {
           "legalEntityName": {
+            "maxLength": 299,
+            "minLength": 1,
             "type": "string"
           },
           "signatoryEmail": {
@@ -5450,9 +5496,13 @@
             ]
           },
           "signatoryName": {
+            "maxLength": 5000,
+            "minLength": 1,
             "type": "string"
           },
           "signatoryTitle": {
+            "maxLength": 299,
+            "minLength": 1,
             "type": "string"
           }
         },
@@ -5888,9 +5938,12 @@
             "type": "array"
           },
           "name": {
+            "maxLength": 299,
+            "minLength": 1,
             "type": "string"
           },
           "nickname": {
+            "maxLength": 299,
             "type": "string"
           },
           "realTimePaymentRoutingInfo": {
@@ -5911,13 +5964,19 @@
       "Address": {
         "properties": {
           "address1": {
+            "maxLength": 299,
+            "minLength": 1,
             "type": "string"
           },
           "address2": {
+            "maxLength": 299,
+            "minLength": 1,
             "nullable": true,
             "type": "string"
           },
           "city": {
+            "maxLength": 299,
+            "minLength": 1,
             "type": "string"
           },
           "country": {
@@ -5931,6 +5990,8 @@
             "type": "string"
           },
           "postalCode": {
+            "maxLength": 299,
+            "minLength": 1,
             "type": "string"
           },
           "region": {
@@ -6238,6 +6299,8 @@
         "properties": {
           "fileName": {
             "description": " The filename for the file.",
+            "maxLength": 299,
+            "minLength": 1,
             "type": "string"
           },
           "id": {
@@ -6283,15 +6346,21 @@
         "properties": {
           "address1": {
             "description": " Primary street address line.",
+            "maxLength": 299,
+            "minLength": 1,
             "type": "string"
           },
           "address2": {
             "description": " Secondary street address line (optional).",
+            "maxLength": 299,
+            "minLength": 1,
             "nullable": true,
             "type": "string"
           },
           "city": {
             "description": " City name.",
+            "maxLength": 299,
+            "minLength": 1,
             "type": "string"
           },
           "country": {
@@ -6306,6 +6375,8 @@
           },
           "postalCode": {
             "description": " Postal or ZIP code",
+            "maxLength": 299,
+            "minLength": 1,
             "type": "string"
           },
           "region": {
@@ -6333,15 +6404,21 @@
         "properties": {
           "address1": {
             "description": " Primary street address line.",
+            "maxLength": 299,
+            "minLength": 1,
             "type": "string"
           },
           "address2": {
             "description": " Secondary street address line (optional).",
+            "maxLength": 299,
+            "minLength": 1,
             "nullable": true,
             "type": "string"
           },
           "city": {
             "description": " City name.",
+            "maxLength": 299,
+            "minLength": 1,
             "type": "string"
           },
           "country": {
@@ -6360,6 +6437,8 @@
           },
           "postalCode": {
             "description": " Postal or ZIP code.",
+            "maxLength": 299,
+            "minLength": 1,
             "type": "string"
           },
           "region": {
@@ -6409,6 +6488,8 @@
           },
           "name": {
             "description": " The name of the customer.",
+            "maxLength": 5000,
+            "minLength": 1,
             "type": "string"
           }
         },
@@ -6494,6 +6575,8 @@
           },
           "name": {
             "description": " Name of customer.",
+            "maxLength": 5000,
+            "minLength": 1,
             "type": "string"
           }
         },
@@ -6530,6 +6613,8 @@
           },
           "name": {
             "description": " The name of the customer.",
+            "maxLength": 5000,
+            "minLength": 1,
             "type": "string"
           },
           "resendOpenInvoices": {
@@ -6605,6 +6690,8 @@
           },
           "internalNote": {
             "description": " Internal note for the invoice, visible by users in the organization but not visible to payers.",
+            "maxLength": 5000,
+            "minLength": 1,
             "nullable": true,
             "type": "string"
           },
@@ -6620,6 +6707,8 @@
           },
           "invoiceNumber": {
             "description": " The payer facing invoice number/identifier.",
+            "maxLength": 299,
+            "minLength": 1,
             "nullable": true,
             "type": "string"
           },
@@ -6632,11 +6721,15 @@
           },
           "payerMemo": {
             "description": " Memo for the payer of the invoice.",
+            "maxLength": 5000,
+            "minLength": 1,
             "nullable": true,
             "type": "string"
           },
           "poNumber": {
             "description": " Purchase order number for the invoice, if applicable.",
+            "maxLength": 299,
+            "minLength": 1,
             "nullable": true,
             "type": "string"
           },
@@ -6787,6 +6880,8 @@
           },
           "internalNote": {
             "description": " Internal note for the invoice, visible by users in the\n mercury organization but not visible to payers.",
+            "maxLength": 5000,
+            "minLength": 1,
             "nullable": true,
             "type": "string"
           },
@@ -6802,6 +6897,8 @@
           },
           "invoiceNumber": {
             "description": " The payer facing invoice number/identifier.",
+            "maxLength": 299,
+            "minLength": 1,
             "type": "string"
           },
           "lineItems": {
@@ -6813,11 +6910,15 @@
           },
           "payerMemo": {
             "description": " Memo for the payer of the invoice.",
+            "maxLength": 5000,
+            "minLength": 1,
             "nullable": true,
             "type": "string"
           },
           "poNumber": {
             "description": " Purchase order number for the invoice if applicable.",
+            "maxLength": 299,
+            "minLength": 1,
             "nullable": true,
             "type": "string"
           },
@@ -6923,6 +7024,8 @@
           },
           "internalNote": {
             "description": " Internal note for the invoice, visible by users in the organization but not visible to payers.",
+            "maxLength": 5000,
+            "minLength": 1,
             "nullable": true,
             "type": "string"
           },
@@ -6938,6 +7041,8 @@
           },
           "invoiceNumber": {
             "description": " The invoice number.",
+            "maxLength": 299,
+            "minLength": 1,
             "type": "string"
           },
           "lineItems": {
@@ -6949,11 +7054,15 @@
           },
           "payerMemo": {
             "description": " Memo for the payer of the invoice.",
+            "maxLength": 5000,
+            "minLength": 1,
             "nullable": true,
             "type": "string"
           },
           "poNumber": {
             "description": " The purchase order number for the invoice if applicable.",
+            "maxLength": 299,
+            "minLength": 1,
             "nullable": true,
             "type": "string"
           },
@@ -7092,6 +7201,8 @@
           },
           "internalNote": {
             "description": " Internal note for the invoice, visible by users in the\n mercury organization but not visible to payers.",
+            "maxLength": 5000,
+            "minLength": 1,
             "nullable": true,
             "type": "string"
           },
@@ -7107,15 +7218,21 @@
           },
           "invoiceNumber": {
             "description": " The payer facing invoice number/identifier.",
+            "maxLength": 299,
+            "minLength": 1,
             "type": "string"
           },
           "payerMemo": {
             "description": " Memo for the payer of the invoice.",
+            "maxLength": 5000,
+            "minLength": 1,
             "nullable": true,
             "type": "string"
           },
           "poNumber": {
             "description": " Purchase order number for the invoice if applicable.",
+            "maxLength": 299,
+            "minLength": 1,
             "nullable": true,
             "type": "string"
           },
@@ -7202,6 +7319,8 @@
         "properties": {
           "name": {
             "description": " the name of the line item",
+            "maxLength": 299,
+            "minLength": 1,
             "type": "string"
           },
           "quantity": {
@@ -7238,6 +7357,8 @@
           },
           "name": {
             "description": " Name of the product. Must be unique per organization in combination with the unit price.",
+            "maxLength": 299,
+            "minLength": 1,
             "type": "string"
           },
           "unitPrice": {
@@ -7306,6 +7427,8 @@
           },
           "name": {
             "description": " Name of the product.",
+            "maxLength": 299,
+            "minLength": 1,
             "type": "string"
           },
           "unitPrice": {
@@ -7561,6 +7684,8 @@
             ]
           },
           "name": {
+            "maxLength": 299,
+            "minLength": 1,
             "nullable": true,
             "type": "string"
           },
@@ -7589,6 +7714,8 @@
             ]
           },
           "fileName": {
+            "maxLength": 299,
+            "minLength": 1,
             "type": "string"
           },
           "id": {
@@ -7650,6 +7777,8 @@
         "description": " Request a presigned URL to upload a receipt file.",
         "properties": {
           "fileName": {
+            "maxLength": 299,
+            "minLength": 1,
             "type": "string"
           }
         },
@@ -7743,6 +7872,8 @@
             ]
           },
           "name": {
+            "maxLength": 299,
+            "minLength": 1,
             "nullable": true,
             "type": "string"
           },
@@ -7826,6 +7957,8 @@
             "nullable": true
           },
           "name": {
+            "maxLength": 299,
+            "minLength": 1,
             "nullable": true,
             "type": "string"
           },
@@ -8866,16 +8999,22 @@
           },
           "name": {
             "description": " Name the invite is created for. This field is required when 'recipientId' is absent.\n When 'recipientId' is present, this field is optional and updates the recipient's name to this value.",
+            "maxLength": 299,
+            "minLength": 1,
             "nullable": true,
             "type": "string"
           },
           "notes": {
             "description": " Optional notes shown to the recipient.",
+            "maxLength": 5000,
+            "minLength": 1,
             "nullable": true,
             "type": "string"
           },
           "organizationNameOnRequest": {
             "description": " Optional organization name to display on the request.",
+            "maxLength": 299,
+            "minLength": 1,
             "nullable": true,
             "type": "string"
           },
@@ -9495,6 +9634,8 @@
             "type": "array"
           },
           "name": {
+            "maxLength": 299,
+            "minLength": 1,
             "type": "string"
           },
           "nickname": {
@@ -10536,6 +10677,7 @@
           },
           "externalMemo": {
             "description": "Optional external memo",
+            "maxLength": 299,
             "type": "string"
           },
           "idempotencyKey": {
@@ -11285,6 +11427,7 @@
           },
           "externalMemo": {
             "description": "Optional external memo",
+            "maxLength": 299,
             "type": "string"
           },
           "idempotencyKey": {
@@ -11361,6 +11504,8 @@
             ]
           },
           "memo": {
+            "maxLength": 299,
+            "minLength": 1,
             "nullable": true,
             "type": "string"
           },
@@ -12942,10 +13087,14 @@
           },
           "firstName": {
             "description": " User's first name",
+            "maxLength": 299,
+            "minLength": 1,
             "type": "string"
           },
           "lastName": {
             "description": " User's last name",
+            "maxLength": 299,
+            "minLength": 1,
             "type": "string"
           },
           "organizationRole": {

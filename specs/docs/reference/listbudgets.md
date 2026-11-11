@@ -69,6 +69,8 @@ Retrieve the organization's non-deleted budgets ordered by creation time, ascend
             ]
           },
           "name": {
+            "maxLength": 299,
+            "minLength": 1,
             "nullable": true,
             "type": "string"
           },

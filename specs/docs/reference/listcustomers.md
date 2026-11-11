@@ -23,15 +23,21 @@ Retrieve a paginated list of customers. Supports cursor-based pagination with li
         "properties": {
           "address1": {
             "description": " Primary street address line.",
+            "maxLength": 299,
+            "minLength": 1,
             "type": "string"
           },
           "address2": {
             "description": " Secondary street address line (optional).",
+            "maxLength": 299,
+            "minLength": 1,
             "nullable": true,
             "type": "string"
           },
           "city": {
             "description": " City name.",
+            "maxLength": 299,
+            "minLength": 1,
             "type": "string"
           },
           "country": {
@@ -46,6 +52,8 @@ Retrieve a paginated list of customers. Supports cursor-based pagination with li
           },
           "postalCode": {
             "description": " Postal or ZIP code",
+            "maxLength": 299,
+            "minLength": 1,
             "type": "string"
           },
           "region": {
@@ -144,6 +152,8 @@ Retrieve a paginated list of customers. Supports cursor-based pagination with li
           },
           "name": {
             "description": " Name of customer.",
+            "maxLength": 5000,
+            "minLength": 1,
             "type": "string"
           }
         },

@@ -31,10 +31,14 @@ agentTools:
           },
           "firstName": {
             "description": " User's first name",
+            "maxLength": 299,
+            "minLength": 1,
             "type": "string"
           },
           "lastName": {
             "description": " User's last name",
+            "maxLength": 299,
+            "minLength": 1,
             "type": "string"
           },
           "organizationRole": {

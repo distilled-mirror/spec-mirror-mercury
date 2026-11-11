@@ -18,6 +18,8 @@ Request a presigned URL to upload a receipt file. The URL expires after five min
         "description": " Request a presigned URL to upload a receipt file.",
         "properties": {
           "fileName": {
+            "maxLength": 299,
+            "minLength": 1,
             "type": "string"
           }
         },

@@ -941,6 +941,7 @@ Note that attempting to create a duplicate transaction (same recipient, same acc
           },
           "externalMemo": {
             "description": "Optional external memo",
+            "maxLength": 299,
             "type": "string"
           },
           "idempotencyKey": {

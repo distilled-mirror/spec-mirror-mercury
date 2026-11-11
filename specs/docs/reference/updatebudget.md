@@ -70,6 +70,8 @@ Update a budget's fields. A draft is edited in place; a published budget gets a 
             "nullable": true
           },
           "name": {
+            "maxLength": 299,
+            "minLength": 1,
             "nullable": true,
             "type": "string"
           },

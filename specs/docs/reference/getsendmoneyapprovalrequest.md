@@ -108,6 +108,8 @@ agentTools:
             ]
           },
           "memo": {
+            "maxLength": 299,
+            "minLength": 1,
             "nullable": true,
             "type": "string"
           },

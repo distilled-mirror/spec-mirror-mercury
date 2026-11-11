@@ -25,6 +25,8 @@ Retrieve a directly uploaded receipt and its auto-matching status by id. Uploade
             ]
           },
           "fileName": {
+            "maxLength": 299,
+            "minLength": 1,
             "type": "string"
           },
           "id": {

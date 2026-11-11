@@ -25,6 +25,8 @@ Retrieve directly uploaded receipts whose matching result is pending, ordered by
             ]
           },
           "fileName": {
+            "maxLength": 299,
+            "minLength": 1,
             "type": "string"
           },
           "id": {

@@ -33,6 +33,8 @@ Response Schema
         "properties": {
           "fileName": {
             "description": " The filename for the file.",
+            "maxLength": 299,
+            "minLength": 1,
             "type": "string"
           },
           "id": {

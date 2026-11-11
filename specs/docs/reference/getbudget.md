@@ -69,6 +69,8 @@ Retrieve a budget by id, including its lifecycle status, per-user limit, cadence
             ]
           },
           "name": {
+            "maxLength": 299,
+            "minLength": 1,
             "nullable": true,
             "type": "string"
           },

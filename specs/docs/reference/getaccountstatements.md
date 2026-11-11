@@ -59,13 +59,19 @@ The maximum date range that may be supplied via the start and end parameters is 
       "Address": {
         "properties": {
           "address1": {
+            "maxLength": 299,
+            "minLength": 1,
             "type": "string"
           },
           "address2": {
+            "maxLength": 299,
+            "minLength": 1,
             "nullable": true,
             "type": "string"
           },
           "city": {
+            "maxLength": 299,
+            "minLength": 1,
             "type": "string"
           },
           "country": {
@@ -79,6 +85,8 @@ The maximum date range that may be supplied via the start and end parameters is 
             "type": "string"
           },
           "postalCode": {
+            "maxLength": 299,
+            "minLength": 1,
             "type": "string"
           },
           "region": {

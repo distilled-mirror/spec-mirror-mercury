@@ -29,16 +29,22 @@ Create an invite for a recipient to submit their payment details. Supply a recip
           },
           "name": {
             "description": " Name the invite is created for. This field is required when 'recipientId' is absent.\n When 'recipientId' is present, this field is optional and updates the recipient's name to this value.",
+            "maxLength": 299,
+            "minLength": 1,
             "nullable": true,
             "type": "string"
           },
           "notes": {
             "description": " Optional notes shown to the recipient.",
+            "maxLength": 5000,
+            "minLength": 1,
             "nullable": true,
             "type": "string"
           },
           "organizationNameOnRequest": {
             "description": " Optional organization name to display on the request.",
+            "maxLength": 299,
+            "minLength": 1,
             "nullable": true,
             "type": "string"
           },

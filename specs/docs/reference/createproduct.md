@@ -24,6 +24,8 @@ Create a new invoicing product (product catalog item). The combination of name a
           },
           "name": {
             "description": " Name of the product. Must be unique per organization in combination with the unit price.",
+            "maxLength": 299,
+            "minLength": 1,
             "type": "string"
           },
           "unitPrice": {
@@ -63,6 +65,8 @@ Create a new invoicing product (product catalog item). The combination of name a
           },
           "name": {
             "description": " Name of the product.",
+            "maxLength": 299,
+            "minLength": 1,
             "type": "string"
           },
           "unitPrice": {

@@ -1,6 +1,6 @@
 {
   "source": "https://docs.mercury.com/llms.txt",
-  "count": 128,
+  "count": 129,
   "pages": [
     {
       "page": "https://docs.mercury.com/changelog/account-balance-events-via-webhooksevents-endpoints-now-available",
@@ -261,6 +261,11 @@
       "page": "https://docs.mercury.com/reference/deletecustomer",
       "markdown": "https://docs.mercury.com/reference/deletecustomer.md",
       "file": "reference/deletecustomer.md"
+    },
+    {
+      "page": "https://docs.mercury.com/reference/deleteproduct",
+      "markdown": "https://docs.mercury.com/reference/deleteproduct.md",
+      "file": "reference/deleteproduct.md"
     },
     {
       "page": "https://docs.mercury.com/reference/deleterecipient",

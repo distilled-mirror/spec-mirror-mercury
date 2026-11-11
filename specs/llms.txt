@@ -95,6 +95,7 @@
 - Products
   - [List all products](https://docs.mercury.com/reference/listproducts.md): Retrieve a paginated list of invoicing products (product catalog items). Supports cursor-based pagination with limit, order, start_after, and end_before query parameters.
   - [Create a product](https://docs.mercury.com/reference/createproduct.md): Create a new invoicing product (product catalog item). The combination of name and unit price must be unique within the organization.
+  - [Delete a product](https://docs.mercury.com/reference/deleteproduct.md): Delete an invoicing product (product catalog item). The product is unlinked from line items on open, pending, and recurring invoices.
 - [Events](https://docs.mercury.com/reference/events.md): Track changes to your Mercury resources in real-time with an auditable event stream that captures what changed, when it changed, and the before/after values.
   - [Get all events](https://docs.mercury.com/reference/getevents.md)
   - [Get event by ID](https://docs.mercury.com/reference/getevent.md)

@@ -90,6 +90,8 @@ If you do not provide an invoiceNumber parameter in the body, the system will at
           },
           "internalNote": {
             "description": " Internal note for the invoice, visible by users in the organization but not visible to payers.",
+            "maxLength": 5000,
+            "minLength": 1,
             "nullable": true,
             "type": "string"
           },
@@ -105,6 +107,8 @@ If you do not provide an invoiceNumber parameter in the body, the system will at
           },
           "invoiceNumber": {
             "description": " The payer facing invoice number/identifier.",
+            "maxLength": 299,
+            "minLength": 1,
             "nullable": true,
             "type": "string"
           },
@@ -117,11 +121,15 @@ If you do not provide an invoiceNumber parameter in the body, the system will at
           },
           "payerMemo": {
             "description": " Memo for the payer of the invoice.",
+            "maxLength": 5000,
+            "minLength": 1,
             "nullable": true,
             "type": "string"
           },
           "poNumber": {
             "description": " Purchase order number for the invoice, if applicable.",
+            "maxLength": 299,
+            "minLength": 1,
             "nullable": true,
             "type": "string"
           },
@@ -272,6 +280,8 @@ If you do not provide an invoiceNumber parameter in the body, the system will at
           },
           "internalNote": {
             "description": " Internal note for the invoice, visible by users in the\n mercury organization but not visible to payers.",
+            "maxLength": 5000,
+            "minLength": 1,
             "nullable": true,
             "type": "string"
           },
@@ -287,6 +297,8 @@ If you do not provide an invoiceNumber parameter in the body, the system will at
           },
           "invoiceNumber": {
             "description": " The payer facing invoice number/identifier.",
+            "maxLength": 299,
+            "minLength": 1,
             "type": "string"
           },
           "lineItems": {
@@ -298,11 +310,15 @@ If you do not provide an invoiceNumber parameter in the body, the system will at
           },
           "payerMemo": {
             "description": " Memo for the payer of the invoice.",
+            "maxLength": 5000,
+            "minLength": 1,
             "nullable": true,
             "type": "string"
           },
           "poNumber": {
             "description": " Purchase order number for the invoice if applicable.",
+            "maxLength": 299,
+            "minLength": 1,
             "nullable": true,
             "type": "string"
           },
@@ -383,6 +399,8 @@ If you do not provide an invoiceNumber parameter in the body, the system will at
         "properties": {
           "name": {
             "description": " the name of the line item",
+            "maxLength": 299,
+            "minLength": 1,
             "type": "string"
           },
           "quantity": {

@@ -19,15 +19,21 @@ Create a new customer for the organization
         "properties": {
           "address1": {
             "description": " Primary street address line.",
+            "maxLength": 299,
+            "minLength": 1,
             "type": "string"
           },
           "address2": {
             "description": " Secondary street address line (optional).",
+            "maxLength": 299,
+            "minLength": 1,
             "nullable": true,
             "type": "string"
           },
           "city": {
             "description": " City name.",
+            "maxLength": 299,
+            "minLength": 1,
             "type": "string"
           },
           "country": {
@@ -42,6 +48,8 @@ Create a new customer for the organization
           },
           "postalCode": {
             "description": " Postal or ZIP code",
+            "maxLength": 299,
+            "minLength": 1,
             "type": "string"
           },
           "region": {
@@ -69,15 +77,21 @@ Create a new customer for the organization
         "properties": {
           "address1": {
             "description": " Primary street address line.",
+            "maxLength": 299,
+            "minLength": 1,
             "type": "string"
           },
           "address2": {
             "description": " Secondary street address line (optional).",
+            "maxLength": 299,
+            "minLength": 1,
             "nullable": true,
             "type": "string"
           },
           "city": {
             "description": " City name.",
+            "maxLength": 299,
+            "minLength": 1,
             "type": "string"
           },
           "country": {
@@ -96,6 +110,8 @@ Create a new customer for the organization
           },
           "postalCode": {
             "description": " Postal or ZIP code.",
+            "maxLength": 299,
+            "minLength": 1,
             "type": "string"
           },
           "region": {
@@ -145,6 +161,8 @@ Create a new customer for the organization
           },
           "name": {
             "description": " The name of the customer.",
+            "maxLength": 5000,
+            "minLength": 1,
             "type": "string"
           }
         },
@@ -201,6 +219,8 @@ Create a new customer for the organization
           },
           "name": {
             "description": " Name of customer.",
+            "maxLength": 5000,
+            "minLength": 1,
             "type": "string"
           }
         },
