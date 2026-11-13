@@ -14,6 +14,15 @@ Retrieve directly uploaded receipts whose matching result is pending, ordered by
 {
   "components": {
     "schemas": {
+      "ApiV1ReceiptFailureReason": {
+        "enum": [
+          "fileNotSupported",
+          "fileTooSmall",
+          "fileTooLarge",
+          "unexpected"
+        ],
+        "type": "string"
+      },
       "ApiV1ReceiptResponse": {
         "description": " Public view of a receipt and its matching state.",
         "properties": {
@@ -23,6 +32,17 @@ Retrieve directly uploaded receipts whose matching result is pending, ordered by
                 "$ref": "#/components/schemas/UTCTime"
               }
             ]
+          },
+          "failureReason": {
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/ApiV1ReceiptFailureReason"
+              },
+              {
+                "description": " Why processing failed when `status` is `failed`; absent when no reason was recorded."
+              }
+            ],
+            "nullable": true
           },
           "fileName": {
             "maxLength": 299,

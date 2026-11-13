@@ -1165,6 +1165,44 @@
         "x-business-only": true
       }
     },
+    "/ar/invoices/{invoiceId}/payments": {
+      "get": {
+        "description": "Retrieve the payments applied to an invoice, oldest first. Each payment shows the amount, the date it was applied, and where the money came from: a Mercury transaction, a card payment, or a payment received outside Mercury.",
+        "operationId": "listInvoicePayments",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "invoiceId",
+            "required": true,
+            "schema": {
+              "description": "ID for the invoice.",
+              "format": "uuid",
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiV1ArInvoicePaymentsResponse"
+                }
+              }
+            },
+            "description": ""
+          },
+          "404": {
+            "description": "`invoiceId` not found"
+          }
+        },
+        "summary": "List invoice payments",
+        "tags": [
+          "Invoices"
+        ],
+        "x-business-only": true
+      }
+    },
     "/ar/invoices/{invoiceId}/pdf": {
       "get": {
         "description": "Downloads a PDF file for the specified invoice. The response includes a Content-Disposition header set to 'attachment' with the filename.",
@@ -6341,6 +6379,25 @@
         ],
         "type": "object"
       },
+      "ApiV1ArCardBrand": {
+        "enum": [
+          "amex",
+          "cartesBancaires",
+          "diners",
+          "discover",
+          "eftposAu",
+          "girocard",
+          "jaywan",
+          "jcb",
+          "link",
+          "mastercard",
+          "troy",
+          "unionpay",
+          "visa",
+          "unknown"
+        ],
+        "type": "string"
+      },
       "ApiV1ArCustomerAddress": {
         "description": " Customer address information for Accounts Receivable API",
         "properties": {
@@ -6629,6 +6686,30 @@
         ],
         "type": "object"
       },
+      "ApiV1ArInvoiceCardChargePayment": {
+        "description": " Details of a card payment made by your customer through the invoice.",
+        "properties": {
+          "brand": {
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/ApiV1ArCardBrand"
+              },
+              {
+                "description": " The brand of the card that was charged."
+              }
+            ]
+          },
+          "last4": {
+            "description": " The last 4 digits of the card that was charged.",
+            "type": "string"
+          }
+        },
+        "required": [
+          "brand",
+          "last4"
+        ],
+        "type": "object"
+      },
       "ApiV1ArInvoiceCreateRequest": {
         "description": " The request body to create an invoice.",
         "properties": {
@@ -6781,6 +6862,156 @@
           "achDebitEnabled",
           "useRealAccountNumber",
           "lineItems"
+        ],
+        "type": "object"
+      },
+      "ApiV1ArInvoiceManualPayment": {
+        "description": " Details of a payment received outside Mercury and marked as paid.",
+        "properties": {
+          "method": {
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/ApiV1ArManualPaymentMethod"
+              },
+              {
+                "description": " How the payment was made."
+              }
+            ]
+          }
+        },
+        "required": [
+          "method"
+        ],
+        "type": "object"
+      },
+      "ApiV1ArInvoicePayment": {
+        "description": " A payment applied to an invoice. Exactly one of @transaction@, @cardCharge@,\n or @manual@ is present, matching @type@.",
+        "properties": {
+          "amount": {
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/PositiveDollar"
+              },
+              {
+                "description": " The amount of the payment applied to this invoice."
+              }
+            ]
+          },
+          "appliedDate": {
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/Day"
+              },
+              {
+                "description": " The date the payment was applied to the invoice. For payments marked as paid or matched in\n Mercury, the date entered then; otherwise the date Mercury received the payment."
+              }
+            ]
+          },
+          "cardCharge": {
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/ApiV1ArInvoiceCardChargePayment"
+              },
+              {
+                "description": " Present when @type@ is @cardCharge@."
+              }
+            ],
+            "nullable": true
+          },
+          "createdAt": {
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/UTCTime"
+              },
+              {
+                "description": " When the payment was recorded."
+              }
+            ]
+          },
+          "currencyCode": {
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/CurrencyCode"
+              },
+              {
+                "description": " ISO 4217 currency code of the amount. Always \"USD\"."
+              }
+            ]
+          },
+          "id": {
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/InvoicePaymentId"
+              },
+              {
+                "description": " The ID of the payment."
+              }
+            ]
+          },
+          "manual": {
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/ApiV1ArInvoiceManualPayment"
+              },
+              {
+                "description": " Present when @type@ is @manual@."
+              }
+            ],
+            "nullable": true
+          },
+          "transaction": {
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/ApiV1ArInvoiceTransactionPayment"
+              },
+              {
+                "description": " Present when @type@ is @transaction@."
+              }
+            ],
+            "nullable": true
+          },
+          "type": {
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/ApiV1ArInvoicePaymentType"
+              },
+              {
+                "description": " Where the money for the payment came from."
+              }
+            ]
+          }
+        },
+        "required": [
+          "id",
+          "amount",
+          "currencyCode",
+          "appliedDate",
+          "createdAt",
+          "type"
+        ],
+        "type": "object"
+      },
+      "ApiV1ArInvoicePaymentType": {
+        "enum": [
+          "transaction",
+          "cardCharge",
+          "manual"
+        ],
+        "type": "string"
+      },
+      "ApiV1ArInvoicePaymentsResponse": {
+        "description": " The payments applied to an invoice, oldest first. Payments that were removed\n from the invoice are not included.",
+        "properties": {
+          "payments": {
+            "description": " The payments applied to the invoice.",
+            "items": {
+              "$ref": "#/components/schemas/ApiV1ArInvoicePayment"
+            },
+            "type": "array"
+          }
+        },
+        "required": [
+          "payments"
         ],
         "type": "object"
       },
@@ -6991,6 +7222,63 @@
           "createdAt",
           "updatedAt",
           "lineItems"
+        ],
+        "type": "object"
+      },
+      "ApiV1ArInvoiceTransactionPayment": {
+        "description": " Details of a payment made by a transaction in one of your Mercury accounts.",
+        "properties": {
+          "counterpartyName": {
+            "description": " The name of the party that sent the money.",
+            "type": "string"
+          },
+          "id": {
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/TransactionMetadataId"
+              },
+              {
+                "description": " The ID of the transaction. For payments that Mercury routed to the invoice's\n destination account, this is the ID of the routing transfer."
+              }
+            ]
+          },
+          "kind": {
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/TransactionKind"
+              },
+              {
+                "description": " The kind of the transaction that paid the invoice."
+              }
+            ]
+          },
+          "matchedBy": {
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/ApiV1ArPaymentMatchedBy"
+              },
+              {
+                "description": " Whether the transaction was matched to the invoice automatically or by a user."
+              }
+            ]
+          },
+          "status": {
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/TransactionStatus"
+              },
+              {
+                "description": " The status of the transaction that paid the invoice."
+              }
+            ]
+          }
+        },
+        "required": [
+          "id",
+          "kind",
+          "status",
+          "counterpartyName",
+          "matchedBy"
         ],
         "type": "object"
       },
@@ -7346,6 +7634,22 @@
           "quantity"
         ],
         "type": "object"
+      },
+      "ApiV1ArManualPaymentMethod": {
+        "enum": [
+          "cash",
+          "check",
+          "card",
+          "other"
+        ],
+        "type": "string"
+      },
+      "ApiV1ArPaymentMatchedBy": {
+        "enum": [
+          "automatic",
+          "manual"
+        ],
+        "type": "string"
       },
       "ApiV1ArProductCreateRequest": {
         "description": " Request data to create a product catalog item using the public API",
@@ -7703,6 +8007,15 @@
         ],
         "type": "object"
       },
+      "ApiV1ReceiptFailureReason": {
+        "enum": [
+          "fileNotSupported",
+          "fileTooSmall",
+          "fileTooLarge",
+          "unexpected"
+        ],
+        "type": "string"
+      },
       "ApiV1ReceiptResponse": {
         "description": " Public view of a receipt and its matching state.",
         "properties": {
@@ -7712,6 +8025,17 @@
                 "$ref": "#/components/schemas/UTCTime"
               }
             ]
+          },
+          "failureReason": {
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/ApiV1ReceiptFailureReason"
+              },
+              {
+                "description": " Why processing failed when `status` is `failed`; absent when no reason was recorded."
+              }
+            ],
+            "nullable": true
           },
           "fileName": {
             "maxLength": 299,
@@ -10221,6 +10545,11 @@
       },
       "InvoiceId": {
         "description": "ID for the invoice.",
+        "format": "uuid",
+        "type": "string"
+      },
+      "InvoicePaymentId": {
+        "description": "ID for the invoice payment.",
         "format": "uuid",
         "type": "string"
       },
