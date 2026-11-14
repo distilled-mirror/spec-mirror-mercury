@@ -1,6 +1,6 @@
 {
   "source": "https://docs.mercury.com/llms.txt",
-  "count": 130,
+  "count": 138,
   "pages": [
     {
       "page": "https://docs.mercury.com/changelog/account-balance-events-via-webhooksevents-endpoints-now-available",
@@ -168,6 +168,11 @@
       "file": "reference/accounts_receivable.md"
     },
     {
+      "page": "https://docs.mercury.com/reference/approvereimbursement",
+      "markdown": "https://docs.mercury.com/reference/approvereimbursement.md",
+      "file": "reference/approvereimbursement.md"
+    },
+    {
       "page": "https://docs.mercury.com/reference/archivebudget",
       "markdown": "https://docs.mercury.com/reference/archivebudget.md",
       "file": "reference/archivebudget.md"
@@ -186,6 +191,11 @@
       "page": "https://docs.mercury.com/reference/cancelinvoice",
       "markdown": "https://docs.mercury.com/reference/cancelinvoice.md",
       "file": "reference/cancelinvoice.md"
+    },
+    {
+      "page": "https://docs.mercury.com/reference/cancelreimbursement",
+      "markdown": "https://docs.mercury.com/reference/cancelreimbursement.md",
+      "file": "reference/cancelreimbursement.md"
     },
     {
       "page": "https://docs.mercury.com/reference/cards",
@@ -243,6 +253,11 @@
       "file": "reference/createrecipientinvite.md"
     },
     {
+      "page": "https://docs.mercury.com/reference/createreimbursement",
+      "markdown": "https://docs.mercury.com/reference/createreimbursement.md",
+      "file": "reference/createreimbursement.md"
+    },
+    {
       "page": "https://docs.mercury.com/reference/createtransaction",
       "markdown": "https://docs.mercury.com/reference/createtransaction.md",
       "file": "reference/createtransaction.md"
@@ -281,6 +296,11 @@
       "page": "https://docs.mercury.com/reference/deletewebhook",
       "markdown": "https://docs.mercury.com/reference/deletewebhook.md",
       "file": "reference/deletewebhook.md"
+    },
+    {
+      "page": "https://docs.mercury.com/reference/denyreimbursement",
+      "markdown": "https://docs.mercury.com/reference/denyreimbursement.md",
+      "file": "reference/denyreimbursement.md"
     },
     {
       "page": "https://docs.mercury.com/reference/editcategory",
@@ -396,6 +416,11 @@
       "page": "https://docs.mercury.com/reference/getrecipients",
       "markdown": "https://docs.mercury.com/reference/getrecipients.md",
       "file": "reference/getrecipients.md"
+    },
+    {
+      "page": "https://docs.mercury.com/reference/getreimbursement",
+      "markdown": "https://docs.mercury.com/reference/getreimbursement.md",
+      "file": "reference/getreimbursement.md"
     },
     {
       "page": "https://docs.mercury.com/reference/getsaferequest",
@@ -543,6 +568,11 @@
       "file": "reference/listrecipientsattachments.md"
     },
     {
+      "page": "https://docs.mercury.com/reference/listreimbursements",
+      "markdown": "https://docs.mercury.com/reference/listreimbursements.md",
+      "file": "reference/listreimbursements.md"
+    },
+    {
       "page": "https://docs.mercury.com/reference/listsendmoneyapprovalrequests",
       "markdown": "https://docs.mercury.com/reference/listsendmoneyapprovalrequests.md",
       "file": "reference/listsendmoneyapprovalrequests.md"
@@ -556,6 +586,11 @@
       "page": "https://docs.mercury.com/reference/listtransfermoneyapprovalrequests",
       "markdown": "https://docs.mercury.com/reference/listtransfermoneyapprovalrequests.md",
       "file": "reference/listtransfermoneyapprovalrequests.md"
+    },
+    {
+      "page": "https://docs.mercury.com/reference/markreimbursementpaid",
+      "markdown": "https://docs.mercury.com/reference/markreimbursementpaid.md",
+      "file": "reference/markreimbursementpaid.md"
     },
     {
       "page": "https://docs.mercury.com/reference/matchreceipt",
@@ -616,6 +651,11 @@
       "page": "https://docs.mercury.com/reference/updaterecipient",
       "markdown": "https://docs.mercury.com/reference/updaterecipient.md",
       "file": "reference/updaterecipient.md"
+    },
+    {
+      "page": "https://docs.mercury.com/reference/updatereimbursement",
+      "markdown": "https://docs.mercury.com/reference/updatereimbursement.md",
+      "file": "reference/updatereimbursement.md"
     },
     {
       "page": "https://docs.mercury.com/reference/updatetransaction",

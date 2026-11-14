@@ -93,10 +93,10 @@
     - [List invoice attachments](https://docs.mercury.com/reference/listinvoiceattachments.md): Retrieve a list of all attachments for a specific invoice
     - [Download invoice PDF](https://docs.mercury.com/reference/getinvoicepdf.md): Downloads a PDF file for the specified invoice. The response includes a Content-Disposition header set to 'attachment' with the filename.
     - [List invoice payments](https://docs.mercury.com/reference/listinvoicepayments.md): Retrieve the payments applied to an invoice, oldest first. Each payment shows the amount, the date it was applied, and where the money came from: a Mercury transaction, a card payment, or a payment…
-- Products
-  - [List all products](https://docs.mercury.com/reference/listproducts.md): Retrieve a paginated list of invoicing products (product catalog items). Supports cursor-based pagination with limit, order, start_after, and end_before query parameters.
-  - [Create a product](https://docs.mercury.com/reference/createproduct.md): Create a new invoicing product (product catalog item). The combination of name and unit price must be unique within the organization.
-  - [Delete a product](https://docs.mercury.com/reference/deleteproduct.md): Delete an invoicing product (product catalog item). The product is unlinked from line items on open, pending, and recurring invoices.
+  - Products
+    - [List all products](https://docs.mercury.com/reference/listproducts.md): Retrieve a paginated list of invoicing products (product catalog items). Supports cursor-based pagination with limit, order, start_after, and end_before query parameters.
+    - [Create a product](https://docs.mercury.com/reference/createproduct.md): Create a new invoicing product (product catalog item). The combination of name and unit price must be unique within the organization.
+    - [Delete a product](https://docs.mercury.com/reference/deleteproduct.md): Delete an invoicing product (product catalog item). The product is unlinked from line items on open, pending, and recurring invoices.
 - [Events](https://docs.mercury.com/reference/events.md): Track changes to your Mercury resources in real-time with an auditable event stream that captures what changed, when it changed, and the before/after values.
   - [Get all events](https://docs.mercury.com/reference/getevents.md)
   - [Get event by ID](https://docs.mercury.com/reference/getevent.md)
@@ -114,6 +114,15 @@
   - [Get all SAFEs](https://docs.mercury.com/reference/getsaferequests.md): Retrieve all SAFE (Simple Agreement for Future Equity) requests for your organization.
   - [Get SAFE by ID](https://docs.mercury.com/reference/getsaferequest.md): Retrieve a specific SAFE request by its ID.
   - [Download SAFE document](https://docs.mercury.com/reference/getsaferequestdocument.md): Download the PDF document for a specific SAFE request. Returns binary PDF data with a Content-Disposition header.
+- Reimbursements
+  - [List reimbursements](https://docs.mercury.com/reference/listreimbursements.md): Retrieve a paginated list of reimbursements for the organization ordered by creation time, ascending (oldest first) by default. Each reimbursement includes its attachments, with an id, a file name,…
+  - [Create a reimbursement](https://docs.mercury.com/reference/createreimbursement.md): Submit a new reimbursement as the token's user. Only that user can edit or cancel it. Returns the new reimbursement id.
+  - [Get a reimbursement](https://docs.mercury.com/reference/getreimbursement.md): Retrieve details of a specific reimbursement by its id, including its review and payment status. Attachments include an id, a file name, and a presigned download URL. The URL expires after 24 hours.…
+  - [Update a reimbursement](https://docs.mercury.com/reference/updatereimbursement.md): Replace the fields of an existing reimbursement. Only reimbursements still in review can be edited.
+  - [Approve a reimbursement](https://docs.mercury.com/reference/approvereimbursement.md): Approve a submitted reimbursement. The token's user needs the "Reimbursement approval and submission" or "Policy management and approval" permission, and access to the organization's reimbursement…
+  - [Cancel a reimbursement](https://docs.mercury.com/reference/cancelreimbursement.md): Cancel a reimbursement that is still in review.
+  - [Deny a reimbursement](https://docs.mercury.com/reference/denyreimbursement.md): Deny a submitted reimbursement. The reason is recorded as a reviewer comment. The token's user needs the "Reimbursement approval and submission" or "Policy management and approval" permission, and…
+  - [Mark a reimbursement as paid outside Mercury](https://docs.mercury.com/reference/markreimbursementpaid.md): Record that the submitter was paid outside Mercury, for example by check or payroll. Mercury won’t pay the reimbursement, and its payment status reads as paidOutsideMercury. Denied or canceled…
 - Receipts
   - [List receipts](https://docs.mercury.com/reference/listreceipts.md): Retrieve directly uploaded receipts whose matching result is pending, ordered by creation time, ascending (oldest first) by default. Upload URL requests do not appear until matching starts. Requires…
   - [Request a receipt upload URL](https://docs.mercury.com/reference/createreceiptuploadurl.md): Request a presigned URL to upload a receipt file. The URL expires after five minutes; replay the request with the same Idempotency-Key to receive a fresh URL for the same receipt. Upload the file,…

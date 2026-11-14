@@ -1,5 +1,5 @@
 ---
-updatedAt: 2026-11-09T23:29:34.000Z
+updatedAt: 2026-11-14T00:47:22.000Z
 agentTools:
   projectIndex: https://docs.mercury.com/llms.txt
 ---

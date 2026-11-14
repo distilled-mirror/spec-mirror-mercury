@@ -1,5 +1,5 @@
 ---
-updatedAt: 2026-11-04T22:42:08.000Z
+updatedAt: 2026-11-14T00:06:46.000Z
 agentTools:
   projectIndex: https://docs.mercury.com/llms.txt
 ---
@@ -18,7 +18,7 @@ Nothing to set up on Mercury's side. Your AI tool registers itself the first tim
 
 Adding the server grants no access on its own. Your browser opens Mercury's sign-in page. Review the account and requested permissions before selecting **Allow**. Mercury issues a token with the permissions you grant for that account. Cancel at the sign-in screen and the tool gets nothing.
 
-Write permissions let your AI tool request payments and internal transfers, create or edit custom categories, and update transaction notes and categories. Payments and transfers still require approval in Mercury. Category and note changes apply immediately. See [Supported tools](https://docs.mercury.com/docs/supported-tools-on-mercury-mcp) for the scope and behavior of each action.
+Write permissions let your AI tool request payments and internal transfers, create or edit custom categories, update transaction notes and categories, manage budgets, upload and match receipts, and submit, approve, and deny reimbursements. Payments and transfers still require approval in Mercury. Approving a reimbursement queues a payout without a separate approval in Mercury. Other changes apply immediately. See [Supported tools](https://docs.mercury.com/docs/supported-tools-on-mercury-mcp) for the scope and behavior of each action.
 
 Find your tool below. To write your own client, read [Build your own client](#build-your-own-client).
 
@@ -194,15 +194,18 @@ Mercury supports [OAuth 2.0 Dynamic Client Registration (RFC 7591)](https://data
 
 ### Write permission scopes
 
-| Scope                  | Tool                   | Effect                                                                 |
-| :--------------------- | :--------------------- | :--------------------------------------------------------------------- |
-| `transactions:request` | `requestSendMoney`     | Create a payment request that requires approval in Mercury.            |
-| `transfers:request`    | `requestTransferMoney` | Create an internal transfer request that requires approval in Mercury. |
-| `categories:create`    | `createCategory`       | Create a custom expense category immediately.                          |
-| `categories:edit`      | `editCategory`         | Edit a custom expense category immediately.                            |
-| `transactions:update`  | `updateTransaction`    | Update or clear a transaction's note or category immediately.          |
+| Scope                   | Tool                                                                                                                                      | Effect                                                                                                                       |
+| :---------------------- | :---------------------------------------------------------------------------------------------------------------------------------------- | :--------------------------------------------------------------------------------------------------------------------------- |
+| `transactions:request`  | `requestSendMoney`                                                                                                                        | Create a payment request that requires approval in Mercury.                                                                  |
+| `transfers:request`     | `requestTransferMoney`                                                                                                                    | Create an internal transfer request that requires approval in Mercury.                                                       |
+| `categories:create`     | `createCategory`                                                                                                                          | Create a custom expense category immediately.                                                                                |
+| `categories:edit`       | `editCategory`                                                                                                                            | Edit a custom expense category immediately.                                                                                  |
+| `transactions:update`   | `updateTransaction`                                                                                                                       | Update or clear a transaction's note or category immediately.                                                                |
+| `budgets:manage`        | `createBudget`, `updateBudget`, `archiveBudget`, `assignTransactionToBudget`                                                              | Create draft budgets, and update, archive, or assign transactions to budgets immediately.                                    |
+| `receipts:manage`       | `createReceiptUploadUrl`, `matchReceipt`                                                                                                  | Upload a receipt and match it to a transaction.                                                                              |
+| `reimbursements:manage` | `createReimbursement`, `updateReimbursement`, `cancelReimbursement`, `approveReimbursement`, `denyReimbursement`, `markReimbursementPaid` | Submit, edit, cancel, approve, deny, or mark reimbursements paid outside Mercury. Approving a reimbursement queues a payout. |
 
-A connection without a tool's required scope cannot use that write tool. A write scope does not grant permission to approve a payment or bypass Mercury's approval policies. Request only the permissions your client needs.
+A connection without a tool's required scope cannot use that write tool. A write scope does not let your client approve payment or transfer requests or bypass Mercury's approval policies. `reimbursements:manage` lets an eligible approver approve reimbursements, which queues a payout. Request only the permissions your client needs.
 
 ### Discovering the endpoints
 
@@ -250,6 +253,6 @@ For a web app, use an `https` redirect URI and leave `token_endpoint_auth_method
 
 ## Notes
 
-* You decide whether to connect your Mercury data to a third party and grant supported write permissions. Payment and transfer requests require approval in Mercury; custom category and transaction metadata changes apply immediately.
+* You decide whether to connect your Mercury data to a third party and grant supported write permissions. Payment and transfer requests require approval in Mercury. Approving a reimbursement queues a payout. Other changes apply immediately.
 * Mercury does **not** offer a non-hosted MCP at this time.
 * We verified the command line steps on this page with Claude Code 2.1.220 and codex-cli 0.145.0.

@@ -1,5 +1,5 @@
 ---
-updatedAt: 2026-10-08T06:02:47.000Z
+updatedAt: 2026-11-14T00:06:46.000Z
 agentTools:
   projectIndex: https://docs.mercury.com/llms.txt
 ---
@@ -16,7 +16,7 @@ Connect your AI tools to Mercury accounts using the [Model Context Protocol](htt
 
 ## What is Mercury MCP?
 
-Mercury MCP is a hosted server that connects AI tools such as ChatGPT and Claude to your Mercury account through OAuth. You can ask questions about your finances and authorize supported actions: request payments and internal transfers, create or edit custom expense categories, and update transaction notes and categories. Available tools depend on your account type and the permissions you grant.
+Mercury MCP is a hosted server that connects AI tools such as ChatGPT and Claude to your Mercury account through OAuth. You can ask questions about your finances and authorize supported actions: request payments and internal transfers, create or edit custom expense categories, update transaction notes and categories, manage budgets, upload and match receipts, and submit, approve, and deny reimbursements. Available tools depend on your account type and the permissions you grant.
 
 <Image align="center" border={false} caption="Mercury MCP connects your AI tools to Mercury's public [API](https://docs.mercury.com/docs/welcome) through OAuth. Supported write actions require explicit permissions; payment and transfer requests require approval in Mercury." src="https://files.readme.io/14c3e4375c8e97f82f10e14104a39241fd9477e17d6a97d7141b07ee9e8a1e39-image.png" width="500px" />
 
@@ -33,13 +33,16 @@ Mercury MCP is a hosted server that connects AI tools such as ChatGPT and Claude
 * Quick access to card and recipient details - grab the details of who you are paying and what cards are currently active
 * Prepare payments - request a payment to an existing recipient, then review and approve it in Mercury
 * Prepare internal transfers - request a transfer between your own Mercury accounts, then review and approve it in Mercury
-* Organize your transactions - create or edit custom expense categories and update transaction notes and categories
+* Organize your transactions - create or edit custom expense categories, update transaction notes and categories, manage budgets, and upload and match receipts
+* Handle reimbursements - submit a reimbursement, then approve, deny, or mark it paid outside Mercury
 
 ## How actions work
 
-**Money movement requires approval in Mercury.** Your AI tool creates a payment or transfer request. It cannot approve the request or move money on its own. Your organization's approval policies still apply. If those policies would otherwise allow the action without approval, the requester must approve it in Mercury. A request being created does not mean that money has been sent.
+**Payments and transfers require approval in Mercury.** Your AI tool creates a payment or transfer request but cannot approve it, so no money moves until someone approves it in Mercury. Your organization's approval policies still apply. If those policies would otherwise allow the action without approval, the requester must approve it in Mercury.
 
-**Category and note changes apply immediately.** With the required permissions, your AI tool can create or edit custom categories and update transaction notes and categories without a separate approval in Mercury.
+**Category, note, budget, receipt, and reimbursement changes apply immediately.** With the required permissions, your AI tool can create or edit custom categories, update transaction notes and categories, manage budgets, and match receipts. It can also submit, deny, or mark reimbursements paid outside Mercury. None of these needs a separate approval in Mercury.
+
+**Approving a reimbursement queues a payout.** If you can approve reimbursements in Mercury, your AI tool can approve one. Mercury then pays it from the reimbursement account with no separate approval step.
 
 For example, ask “Request a $500 payment to Acme from my checking account,” then review the request in Mercury. Or ask “Categorize this transaction as Software” to update its category directly.
 

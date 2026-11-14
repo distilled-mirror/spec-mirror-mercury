@@ -1,5 +1,5 @@
 ---
-updatedAt: 2026-11-05T00:59:49.000Z
+updatedAt: 2026-11-14T00:06:46.000Z
 agentTools:
   projectIndex: https://docs.mercury.com/llms.txt
 ---
@@ -12,21 +12,27 @@ Mercury MCP lets your AI tool read financial data and perform supported actions.
 
 ## Write actions
 
-Mercury MCP supports the following eleven write tools. Existing connections must [reauthorize](https://docs.mercury.com/docs/connecting-mercury-mcp#enable-actions-on-an-existing-connection) before they can use a write tool whose scope they were not granted. Budget and receipt tools are available only for business accounts.
+Mercury MCP supports the following seventeen write tools. Existing connections must [reauthorize](https://docs.mercury.com/docs/connecting-mercury-mcp#enable-actions-on-an-existing-connection) before they can use a write tool whose scope they were not granted. Budget, receipt, and reimbursement tools are available only for business accounts.
 
-| Tool                        | Required OAuth scope   | What happens                                                                                                                                               |
-| :-------------------------- | :--------------------- | :--------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `requestSendMoney`          | `transactions:request` | Creates a payment request to an existing recipient. Requires approval in Mercury before money is sent.                                                     |
-| `requestTransferMoney`      | `transfers:request`    | Creates a transfer request between your own Mercury accounts. Requires approval in Mercury before money moves.                                             |
-| `createCategory`            | `categories:create`    | Creates a custom expense category immediately. No separate approval in Mercury.                                                                            |
-| `editCategory`              | `categories:edit`      | Updates a custom expense category immediately. No separate approval in Mercury.                                                                            |
-| `updateTransaction`         | `transactions:update`  | Updates or clears an existing transaction's note or category immediately. No separate approval in Mercury.                                                 |
-| `createBudget`              | `budgets:manage`       | Creates a budget as a draft. Add members and publish the budget from the Mercury dashboard. Requires approval in Mercury before money movement is possible |
-| `updateBudget`              | `budgets:manage`       | Updates a budget's name, description, amount per user, frequency, or dates immediately. A published budget gets a new version.                             |
-| `archiveBudget`             | `budgets:manage`       | Archives a published budget or deletes a draft budget immediately.                                                                                         |
-| `assignTransactionToBudget` | `budgets:manage`       | Assigns a transaction to a budget immediately. The transaction moves off any budget it was on before.                                                      |
-| `createReceiptUploadUrl`    | `receipts:manage`      | Creates a receipt and returns a link to upload the receipt file. The link expires after five minutes.                                                      |
-| `matchReceipt`              | `receipts:manage`      | Reads an uploaded receipt and matches it to one of your organization's transactions. Use `getReceipt` to check the result.                                 |
+| Tool                        | Required OAuth scope    | What happens                                                                                                                                                |
+| :-------------------------- | :---------------------- | :---------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `requestSendMoney`          | `transactions:request`  | Creates a payment request to an existing recipient. Requires approval in Mercury before money is sent.                                                      |
+| `requestTransferMoney`      | `transfers:request`     | Creates a transfer request between your own Mercury accounts. Requires approval in Mercury before money moves.                                              |
+| `createCategory`            | `categories:create`     | Creates a custom expense category immediately. No separate approval in Mercury.                                                                             |
+| `editCategory`              | `categories:edit`       | Updates a custom expense category immediately. No separate approval in Mercury.                                                                             |
+| `updateTransaction`         | `transactions:update`   | Updates or clears an existing transaction's note or category immediately. No separate approval in Mercury.                                                  |
+| `createBudget`              | `budgets:manage`        | Creates a budget as a draft. Add members and publish the budget from the Mercury dashboard. Requires approval in Mercury before money movement is possible. |
+| `updateBudget`              | `budgets:manage`        | Updates a budget's name, description, amount per user, frequency, or dates immediately. A published budget gets a new version.                              |
+| `archiveBudget`             | `budgets:manage`        | Archives a published budget or deletes a draft budget immediately.                                                                                          |
+| `assignTransactionToBudget` | `budgets:manage`        | Assigns a transaction to a budget immediately. The transaction moves off any budget it was on before.                                                       |
+| `createReceiptUploadUrl`    | `receipts:manage`       | Creates a receipt and returns a link to upload the receipt file. The link expires after five minutes.                                                       |
+| `matchReceipt`              | `receipts:manage`       | Reads an uploaded receipt and matches it to one of your organization's transactions. Use `getReceipt` to check the result.                                  |
+| `createReimbursement`       | `reimbursements:manage` | Submits a reimbursement in your name immediately. Only you can edit or cancel it.                                                                           |
+| `updateReimbursement`       | `reimbursements:manage` | Replaces your reimbursement's fields immediately. Leaving out the notes or category clears them. Only reimbursements still in review can be edited.         |
+| `cancelReimbursement`       | `reimbursements:manage` | Cancels your reimbursement immediately. Only reimbursements still in review can be canceled.                                                                |
+| `approveReimbursement`      | `reimbursements:manage` | Approves a submitted reimbursement immediately and queues a payout from the reimbursement account. No separate approval in Mercury.                         |
+| `denyReimbursement`         | `reimbursements:manage` | Denies a submitted reimbursement immediately. Mercury records the reason as a reviewer comment.                                                             |
+| `markReimbursementPaid`     | `reimbursements:manage` | Records immediately that the submitter was paid outside Mercury, for example by check or payroll. Mercury does not pay the reimbursement.                   |
 
 ### Example prompts
 
@@ -40,6 +46,10 @@ Mercury MCP supports the following eleven write tools. Existing connections must
 * **Archive a budget:** “Archive the Offsite 2026 budget.”
 * **Assign a transaction to a budget:** “Add yesterday's Sweetgreen charge to the Team lunches budget.”
 * **Upload and match a receipt:** “Upload this receipt and match it to the right transaction.”
+* **Submit a reimbursement:** “Submit a $42.50 reimbursement for lunch at Sweetgreen on November 10.”
+* **Approve a reimbursement:** “Approve Jordan's reimbursement for the Sweetgreen lunch.”
+* **Deny a reimbursement:** “Deny the $300 taxi reimbursement and say it needs an itemized receipt.”
+* **Mark a reimbursement paid outside Mercury:** “Mark Jordan's Sweetgreen reimbursement as paid outside Mercury. We paid it through payroll.”
 
 ### Review and approve a payment or transfer
 
@@ -50,7 +60,7 @@ Mercury MCP supports the following eleven write tools. Existing connections must
 5. Approve the request if the details are correct and you are an eligible approver.
 6. Check the request or payment status in Mercury.
 
-Your organization's approval policies still apply. If those policies would otherwise allow the action without approval, the requester must approve it in Mercury. Your AI tool cannot approve the request or move money on its own. A confirmation in chat is not approval in Mercury, and “request created” does not mean “payment sent.”
+Your organization's approval policies still apply. If those policies would otherwise allow the action without approval, the requester must approve it in Mercury. Your AI tool cannot approve the request, so no money moves until someone approves it in Mercury. A confirmation in chat is not approval in Mercury, and “request created” does not mean “payment sent.”
 
 Use `listSendMoneyApprovalRequests` or `getSendMoneyApprovalRequest` to check payment requests. Use `listTransferMoneyApprovalRequests` or `getTransferMoneyApprovalRequest` to check internal transfer requests. Check for an existing request before creating another one after an uncertain result.
 
@@ -72,9 +82,24 @@ After a budget is published, its frequency cannot change. If a budget is linked 
 
 `assignTransactionToBudget` does not let a transaction exceed the budget unless you ask your AI tool to allow overspending.
 
+### Submit and review reimbursements
+
+`createReimbursement` submits a reimbursement in your name. It needs the amount, currency, the date you spent the money, and the merchant name. You can also add a category and notes. Only you can edit or cancel the reimbursement, and only while it is still in review.
+
+To approve or deny a reimbursement, you need the **Reimbursement approval and submission** or **Policy management and approval** permission and access to your organization's reimbursement account. Marking a reimbursement paid outside Mercury needs the same permission but not access to the reimbursement account. You can approve your own reimbursement only if your organization allows it or has only one admin. `denyReimbursement` requires a reason, which Mercury records as a reviewer comment.
+
+Approving a reimbursement queues a payout. Unlike payments and transfers, it has no separate approval step in Mercury. Mercury pays approved reimbursements from the reimbursement account in a batch each weekday at 1:49 PM Eastern. A payout waits for a later batch when the reimbursement account can't cover it or the submitter has no verified payout account.
+
+`markReimbursementPaid` records that the submitter was paid outside Mercury, for example by check or payroll. Mercury won't pay the reimbursement, and its payment status reads `paidOutsideMercury`. You can't mark a reimbursement that is denied or canceled, or one with a Mercury payment in progress or completed. Mercury records the optional note as a reviewer comment. Approving or denying the reimbursement afterward undoes the mark.
+
+Use `getReimbursement` to check a reimbursement's status. `listReimbursements` and `getReimbursement` require permission to see all expenses. The status fields are:
+
+* `reviewStatus` is `submitted`, `updatesRequested`, `approved`, `denied`, or `canceled`.
+* `paymentStatus` is `pending`, `initiated`, `paid`, `failed`, or `paidOutsideMercury`. An approved reimbursement stays `pending` until its payout batch starts.
+
 ### Limitations on write actions
 
-These write tools do not create recipients, delete categories, issue or manage cards, create invoices, add budget members, or publish budgets. The public API has capabilities that are not exposed as MCP write tools. Category, transaction, budget, and receipt changes can overwrite existing values; they do not wait in Mercury's approval queue.
+These write tools do not create recipients, delete categories, issue or manage cards, create invoices, add budget members, or publish budgets. They also cannot attach files to a reimbursement, request updates from a submitter, or submit or edit mileage reimbursements. The public API has capabilities that are not exposed as MCP write tools. Category, transaction, budget, receipt, and reimbursement changes can overwrite existing values; they do not wait in Mercury's approval queue.
 
 See [Security best practices](https://docs.mercury.com/docs/security-best-practices) for access controls and write-action risks.
 
@@ -129,6 +154,8 @@ Use prompts such as “What's my balance today?” or “Show my recent transact
 | `getBudgetExpenditures`             | Get budget expenditures - Retrieve the transactions assigned to a budget                                                                                                                     | "Show me everything charged to the Offsite 2026 budget"                                                                  |
 | `listReceipts`                      | List receipts - Retrieve uploaded receipts that are still being matched. Requires permission to see all expenses                                                                             | "Which of my uploaded receipts are still being matched?"                                                                 |
 | `getReceipt`                        | Get a receipt - Retrieve an uploaded receipt and its matching status by its ID                                                                                                               | "Did the receipt I just uploaded match a transaction?"                                                                   |
+| `listReimbursements`                | List reimbursements - Retrieve your organization's reimbursements, including review status, payment status, and attachments. Requires permission to see all expenses                         | "Which reimbursements are waiting for review?"                                                                           |
+| `getReimbursement`                  | Get a reimbursement - Retrieve a reimbursement by its ID, including its review and payment status. Requires permission to see all expenses                                                   | "Has Jordan's Sweetgreen reimbursement been paid?"                                                                       |
 
 We'd love your feedback. If there are more tools or data you'd love to see in Mercury's MCP, email us at <api@mercury.com>
 
