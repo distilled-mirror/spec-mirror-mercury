@@ -403,6 +403,17 @@ If you do not provide an invoiceNumber parameter in the body, the system will at
             "minLength": 1,
             "type": "string"
           },
+          "productId": {
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/ProductId"
+              },
+              {
+                "description": " the id of the catalog product this line item is linked to, if any. Omit or set to null for a standalone line item."
+              }
+            ],
+            "nullable": true
+          },
           "quantity": {
             "description": " the quantity of this item",
             "format": "double",
@@ -455,6 +466,11 @@ If you do not provide an invoiceNumber parameter in the body, the system will at
           "Cancelled",
           "Processing"
         ],
+        "type": "string"
+      },
+      "ProductId": {
+        "description": "The ID of an invoicing product. Use the /api/v1/ar/products endpoint to list your products.",
+        "format": "uuid",
         "type": "string"
       },
       "TransactionPartyId": {

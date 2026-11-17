@@ -162,7 +162,7 @@ Retrieve all debit and credit cards associated with a specific account.
                 "$ref": "#/components/schemas/SpendLimitInterval"
               },
               {
-                "description": " Rolling window the limit applies to."
+                "description": " Rolling window the limit applies to. Has no effect on single-use cards, which\n close after their first approved purchase."
               }
             ]
           }

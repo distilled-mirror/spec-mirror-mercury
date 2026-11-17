@@ -367,7 +367,7 @@ Permanently cancel a card. This action cannot be undone.
                 "$ref": "#/components/schemas/SpendLimitInterval"
               },
               {
-                "description": " Rolling window the limit applies to."
+                "description": " Rolling window the limit applies to. Has no effect on single-use cards, which\n close after their first approved purchase."
               }
             ]
           }

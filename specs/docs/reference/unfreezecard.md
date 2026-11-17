@@ -365,7 +365,7 @@ Unfreeze a previously frozen card, restoring it to active status.
                 "$ref": "#/components/schemas/SpendLimitInterval"
               },
               {
-                "description": " Rolling window the limit applies to."
+                "description": " Rolling window the limit applies to. Has no effect on single-use cards, which\n close after their first approved purchase."
               }
             ]
           }

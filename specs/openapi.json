@@ -8024,6 +8024,17 @@
             "minLength": 1,
             "type": "string"
           },
+          "productId": {
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/ProductId"
+              },
+              {
+                "description": " the id of the catalog product this line item is linked to, if any. Omit or set to null for a standalone line item."
+              }
+            ],
+            "nullable": true
+          },
           "quantity": {
             "description": " the quantity of this item",
             "format": "double",
@@ -10138,7 +10149,7 @@
                 "$ref": "#/components/schemas/SpendLimitInterval"
               },
               {
-                "description": " Rolling window the limit applies to."
+                "description": " Rolling window the limit applies to. Has no effect on single-use cards, which\n close after their first approved purchase."
               }
             ]
           }
@@ -12775,7 +12786,7 @@
                 "$ref": "#/components/schemas/SpendLimitInterval"
               },
               {
-                "description": " Rolling window the limit applies to."
+                "description": " Rolling window the limit applies to. Has no effect on single-use cards, which\n close after their first approved purchase."
               }
             ]
           }
