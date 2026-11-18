@@ -1,6 +1,6 @@
 {
   "source": "https://docs.mercury.com/llms.txt",
-  "count": 138,
+  "count": 175,
   "pages": [
     {
       "page": "https://docs.mercury.com/changelog/account-balance-events-via-webhooksevents-endpoints-now-available",
@@ -183,6 +183,36 @@
       "file": "reference/assigntransactiontobudget.md"
     },
     {
+      "page": "https://docs.mercury.com/reference/books",
+      "markdown": "https://docs.mercury.com/reference/books.md",
+      "file": "reference/books.md"
+    },
+    {
+      "page": "https://docs.mercury.com/reference/books-api-use-cases",
+      "markdown": "https://docs.mercury.com/reference/books-api-use-cases.md",
+      "file": "reference/books-api-use-cases.md"
+    },
+    {
+      "page": "https://docs.mercury.com/reference/books-mcp-setup",
+      "markdown": "https://docs.mercury.com/reference/books-mcp-setup.md",
+      "file": "reference/books-mcp-setup.md"
+    },
+    {
+      "page": "https://docs.mercury.com/reference/bulkcreatebooksjournalentries",
+      "markdown": "https://docs.mercury.com/reference/bulkcreatebooksjournalentries.md",
+      "file": "reference/bulkcreatebooksjournalentries.md"
+    },
+    {
+      "page": "https://docs.mercury.com/reference/bulkdeletebooksjournalentries",
+      "markdown": "https://docs.mercury.com/reference/bulkdeletebooksjournalentries.md",
+      "file": "reference/bulkdeletebooksjournalentries.md"
+    },
+    {
+      "page": "https://docs.mercury.com/reference/bulkupdatebooksjournalentries",
+      "markdown": "https://docs.mercury.com/reference/bulkupdatebooksjournalentries.md",
+      "file": "reference/bulkupdatebooksjournalentries.md"
+    },
+    {
       "page": "https://docs.mercury.com/reference/cancelcard",
       "markdown": "https://docs.mercury.com/reference/cancelcard.md",
       "file": "reference/cancelcard.md"
@@ -201,6 +231,36 @@
       "page": "https://docs.mercury.com/reference/cards",
       "markdown": "https://docs.mercury.com/reference/cards.md",
       "file": "reference/cards.md"
+    },
+    {
+      "page": "https://docs.mercury.com/reference/categorizebookstransactions",
+      "markdown": "https://docs.mercury.com/reference/categorizebookstransactions.md",
+      "file": "reference/categorizebookstransactions.md"
+    },
+    {
+      "page": "https://docs.mercury.com/reference/createbooksbill",
+      "markdown": "https://docs.mercury.com/reference/createbooksbill.md",
+      "file": "reference/createbooksbill.md"
+    },
+    {
+      "page": "https://docs.mercury.com/reference/createbookscategorizationrule",
+      "markdown": "https://docs.mercury.com/reference/createbookscategorizationrule.md",
+      "file": "reference/createbookscategorizationrule.md"
+    },
+    {
+      "page": "https://docs.mercury.com/reference/createbooksinvoice",
+      "markdown": "https://docs.mercury.com/reference/createbooksinvoice.md",
+      "file": "reference/createbooksinvoice.md"
+    },
+    {
+      "page": "https://docs.mercury.com/reference/createbooksledgers",
+      "markdown": "https://docs.mercury.com/reference/createbooksledgers.md",
+      "file": "reference/createbooksledgers.md"
+    },
+    {
+      "page": "https://docs.mercury.com/reference/createbookspaymentapplications",
+      "markdown": "https://docs.mercury.com/reference/createbookspaymentapplications.md",
+      "file": "reference/createbookspaymentapplications.md"
     },
     {
       "page": "https://docs.mercury.com/reference/createbudget",
@@ -266,6 +326,21 @@
       "page": "https://docs.mercury.com/reference/createwebhook",
       "markdown": "https://docs.mercury.com/reference/createwebhook.md",
       "file": "reference/createwebhook.md"
+    },
+    {
+      "page": "https://docs.mercury.com/reference/deletebookscategorizationrule",
+      "markdown": "https://docs.mercury.com/reference/deletebookscategorizationrule.md",
+      "file": "reference/deletebookscategorizationrule.md"
+    },
+    {
+      "page": "https://docs.mercury.com/reference/deletebooksledgers",
+      "markdown": "https://docs.mercury.com/reference/deletebooksledgers.md",
+      "file": "reference/deletebooksledgers.md"
+    },
+    {
+      "page": "https://docs.mercury.com/reference/deletebookspaymentapplications",
+      "markdown": "https://docs.mercury.com/reference/deletebookspaymentapplications.md",
+      "file": "reference/deletebookspaymentapplications.md"
     },
     {
       "page": "https://docs.mercury.com/reference/deletecategory",
@@ -341,6 +416,86 @@
       "page": "https://docs.mercury.com/reference/getautotransferrules",
       "markdown": "https://docs.mercury.com/reference/getautotransferrules.md",
       "file": "reference/getautotransferrules.md"
+    },
+    {
+      "page": "https://docs.mercury.com/reference/getbooksbalancesheet",
+      "markdown": "https://docs.mercury.com/reference/getbooksbalancesheet.md",
+      "file": "reference/getbooksbalancesheet.md"
+    },
+    {
+      "page": "https://docs.mercury.com/reference/getbooksbill",
+      "markdown": "https://docs.mercury.com/reference/getbooksbill.md",
+      "file": "reference/getbooksbill.md"
+    },
+    {
+      "page": "https://docs.mercury.com/reference/getbooksbills",
+      "markdown": "https://docs.mercury.com/reference/getbooksbills.md",
+      "file": "reference/getbooksbills.md"
+    },
+    {
+      "page": "https://docs.mercury.com/reference/getbookscashflow",
+      "markdown": "https://docs.mercury.com/reference/getbookscashflow.md",
+      "file": "reference/getbookscashflow.md"
+    },
+    {
+      "page": "https://docs.mercury.com/reference/getbookscategorizationrules",
+      "markdown": "https://docs.mercury.com/reference/getbookscategorizationrules.md",
+      "file": "reference/getbookscategorizationrules.md"
+    },
+    {
+      "page": "https://docs.mercury.com/reference/getbooksinstances",
+      "markdown": "https://docs.mercury.com/reference/getbooksinstances.md",
+      "file": "reference/getbooksinstances.md"
+    },
+    {
+      "page": "https://docs.mercury.com/reference/getbooksinvoice",
+      "markdown": "https://docs.mercury.com/reference/getbooksinvoice.md",
+      "file": "reference/getbooksinvoice.md"
+    },
+    {
+      "page": "https://docs.mercury.com/reference/getbooksinvoices",
+      "markdown": "https://docs.mercury.com/reference/getbooksinvoices.md",
+      "file": "reference/getbooksinvoices.md"
+    },
+    {
+      "page": "https://docs.mercury.com/reference/getbooksledger",
+      "markdown": "https://docs.mercury.com/reference/getbooksledger.md",
+      "file": "reference/getbooksledger.md"
+    },
+    {
+      "page": "https://docs.mercury.com/reference/getbooksledgerbalances",
+      "markdown": "https://docs.mercury.com/reference/getbooksledgerbalances.md",
+      "file": "reference/getbooksledgerbalances.md"
+    },
+    {
+      "page": "https://docs.mercury.com/reference/getbooksledgers",
+      "markdown": "https://docs.mercury.com/reference/getbooksledgers.md",
+      "file": "reference/getbooksledgers.md"
+    },
+    {
+      "page": "https://docs.mercury.com/reference/getbookslineentries",
+      "markdown": "https://docs.mercury.com/reference/getbookslineentries.md",
+      "file": "reference/getbookslineentries.md"
+    },
+    {
+      "page": "https://docs.mercury.com/reference/getbooksprofitandloss",
+      "markdown": "https://docs.mercury.com/reference/getbooksprofitandloss.md",
+      "file": "reference/getbooksprofitandloss.md"
+    },
+    {
+      "page": "https://docs.mercury.com/reference/getbookssourceaccounts",
+      "markdown": "https://docs.mercury.com/reference/getbookssourceaccounts.md",
+      "file": "reference/getbookssourceaccounts.md"
+    },
+    {
+      "page": "https://docs.mercury.com/reference/getbookstransaction",
+      "markdown": "https://docs.mercury.com/reference/getbookstransaction.md",
+      "file": "reference/getbookstransaction.md"
+    },
+    {
+      "page": "https://docs.mercury.com/reference/getbookstransactions",
+      "markdown": "https://docs.mercury.com/reference/getbookstransactions.md",
+      "file": "reference/getbookstransactions.md"
     },
     {
       "page": "https://docs.mercury.com/reference/getbudget",
@@ -503,6 +658,11 @@
       "file": "reference/listaccounttransactions.md"
     },
     {
+      "page": "https://docs.mercury.com/reference/listbooksjournalentries",
+      "markdown": "https://docs.mercury.com/reference/listbooksjournalentries.md",
+      "file": "reference/listbooksjournalentries.md"
+    },
+    {
       "page": "https://docs.mercury.com/reference/listbudgets",
       "markdown": "https://docs.mercury.com/reference/listbudgets.md",
       "file": "reference/listbudgets.md"
@@ -613,9 +773,19 @@
       "file": "reference/requesttransfermoney.md"
     },
     {
+      "page": "https://docs.mercury.com/reference/retrievebooksjournalentry",
+      "markdown": "https://docs.mercury.com/reference/retrievebooksjournalentry.md",
+      "file": "reference/retrievebooksjournalentry.md"
+    },
+    {
       "page": "https://docs.mercury.com/reference/revealcardpan",
       "markdown": "https://docs.mercury.com/reference/revealcardpan.md",
       "file": "reference/revealcardpan.md"
+    },
+    {
+      "page": "https://docs.mercury.com/reference/setbooksledgeropeningbalances",
+      "markdown": "https://docs.mercury.com/reference/setbooksledgeropeningbalances.md",
+      "file": "reference/setbooksledgeropeningbalances.md"
     },
     {
       "page": "https://docs.mercury.com/reference/startoauth2flow",
@@ -626,6 +796,21 @@
       "page": "https://docs.mercury.com/reference/unfreezecard",
       "markdown": "https://docs.mercury.com/reference/unfreezecard.md",
       "file": "reference/unfreezecard.md"
+    },
+    {
+      "page": "https://docs.mercury.com/reference/updatebooksbill",
+      "markdown": "https://docs.mercury.com/reference/updatebooksbill.md",
+      "file": "reference/updatebooksbill.md"
+    },
+    {
+      "page": "https://docs.mercury.com/reference/updatebooksinvoice",
+      "markdown": "https://docs.mercury.com/reference/updatebooksinvoice.md",
+      "file": "reference/updatebooksinvoice.md"
+    },
+    {
+      "page": "https://docs.mercury.com/reference/updatebooksledgers",
+      "markdown": "https://docs.mercury.com/reference/updatebooksledgers.md",
+      "file": "reference/updatebooksledgers.md"
     },
     {
       "page": "https://docs.mercury.com/reference/updatebudget",
