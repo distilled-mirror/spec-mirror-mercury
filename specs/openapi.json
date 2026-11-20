@@ -4128,6 +4128,65 @@
         "x-business-only": true
       }
     },
+    "/books/tag-groups": {
+      "get": {
+        "description": "Returns the tag groups available to a Books instance. A tag is a label in a tag group, such as a client in a \"Clients\" group or a contractor in a \"Contractors\" group, and is applied to line entries, i.e. the debits and credits of a journal entry, through `tagIds`: on each line entry of bulkCreateBooksJournalEntries and bulkUpdateBooksJournalEntries, on each split of categorizeBooksTransactions, and as a filter of listBooksJournalEntries. A line entry can carry at most one tag from each group. Each tag group has its `id`, `name`, `ownership`, and `createdAt`. `ownership` is `platform` for a default group shared by every Books instance, which can't be renamed, or `instance` for a group that belongs to this Books instance. Results are newest first and returned a page at a time: when the response has a `nextPageToken`, pass it as `pageToken` to get the next page.",
+        "operationId": "getBooksTagGroups",
+        "parameters": [
+          {
+            "in": "query",
+            "name": "booksId",
+            "required": false,
+            "schema": {
+              "description": "The Books instance to act on. Must be the token organization's own instance, which it defaults to.",
+              "format": "uuid",
+              "type": "string"
+            }
+          },
+          {
+            "in": "query",
+            "name": "pageToken",
+            "required": false,
+            "schema": {
+              "description": "The nextPageToken or prevPageToken from a previous response, to fetch that page.",
+              "type": "string"
+            }
+          },
+          {
+            "in": "query",
+            "name": "limit",
+            "required": false,
+            "schema": {
+              "default": 50,
+              "description": "The maximum number of tag groups to return per page, from 1 to 1000. Defaults to 50.",
+              "maximum": 1000,
+              "minimum": 1,
+              "type": "integer"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/GetBooksAPITagGroupsResponse"
+                }
+              }
+            },
+            "description": ""
+          },
+          "400": {
+            "description": "Invalid `limit` or `pageToken` or `booksId`"
+          }
+        },
+        "summary": "List tag groups",
+        "tags": [
+          "Books"
+        ],
+        "x-business-only": true
+      }
+    },
     "/books/transaction/{transactionId}": {
       "get": {
         "description": "Returns a single transaction of a source account (a bank account, credit card, or other feed) by its transaction ID, with the same fields as an item of `GET /books/transactions` (getBooksTransactions): its `amount`, `datetime`, `description`, `reviewStatus`, `postedStatus`, and `categorizationMethod`, and once posted its `journalEntryId`, its own `lineEntryId` on the source account's `ledgerId`, and `categorizationLines`, the other lines of its journal entry with their `lineEntryId`, `ledgerId`, `ledgerName`, `amount`, and `debitCredit`. Use it to read a transaction's current categorization and its `journalEntryId` before recategorizing it with `POST /books/transactions/categorize` (categorizeBooksTransactions). sourceAccountId is required and must be the transaction's own source account (its `sourceAccountId`). Pass enrich=true to add Mercury banking details where available. To find transactions, use `GET /books/transactions` (getBooksTransactions).",
@@ -14606,6 +14665,55 @@
         ],
         "type": "string"
       },
+      "BooksAPITagGroup": {
+        "description": " A tag group: a named set of tags, such as \"Clients\" or \"Contractors\". A line entry can carry at most one tag from each group.",
+        "properties": {
+          "createdAt": {
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/UTCTime"
+              },
+              {
+                "description": " When the tag group was created."
+              }
+            ]
+          },
+          "id": {
+            "description": " The unique identifier of the tag group.",
+            "example": "7JRNsKwy2Lw66caxVU7WGC",
+            "format": "base58 (max length 22)",
+            "type": "string"
+          },
+          "name": {
+            "description": " The tag group's display name.",
+            "type": "string"
+          },
+          "ownership": {
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/BooksAPITagGroupOwnership"
+              },
+              {
+                "description": " `platform` for a default group shared by every Books instance, which can't be renamed; `instance` for a group that belongs to this Books instance."
+              }
+            ]
+          }
+        },
+        "required": [
+          "id",
+          "name",
+          "ownership",
+          "createdAt"
+        ],
+        "type": "object"
+      },
+      "BooksAPITagGroupOwnership": {
+        "enum": [
+          "platform",
+          "instance"
+        ],
+        "type": "string"
+      },
       "BooksAPITransaction": {
         "description": " A transaction imported into Books from a source account (a bank, card, or\n other feed). Once posted, it has a journal entry with one line on the source\n account's ledger (`lineEntryId`) and one or more `categorizationLines`. To\n recategorize it, pass its `journalEntryId` and its current\n `categorizationLines` IDs as the expected categorization.",
         "properties": {
@@ -16344,7 +16452,7 @@
                 "$ref": "#/components/schemas/BooksLineEntryPaymentApplicationAccrualSource"
               },
               {
-                "description": " Metadata for the accrual source for this payment application"
+                "description": " Metadata for the accrual source for this payment application. Absent\n for a closing adjustment or the unapplied payment."
               }
             ],
             "nullable": true
@@ -16389,6 +16497,17 @@
               "rejected"
             ],
             "type": "string"
+          },
+          "unappliedPayment": {
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/BooksLineEntryUnappliedPayment"
+              },
+              {
+                "description": " Present when this row is the line entry's unapplied payment, the part\n of the deposit the match leaves unapplied; its amount is @matchedAmount@.\n Absent for an accrual source's payment or a closing adjustment."
+              }
+            ],
+            "nullable": true
           }
         },
         "required": [
@@ -16397,6 +16516,21 @@
           "status",
           "sourceType",
           "adjustments"
+        ],
+        "type": "object"
+      },
+      "BooksLineEntryUnappliedPayment": {
+        "description": " Marks a source-level payment application as the line entry's unapplied\n payment. Not 'BooksAccrualSourceUnappliedPayment', which is Mercury money\n Books hasn't recorded.",
+        "properties": {
+          "lineEntryId": {
+            "description": " The line on the same journal entry that holds the unapplied amount, on\n the unapplied payments ledger",
+            "example": "7JRNsKwy2Lw66caxVU7WGC",
+            "format": "base58 (max length 22)",
+            "type": "string"
+          }
+        },
+        "required": [
+          "lineEntryId"
         ],
         "type": "object"
       },
@@ -18988,6 +19122,32 @@
         },
         "required": [
           "sourceAccounts"
+        ],
+        "type": "object"
+      },
+      "GetBooksAPITagGroupsResponse": {
+        "description": " One page of the tag groups available to a Books instance, newest first.",
+        "properties": {
+          "nextPageToken": {
+            "description": " Token to fetch the next page of results",
+            "nullable": true,
+            "type": "string"
+          },
+          "prevPageToken": {
+            "description": " Token to fetch the previous page of results",
+            "nullable": true,
+            "type": "string"
+          },
+          "tagGroups": {
+            "description": " The tag groups on this page.",
+            "items": {
+              "$ref": "#/components/schemas/BooksAPITagGroup"
+            },
+            "type": "array"
+          }
+        },
+        "required": [
+          "tagGroups"
         ],
         "type": "object"
       },

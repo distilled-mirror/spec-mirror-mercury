@@ -1256,7 +1256,7 @@ Returns the journal entries of a Books instance. A journal entry is a balanced s
                 "$ref": "#/components/schemas/BooksLineEntryPaymentApplicationAccrualSource"
               },
               {
-                "description": " Metadata for the accrual source for this payment application"
+                "description": " Metadata for the accrual source for this payment application. Absent\n for a closing adjustment or the unapplied payment."
               }
             ],
             "nullable": true
@@ -1301,6 +1301,17 @@ Returns the journal entries of a Books instance. A journal entry is a balanced s
               "rejected"
             ],
             "type": "string"
+          },
+          "unappliedPayment": {
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/BooksLineEntryUnappliedPayment"
+              },
+              {
+                "description": " Present when this row is the line entry's unapplied payment, the part\n of the deposit the match leaves unapplied; its amount is @matchedAmount@.\n Absent for an accrual source's payment or a closing adjustment."
+              }
+            ],
+            "nullable": true
           }
         },
         "required": [
@@ -1309,6 +1320,21 @@ Returns the journal entries of a Books instance. A journal entry is a balanced s
           "status",
           "sourceType",
           "adjustments"
+        ],
+        "type": "object"
+      },
+      "BooksLineEntryUnappliedPayment": {
+        "description": " Marks a source-level payment application as the line entry's unapplied\n payment. Not 'BooksAccrualSourceUnappliedPayment', which is Mercury money\n Books hasn't recorded.",
+        "properties": {
+          "lineEntryId": {
+            "description": " The line on the same journal entry that holds the unapplied amount, on\n the unapplied payments ledger",
+            "example": "7JRNsKwy2Lw66caxVU7WGC",
+            "format": "base58 (max length 22)",
+            "type": "string"
+          }
+        },
+        "required": [
+          "lineEntryId"
         ],
         "type": "object"
       },
