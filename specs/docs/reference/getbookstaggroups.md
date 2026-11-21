@@ -6,7 +6,7 @@ agentTools:
 
 # List tag groups
 
-Returns the tag groups available to a Books instance. A tag is a label in a tag group, such as a client in a "Clients" group or a contractor in a "Contractors" group, and is applied to line entries, i.e. the debits and credits of a journal entry, through `tagIds`: on each line entry of bulkCreateBooksJournalEntries and bulkUpdateBooksJournalEntries, on each split of categorizeBooksTransactions, and as a filter of listBooksJournalEntries. A line entry can carry at most one tag from each group. Each tag group has its `id`, `name`, `ownership`, and `createdAt`. `ownership` is `platform` for a default group shared by every Books instance, which can't be renamed, or `instance` for a group that belongs to this Books instance. Results are newest first and returned a page at a time: when the response has a `nextPageToken`, pass it as `pageToken` to get the next page.
+Returns the tag groups available to a Books instance. A tag is a label in a tag group, such as a client in a "Clients" group or a contractor in a "Contractors" group, and is applied to line entries, i.e. the debits and credits of a journal entry, through `tagIds`: on each line entry of bulkCreateBooksJournalEntries and bulkUpdateBooksJournalEntries, on each split of categorizeBooksTransactions, and as a filter of listBooksJournalEntries. A line entry can carry at most one tag from each group. Each tag group has its `id`, `name`, `ownership`, and `createdAt`. `ownership` is `platform` for a default group shared by every Books instance, which can't be renamed, or `instance` for a group that belongs to this Books instance. To list the tags in a group, pass its `id` as `tagGroupId` to getBooksTags. Results are newest first and returned a page at a time: when the response has a `nextPageToken`, pass it as `pageToken` to get the next page.
 
 # OpenAPI definition
 
@@ -28,7 +28,7 @@ Returns the tag groups available to a Books instance. A tag is a label in a tag 
             ]
           },
           "id": {
-            "description": " The unique identifier of the tag group.",
+            "description": " The unique identifier of the tag group. Pass it as `tagGroupId` to getBooksTags to list the group's tags.",
             "example": "7JRNsKwy2Lw66caxVU7WGC",
             "format": "base58 (max length 22)",
             "type": "string"
@@ -112,7 +112,7 @@ Returns the tag groups available to a Books instance. A tag is a label in a tag 
   "paths": {
     "/books/tag-groups": {
       "get": {
-        "description": "Returns the tag groups available to a Books instance. A tag is a label in a tag group, such as a client in a \"Clients\" group or a contractor in a \"Contractors\" group, and is applied to line entries, i.e. the debits and credits of a journal entry, through `tagIds`: on each line entry of bulkCreateBooksJournalEntries and bulkUpdateBooksJournalEntries, on each split of categorizeBooksTransactions, and as a filter of listBooksJournalEntries. A line entry can carry at most one tag from each group. Each tag group has its `id`, `name`, `ownership`, and `createdAt`. `ownership` is `platform` for a default group shared by every Books instance, which can't be renamed, or `instance` for a group that belongs to this Books instance. Results are newest first and returned a page at a time: when the response has a `nextPageToken`, pass it as `pageToken` to get the next page.",
+        "description": "Returns the tag groups available to a Books instance. A tag is a label in a tag group, such as a client in a \"Clients\" group or a contractor in a \"Contractors\" group, and is applied to line entries, i.e. the debits and credits of a journal entry, through `tagIds`: on each line entry of bulkCreateBooksJournalEntries and bulkUpdateBooksJournalEntries, on each split of categorizeBooksTransactions, and as a filter of listBooksJournalEntries. A line entry can carry at most one tag from each group. Each tag group has its `id`, `name`, `ownership`, and `createdAt`. `ownership` is `platform` for a default group shared by every Books instance, which can't be renamed, or `instance` for a group that belongs to this Books instance. To list the tags in a group, pass its `id` as `tagGroupId` to getBooksTags. Results are newest first and returned a page at a time: when the response has a `nextPageToken`, pass it as `pageToken` to get the next page.",
         "operationId": "getBooksTagGroups",
         "parameters": [
           {

@@ -1,6 +1,6 @@
 {
   "source": "https://docs.mercury.com/llms.txt",
-  "count": 176,
+  "count": 177,
   "pages": [
     {
       "page": "https://docs.mercury.com/changelog/account-balance-events-via-webhooksevents-endpoints-now-available",
@@ -491,6 +491,11 @@
       "page": "https://docs.mercury.com/reference/getbookstaggroups",
       "markdown": "https://docs.mercury.com/reference/getbookstaggroups.md",
       "file": "reference/getbookstaggroups.md"
+    },
+    {
+      "page": "https://docs.mercury.com/reference/getbookstags",
+      "markdown": "https://docs.mercury.com/reference/getbookstags.md",
+      "file": "reference/getbookstags.md"
     },
     {
       "page": "https://docs.mercury.com/reference/getbookstransaction",
