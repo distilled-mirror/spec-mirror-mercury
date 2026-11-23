@@ -1,5 +1,5 @@
 ---
-updatedAt: 2026-11-14T00:06:46.000Z
+updatedAt: 2026-11-21T00:40:27.000Z
 agentTools:
   projectIndex: https://docs.mercury.com/llms.txt
 ---
@@ -16,9 +16,9 @@ Connect your AI tools to Mercury accounts using the [Model Context Protocol](htt
 
 ## What is Mercury MCP?
 
-Mercury MCP is a hosted server that connects AI tools such as ChatGPT and Claude to your Mercury account through OAuth. You can ask questions about your finances and authorize supported actions: request payments and internal transfers, create or edit custom expense categories, update transaction notes and categories, manage budgets, upload and match receipts, and submit, approve, and deny reimbursements. Available tools depend on your account type and the permissions you grant.
+Mercury MCP is a hosted server that connects AI tools such as ChatGPT and Claude to your Mercury account through OAuth. You can ask questions about your finances and authorize supported actions: request payments and internal transfers, create or edit custom expense categories, update transaction notes and categories, manage budgets, upload and match receipts, submit or deny reimbursements, and start reimbursement approvals. Available tools depend on your account type and the permissions you grant.
 
-<Image align="center" border={false} caption="Mercury MCP connects your AI tools to Mercury's public [API](https://docs.mercury.com/docs/welcome) through OAuth. Supported write actions require explicit permissions; payment and transfer requests require approval in Mercury." src="https://files.readme.io/14c3e4375c8e97f82f10e14104a39241fd9477e17d6a97d7141b07ee9e8a1e39-image.png" width="500px" />
+<Image align="center" border={false} caption="Mercury MCP connects your AI tools to Mercury's public [API](https://docs.mercury.com/docs/welcome) through OAuth. Supported write actions require explicit permissions; payment and transfer requests and reimbursement approvals require approval in Mercury." src="https://files.readme.io/14c3e4375c8e97f82f10e14104a39241fd9477e17d6a97d7141b07ee9e8a1e39-image.png" width="500px" />
 
 ## Why use Mercury MCP?
 
@@ -34,7 +34,7 @@ Mercury MCP is a hosted server that connects AI tools such as ChatGPT and Claude
 * Prepare payments - request a payment to an existing recipient, then review and approve it in Mercury
 * Prepare internal transfers - request a transfer between your own Mercury accounts, then review and approve it in Mercury
 * Organize your transactions - create or edit custom expense categories, update transaction notes and categories, manage budgets, and upload and match receipts
-* Handle reimbursements - submit a reimbursement, then approve, deny, or mark it paid outside Mercury
+* Handle reimbursements - submit, deny, or mark a reimbursement paid outside Mercury, or start an approval, then review and approve it in Mercury
 
 ## How actions work
 
@@ -42,7 +42,7 @@ Mercury MCP is a hosted server that connects AI tools such as ChatGPT and Claude
 
 **Category, note, budget, receipt, and reimbursement changes apply immediately.** With the required permissions, your AI tool can create or edit custom categories, update transaction notes and categories, manage budgets, and match receipts. It can also submit, deny, or mark reimbursements paid outside Mercury. None of these needs a separate approval in Mercury.
 
-**Approving a reimbursement queues a payout.** If you can approve reimbursements in Mercury, your AI tool can approve one. Mercury then pays it from the reimbursement account with no separate approval step.
+**Approving a reimbursement requires approval in Mercury.** If you can approve reimbursements in Mercury, your AI tool can start an approval. An eligible approver then confirms it in the Mercury app before Mercury queues the payout.
 
 For example, ask “Request a $500 payment to Acme from my checking account,” then review the request in Mercury. Or ask “Categorize this transaction as Software” to update its category directly.
 

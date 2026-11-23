@@ -1,5 +1,5 @@
 ---
-updatedAt: 2026-11-20T19:22:11.000Z
+updatedAt: 2026-11-21T17:00:46.000Z
 agentTools:
   projectIndex: https://docs.mercury.com/llms.txt
 ---
@@ -32,7 +32,7 @@ Books tools are available when your organization has an active Books subscriptio
 | `createReimbursement`            | `reimbursements:manage`             | Submits a reimbursement in your name immediately. Only you can edit or cancel it.                                                                                                                                                 |
 | `updateReimbursement`            | `reimbursements:manage`             | Replaces your reimbursement's fields immediately. Leaving out the notes or category clears them. Only reimbursements still in review can be edited.                                                                               |
 | `cancelReimbursement`            | `reimbursements:manage`             | Cancels your reimbursement immediately. Only reimbursements still in review can be canceled.                                                                                                                                      |
-| `approveReimbursement`           | `reimbursements:manage`             | Approves a submitted reimbursement immediately and queues a payout from the reimbursement account. No separate approval in Mercury.                                                                                               |
+| `approveReimbursement`           | `reimbursements:manage`             | Starts the approval process for a submitted reimbursement. An eligible approver must approve it in the Mercury app before Mercury queues the payout.                                                                              |
 | `denyReimbursement`              | `reimbursements:manage`             | Denies a submitted reimbursement immediately. Mercury records the reason as a reviewer comment.                                                                                                                                   |
 | `markReimbursementPaid`          | `reimbursements:manage`             | Records immediately that the submitter was paid outside Mercury, for example by check or payroll. Mercury does not pay the reimbursement.                                                                                         |
 | `categorizeBooksTransactions`    | `books_transactions:categorize`     | Categorizes or splits up to 100 bank or card transactions to GL accounts immediately. All or nothing: if any item is invalid, no transaction changes. Replaces the transaction's current categorization, and the last write wins. |
@@ -65,7 +65,7 @@ Books tools are available when your organization has an active Books subscriptio
 * **Assign a transaction to a budget:** “Add yesterday's Sweetgreen charge to the Team lunches budget.”
 * **Upload and match a receipt:** “Upload this receipt and match it to the right transaction.”
 * **Submit a reimbursement:** “Submit a $42.50 reimbursement for lunch at Sweetgreen on November 10.”
-* **Approve a reimbursement:** “Approve Jordan's reimbursement for the Sweetgreen lunch.”
+* **Request reimbursement approval:** “Prepare Jordan's Sweetgreen lunch reimbursement for approval in Mercury.”
 * **Deny a reimbursement:** “Deny the $300 taxi reimbursement and say it needs an itemized receipt.”
 * **Mark a reimbursement paid outside Mercury:** “Mark Jordan's Sweetgreen reimbursement as paid outside Mercury. We paid it through payroll.”
 
@@ -106,13 +106,15 @@ After a budget is published, its frequency cannot change. If a budget is linked 
 
 To approve or deny a reimbursement, you need the **Reimbursement approval and submission** or **Policy management and approval** permission and access to your organization's reimbursement account. Marking a reimbursement paid outside Mercury needs the same permission but not access to the reimbursement account. You can approve your own reimbursement only if your organization allows it or has only one admin. `denyReimbursement` requires a reason, which Mercury records as a reviewer comment.
 
-Approving a reimbursement queues a payout. Unlike payments and transfers, it has no separate approval step in Mercury. Mercury pays approved reimbursements from the reimbursement account in a batch each weekday at 1:49 PM Eastern. A payout waits for a later batch when the reimbursement account can't cover it or the submitter has no verified payout account.
+When you use `approveReimbursement`, an eligible approver must review and approve the reimbursement in the Mercury app. Mercury queues the payout after the approval. Mercury pays approved reimbursements from the reimbursement account in a batch each weekday at 1:49 PM Eastern. A payout waits for a later batch when the reimbursement account can't cover it or the submitter has no verified payout account.
 
-`markReimbursementPaid` records that the submitter was paid outside Mercury, for example by check or payroll. Mercury won't pay the reimbursement, and its payment status reads `paidOutsideMercury`. You can't mark a reimbursement that is denied or canceled, or one with a Mercury payment in progress or completed. Mercury records the optional note as a reviewer comment. Approving or denying the reimbursement afterward undoes the mark.
+`approveReimbursement` returns the approval request, including a link to it in Mercury. Check for a pending request in Mercury before calling `approveReimbursement` again after an uncertain result, because a second call can create a second request.
+
+`markReimbursementPaid` records that the submitter was paid outside Mercury, for example by check or payroll. Mercury won't pay the reimbursement, and its payment status reads `paidOutsideMercury`. You can't mark a reimbursement that is denied or canceled, or one with a Mercury payment in progress or completed. Mercury records the optional note as a reviewer comment. Denying the reimbursement afterward, or approving it directly in Mercury, undoes the mark. `approveReimbursement` can't start an approval for a marked reimbursement. If someone marks a reimbursement while its approval is pending, confirming the approval fails and Mercury doesn't pay it.
 
 Use `getReimbursement` to check a reimbursement's status. `listReimbursements` and `getReimbursement` require permission to see all expenses. The status fields are:
 
-* `reviewStatus` is `submitted`, `updatesRequested`, `approved`, `denied`, or `canceled`.
+* `reviewStatus` is `submitted`, `updatesRequested`, `approved`, `denied`, or `canceled`. A reimbursement stays `submitted` while its approval is pending.
 * `paymentStatus` is `pending`, `initiated`, `paid`, `failed`, or `paidOutsideMercury`. An approved reimbursement stays `pending` until its payout batch starts.
 
 ### Manage your books
@@ -136,7 +138,7 @@ Books changes post to your general ledger immediately and show up in reports as 
 
 ### Limitations on write actions
 
-These write tools do not create recipients, delete categories, issue or manage cards, send invoices through Mercury Invoicing, add budget members, or publish budgets. They also cannot attach files to a reimbursement, request updates from a submitter, or submit or edit mileage reimbursements. The public API has capabilities that are not exposed as MCP write tools. Category, transaction, budget, receipt, reimbursement, and Books changes can overwrite existing values; they do not wait in Mercury's approval queue.
+These write tools do not create recipients, delete categories, issue or manage cards, send invoices through Mercury Invoicing, add budget members, or publish budgets. They also cannot attach files to a reimbursement, request updates from a submitter, or submit or edit mileage reimbursements. The public API has capabilities that are not exposed as MCP write tools. Category, transaction, budget, receipt, reimbursement, and Books changes can overwrite existing values. Reimbursement approval requires a separate approval in the Mercury app. The other changes can proceed without an approval in Mercury.
 
 The Books tools do not close or lock periods, reconcile accounts, match or unmatch transfers between accounts, mark a bill or invoice paid without a matching transaction, create tags, connect or unlink bank and card feeds, or edit an existing rule. Each connection acts on one organization's books, so accounting firms connect once per client organization.
 
