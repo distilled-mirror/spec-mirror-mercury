@@ -325,6 +325,7 @@ Returns a single transaction of a source account (a bank account, credit card, o
           "endogenousIncomingAchTransfer",
           "exogenousOutgoingAch",
           "exogenousIncomingAch",
+          "achReturn",
           "incomingCredit",
           "outgoingCredit",
           "incomingDebit",

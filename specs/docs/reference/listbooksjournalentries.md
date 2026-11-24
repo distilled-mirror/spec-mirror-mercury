@@ -1928,6 +1928,7 @@ Returns the journal entries of a Books instance. A journal entry is a balanced s
           "endogenousIncomingAchTransfer",
           "exogenousOutgoingAch",
           "exogenousIncomingAch",
+          "achReturn",
           "incomingCredit",
           "outgoingCredit",
           "incomingDebit",

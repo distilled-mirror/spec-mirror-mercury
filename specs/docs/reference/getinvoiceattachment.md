@@ -1,26 +1,12 @@
 ---
-updatedAt: 2026-04-22T13:48:46.000Z
+updatedAt: 2026-11-24T03:10:05.000Z
 agentTools:
   projectIndex: https://docs.mercury.com/llms.txt
 ---
 
-# Get an attachment
+# Get an invoice attachment
 
-Retrieve attachment details including download URL
-
-<Callout icon="🚧" theme="warn">
-  The `url` field in the response is a signed S3 download URL. Because this URL expires, you should always call this endpoint — or the single attachment endpoint — to retrieve a fresh URL whenever you want to download attachments.
-</Callout>
-
-Response Schema
-
-```json
-{
-  "id": string,
-  "url": string,
-  "fileName": string
-}
-```
+Retrieve an invoice (accounts receivable) attachment by ID, including a download URL. Only works for attachments uploaded to invoices; it does not return transaction, recipient, or bill attachments.
 
 # OpenAPI definition
 
@@ -82,8 +68,8 @@ Response Schema
   "paths": {
     "/ar/attachments/{attachmentId}": {
       "get": {
-        "description": "Retrieve attachment details including download URL",
-        "operationId": "getAttachment",
+        "description": "Retrieve an invoice (accounts receivable) attachment by ID, including a download URL. Only works for attachments uploaded to invoices; it does not return transaction, recipient, or bill attachments.",
+        "operationId": "getInvoiceAttachment",
         "parameters": [
           {
             "in": "path",
@@ -111,7 +97,7 @@ Response Schema
             "description": "`attachmentId` not found"
           }
         },
-        "summary": "Get an attachment",
+        "summary": "Get an invoice attachment",
         "tags": [
           "Invoices"
         ],

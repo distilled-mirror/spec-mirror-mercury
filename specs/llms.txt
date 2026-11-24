@@ -76,8 +76,6 @@
 - Organization
   - [Get organization information](https://docs.mercury.com/reference/getorganization.md): Retrieve information about your organization including EIN, legal business name, and DBAs.
 - [Accounts Receivable](https://docs.mercury.com/reference/accounts_receivable.md): API for creating and managing invoices
-  - Attachments
-    - [Get an attachment](https://docs.mercury.com/reference/getattachment.md): Retrieve attachment details including download URL
   - Customers
     - [List all customers](https://docs.mercury.com/reference/listcustomers.md): Retrieve a paginated list of customers. Supports cursor-based pagination with limit, order, start_after, and end_before query parameters.
     - [Create a customer](https://docs.mercury.com/reference/createcustomer.md): Create a new customer for the organization
@@ -93,6 +91,7 @@
     - [List invoice attachments](https://docs.mercury.com/reference/listinvoiceattachments.md): Retrieve a list of all attachments for a specific invoice
     - [Download invoice PDF](https://docs.mercury.com/reference/getinvoicepdf.md): Downloads a PDF file for the specified invoice. The response includes a Content-Disposition header set to 'attachment' with the filename.
     - [List invoice payments](https://docs.mercury.com/reference/listinvoicepayments.md): Retrieve the payments applied to an invoice, oldest first. Each payment shows the amount, the date it was applied, and where the money came from: a Mercury transaction, a card payment, or a payment…
+    - [Get an invoice attachment](https://docs.mercury.com/reference/getinvoiceattachment.md): Retrieve an invoice (accounts receivable) attachment by ID, including a download URL. Only works for attachments uploaded to invoices; it does not return transaction, recipient, or bill attachments.
   - Products
     - [List all products](https://docs.mercury.com/reference/listproducts.md): Retrieve a paginated list of invoicing products (product catalog items). Supports cursor-based pagination with limit, order, start_after, and end_before query parameters.
     - [Create a product](https://docs.mercury.com/reference/createproduct.md): Create a new invoicing product (product catalog item). The combination of name and unit price must be unique within the organization.
@@ -176,6 +175,9 @@
   - [Retrieve a profit and loss statement](https://docs.mercury.com/reference/getbooksprofitandloss.md): Returns a profit and loss statement (P&L), i.e. an income statement, for a date range, either as a single column covering the whole range or broken down by period (daily, monthly, quarterly, or…
   - [Retrieve a balance sheet](https://docs.mercury.com/reference/getbooksbalancesheet.md): Returns the balance sheets for every period (daily, monthly, quarterly, or yearly) in a date range, one column per period. Each column reports balances as of its last day. The response has a list of…
   - [Retrieve a cash flow report](https://docs.mercury.com/reference/getbookscashflow.md): Returns a cash flow report for a date range, either as a single column covering the whole range or broken down by period (daily, monthly, quarterly, or yearly). For each column, it shows the total…
+  - [List close dates](https://docs.mercury.com/reference/getbookscloses.md): Lists every close recorded for the Books instance, sorted by `closeDate`, latest first. The first item is the current close date; the list is empty when the books have never been closed. Each close…
+  - [List payroll runs](https://docs.mercury.com/reference/getbookspayrollruns.md): Returns one page of a Books instance's payroll runs. Payroll runs come from the organization's connected payroll provider: each run is one pay period's payroll, which Books records as an accrual to…
+  - [List integrations](https://docs.mercury.com/reference/getbooksintegrations.md): Returns the connection health of every integration a Books instance syncs data from: external bank and credit card accounts (Plaid), Stripe and PayPal accounts, and Gusto payroll. Use it to judge…
 - [Cards](https://docs.mercury.com/reference/cards.md): Issue and manage cards.
   - [List cards](https://docs.mercury.com/reference/listcards.md): Retrieve a paginated list of cards.
   - [Create a card](https://docs.mercury.com/reference/createcard.md): Issue a new virtual card.

@@ -1921,6 +1921,7 @@ Returns a single journal entry of a Books instance by its journal entry ID. A jo
           "endogenousIncomingAchTransfer",
           "exogenousOutgoingAch",
           "exogenousIncomingAch",
+          "achReturn",
           "incomingCredit",
           "outgoingCredit",
           "incomingDebit",

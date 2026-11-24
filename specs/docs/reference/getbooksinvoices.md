@@ -414,7 +414,7 @@ Returns one page of a Books instance's invoices: accounts receivable (AR), money
             "schema": {
               "description": "Comma-separated list of at most 100 distinct invoice IDs. Use it to read specific invoices.",
               "items": {
-                "description": "unique id for an accrual source",
+                "description": "unique id for an accrual source; emitted as base-58, but a base-16 UUID is also accepted",
                 "example": "7JRNsKwy2Lw66caxVU7WGC",
                 "format": "base58 (max length 22)",
                 "type": "string"

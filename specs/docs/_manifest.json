@@ -1,6 +1,6 @@
 {
   "source": "https://docs.mercury.com/llms.txt",
-  "count": 177,
+  "count": 180,
   "pages": [
     {
       "page": "https://docs.mercury.com/changelog/account-balance-events-via-webhooksevents-endpoints-now-available",
@@ -408,11 +408,6 @@
       "file": "reference/getaccountstatements.md"
     },
     {
-      "page": "https://docs.mercury.com/reference/getattachment",
-      "markdown": "https://docs.mercury.com/reference/getattachment.md",
-      "file": "reference/getattachment.md"
-    },
-    {
       "page": "https://docs.mercury.com/reference/getautotransferrules",
       "markdown": "https://docs.mercury.com/reference/getautotransferrules.md",
       "file": "reference/getautotransferrules.md"
@@ -443,9 +438,19 @@
       "file": "reference/getbookscategorizationrules.md"
     },
     {
+      "page": "https://docs.mercury.com/reference/getbookscloses",
+      "markdown": "https://docs.mercury.com/reference/getbookscloses.md",
+      "file": "reference/getbookscloses.md"
+    },
+    {
       "page": "https://docs.mercury.com/reference/getbooksinstances",
       "markdown": "https://docs.mercury.com/reference/getbooksinstances.md",
       "file": "reference/getbooksinstances.md"
+    },
+    {
+      "page": "https://docs.mercury.com/reference/getbooksintegrations",
+      "markdown": "https://docs.mercury.com/reference/getbooksintegrations.md",
+      "file": "reference/getbooksintegrations.md"
     },
     {
       "page": "https://docs.mercury.com/reference/getbooksinvoice",
@@ -476,6 +481,11 @@
       "page": "https://docs.mercury.com/reference/getbookslineentries",
       "markdown": "https://docs.mercury.com/reference/getbookslineentries.md",
       "file": "reference/getbookslineentries.md"
+    },
+    {
+      "page": "https://docs.mercury.com/reference/getbookspayrollruns",
+      "markdown": "https://docs.mercury.com/reference/getbookspayrollruns.md",
+      "file": "reference/getbookspayrollruns.md"
     },
     {
       "page": "https://docs.mercury.com/reference/getbooksprofitandloss",
@@ -551,6 +561,11 @@
       "page": "https://docs.mercury.com/reference/getinvoice",
       "markdown": "https://docs.mercury.com/reference/getinvoice.md",
       "file": "reference/getinvoice.md"
+    },
+    {
+      "page": "https://docs.mercury.com/reference/getinvoiceattachment",
+      "markdown": "https://docs.mercury.com/reference/getinvoiceattachment.md",
+      "file": "reference/getinvoiceattachment.md"
     },
     {
       "page": "https://docs.mercury.com/reference/getinvoicepdf",

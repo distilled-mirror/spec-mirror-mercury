@@ -647,8 +647,8 @@
     },
     "/ar/attachments/{attachmentId}": {
       "get": {
-        "description": "Retrieve attachment details including download URL",
-        "operationId": "getAttachment",
+        "description": "Retrieve an invoice (accounts receivable) attachment by ID, including a download URL. Only works for attachments uploaded to invoices; it does not return transaction, recipient, or bill attachments.",
+        "operationId": "getInvoiceAttachment",
         "parameters": [
           {
             "in": "path",
@@ -676,7 +676,7 @@
             "description": "`attachmentId` not found"
           }
         },
-        "summary": "Get an attachment",
+        "summary": "Get an invoice attachment",
         "tags": [
           "Invoices"
         ],
@@ -1718,7 +1718,7 @@
             "schema": {
               "description": "Comma-separated list of at most 100 distinct bill IDs. Use it to read specific bills.",
               "items": {
-                "description": "unique id for an accrual source",
+                "description": "unique id for an accrual source; emitted as base-58, but a base-16 UUID is also accepted",
                 "example": "7JRNsKwy2Lw66caxVU7WGC",
                 "format": "base58 (max length 22)",
                 "type": "string"
@@ -1927,6 +1927,44 @@
         "x-business-only": true
       }
     },
+    "/books/closes": {
+      "get": {
+        "description": "Lists every close recorded for the Books instance, sorted by `closeDate`, latest first. The first item is the current close date; the list is empty when the books have never been closed. Each close has its `closeId` and its `closeDate` (`YYYY-MM-DD`), the last day the books are closed through. Closes are soft: they are recorded but not enforced, so journal entries dated on or before a close can still be created and edited.",
+        "operationId": "getBooksCloses",
+        "parameters": [
+          {
+            "in": "query",
+            "name": "booksId",
+            "required": false,
+            "schema": {
+              "description": "The Books instance to act on. Must be the token organization's own instance, which it defaults to.",
+              "format": "uuid",
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/GetBooksAPIClosesResponse"
+                }
+              }
+            },
+            "description": ""
+          },
+          "400": {
+            "description": "Invalid `booksId`"
+          }
+        },
+        "summary": "List close dates",
+        "tags": [
+          "Books"
+        ],
+        "x-business-only": true
+      }
+    },
     "/books/instances": {
       "get": {
         "description": "Lists the Books instances, i.e. organizations' books (their general ledger: chart of accounts, journal entries, and reports), that this token can act on. Call this first, then pass an instance's `booksId` as the `booksId` argument of the other Books operations, such as the list ledgers endpoint (getBooksLedgers). A token can only act on its own organization's Books instance, so this lists at most that one instance; where `booksId` is optional, the token may omit it. Each instance has its `booksId`; the `organizationId`, `companyName`, and `callsign` of the organization it belongs to; and its `relationship` to the token's organization, which is `self`. Lists exactly the instances the other Books operations would let this token act on, given the scopes those operations need: the token's user must be an active member of the instance's organization with permission to manage Books, code transactions, and manage accounting integrations, and with access to all of its accounts, and the organization must have access to Books. An empty list means there is no instance this token can act on. Instances are sorted by `companyName`, ignoring case, and returned a page at a time: when the response has a `nextPageToken`, pass it as `pageToken` to get the next page.",
@@ -1970,6 +2008,44 @@
           }
         },
         "summary": "List the Books instances you can act on",
+        "tags": [
+          "Books"
+        ],
+        "x-business-only": true
+      }
+    },
+    "/books/integrations": {
+      "get": {
+        "description": "Returns the connection health of every integration a Books instance syncs data from: external bank and credit card accounts (Plaid), Stripe and PayPal accounts, and Gusto payroll. Use it to judge whether the books are complete enough to trust before reporting on them. Each entry in `integrations` is one existing connection, with `integrationId` (unique only within its `provider`), `name`, `provider` (`plaid`, `stripe`, `payPal`, or `gusto`), `connectionStatus`, `lastSyncedAt` when known, `sourceAccountId` when it feeds a source account, and `requiredAction`. `connectionStatus` is `autoSynced` (healthy), `setupInProgress` (first sync running), `setupPending` (waiting for the user to finish setup), `syncPaused` (paused by the user), `connectionLost` (broken; no new data arrives), or `inactive` (disabled; do not treat it as connected). `requiredAction` names what the user must do: `reconnectInMercury`, `completeSetupInMercury`, `resumeSyncInMercury`, or `none`. All fixes must be done by the user in the Mercury app; the API cannot reconnect, resume, or finish setting up an integration. `lastSyncedAt` means different things per provider: for Stripe, PayPal, and Gusto it is the last successful pull from the vendor into Mercury; for Plaid it is the last successful push from Mercury into Books. No staleness flag is returned; judge staleness from it. A provider the organization never connected has no entry, and neither has a removed Plaid connection, so a missing bank entry doesn't tell never-connected from removed. Mercury accounts and manual accounts are never included; to list every transaction feed, including those, use `getBooksSourceAccounts`. `failedChecks` lists the areas whose health could not be checked (`externalBanks`, `commerce`, `payroll`). For a listed area, health is unknown, not broken: don't treat its missing providers as never connected, and don't tell the user to reconnect them. When `failedChecks` is empty, a missing provider was never connected.",
+        "operationId": "getBooksIntegrations",
+        "parameters": [
+          {
+            "in": "query",
+            "name": "booksId",
+            "required": false,
+            "schema": {
+              "description": "The Books instance to act on. Must be the token organization's own instance, which it defaults to.",
+              "format": "uuid",
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/GetBooksAPIIntegrationsResponse"
+                }
+              }
+            },
+            "description": ""
+          },
+          "400": {
+            "description": "Invalid `booksId`"
+          }
+        },
+        "summary": "List integrations",
         "tags": [
           "Books"
         ],
@@ -2220,7 +2296,7 @@
             "schema": {
               "description": "Comma-separated list of at most 100 distinct invoice IDs. Use it to read specific invoices.",
               "items": {
-                "description": "unique id for an accrual source",
+                "description": "unique id for an accrual source; emitted as base-58, but a base-16 UUID is also accepted",
                 "example": "7JRNsKwy2Lw66caxVU7WGC",
                 "format": "base58 (max length 22)",
                 "type": "string"
@@ -3672,6 +3748,224 @@
           }
         },
         "summary": "Unmatch a transaction from its bills or invoices",
+        "tags": [
+          "Books"
+        ],
+        "x-business-only": true
+      }
+    },
+    "/books/payroll-runs": {
+      "get": {
+        "description": "Returns one page of a Books instance's payroll runs. Payroll runs come from the organization's connected payroll provider: each run is one pay period's payroll, which Books records as an accrual to be matched to the payments that settle it. Each run has its `id`, `runType` (`regular`, `offCycle`, or `oneTime`), `payPeriodStart` and `payPeriodEnd`, `postingDate` (the date it is posted to the ledger), `totalPayroll` (the cash requirement: net pay plus employee and employer taxes), `employerCost` (earnings, employer taxes, and employer contributions), and `matchingStatus` (`unmatched`, `partiallyMatched`, or `fullyMatched`), which says how much of the run has been matched to payments. Amounts are in dollars. To find runs still awaiting payment, pass `matchingStatuses=unmatched,partiallyMatched`. To see how much of one run a payment can still be matched to, retrieve it with getBooksPayrollRun and read `amountOutstanding` on the run and on each of its lines. Dates are YYYY-MM-DD and every date range is inclusive. Each response is one page of at most `limit` runs (default 50, at most 250). To see every match, pass `nextPageToken` back as pageToken with the same other parameters, and repeat until a response has no `nextPageToken`.",
+        "operationId": "getBooksPayrollRuns",
+        "parameters": [
+          {
+            "in": "query",
+            "name": "booksId",
+            "required": false,
+            "schema": {
+              "description": "The Books instance to act on. Must be the token organization's own instance, which it defaults to.",
+              "format": "uuid",
+              "type": "string"
+            }
+          },
+          {
+            "in": "query",
+            "name": "matchingStatuses",
+            "required": false,
+            "schema": {
+              "description": "Comma-separated list of matching statuses to include: `unmatched`, `partiallyMatched`, or `fullyMatched`. Pass `unmatched,partiallyMatched` for runs still awaiting payment.",
+              "items": {
+                "enum": [
+                  "unmatched",
+                  "partiallyMatched",
+                  "fullyMatched"
+                ],
+                "type": "string"
+              },
+              "type": "array"
+            }
+          },
+          {
+            "in": "query",
+            "name": "runTypes",
+            "required": false,
+            "schema": {
+              "description": "Comma-separated list of run types to include: `regular`, `offCycle`, or `oneTime`.",
+              "items": {
+                "enum": [
+                  "regular",
+                  "offCycle",
+                  "oneTime"
+                ],
+                "type": "string"
+              },
+              "type": "array"
+            }
+          },
+          {
+            "in": "query",
+            "name": "payPeriodStartFrom",
+            "required": false,
+            "schema": {
+              "description": "Only return runs whose pay period starts on or after this date (inclusive, YYYY-MM-DD).",
+              "format": "date",
+              "type": "string"
+            }
+          },
+          {
+            "in": "query",
+            "name": "payPeriodStartTo",
+            "required": false,
+            "schema": {
+              "description": "Only return runs whose pay period starts on or before this date (inclusive, YYYY-MM-DD).",
+              "format": "date",
+              "type": "string"
+            }
+          },
+          {
+            "in": "query",
+            "name": "payPeriodEndFrom",
+            "required": false,
+            "schema": {
+              "description": "Only return runs whose pay period ends on or after this date (inclusive, YYYY-MM-DD).",
+              "format": "date",
+              "type": "string"
+            }
+          },
+          {
+            "in": "query",
+            "name": "payPeriodEndTo",
+            "required": false,
+            "schema": {
+              "description": "Only return runs whose pay period ends on or before this date (inclusive, YYYY-MM-DD).",
+              "format": "date",
+              "type": "string"
+            }
+          },
+          {
+            "in": "query",
+            "name": "postingDateFrom",
+            "required": false,
+            "schema": {
+              "description": "Only return runs posted on or after this date (inclusive, YYYY-MM-DD).",
+              "format": "date",
+              "type": "string"
+            }
+          },
+          {
+            "in": "query",
+            "name": "postingDateTo",
+            "required": false,
+            "schema": {
+              "description": "Only return runs posted on or before this date (inclusive, YYYY-MM-DD).",
+              "format": "date",
+              "type": "string"
+            }
+          },
+          {
+            "in": "query",
+            "name": "minTotalPayroll",
+            "required": false,
+            "schema": {
+              "description": "Only return runs with a `totalPayroll` of at least this many dollars.",
+              "format": "double",
+              "type": "number"
+            }
+          },
+          {
+            "in": "query",
+            "name": "maxTotalPayroll",
+            "required": false,
+            "schema": {
+              "description": "Only return runs with a `totalPayroll` of at most this many dollars.",
+              "format": "double",
+              "type": "number"
+            }
+          },
+          {
+            "in": "query",
+            "name": "minEmployerCost",
+            "required": false,
+            "schema": {
+              "description": "Only return runs with an `employerCost` of at least this many dollars.",
+              "format": "double",
+              "type": "number"
+            }
+          },
+          {
+            "in": "query",
+            "name": "maxEmployerCost",
+            "required": false,
+            "schema": {
+              "description": "Only return runs with an `employerCost` of at most this many dollars.",
+              "format": "double",
+              "type": "number"
+            }
+          },
+          {
+            "in": "query",
+            "name": "sort",
+            "required": false,
+            "schema": {
+              "description": "The order to return runs in, as a single value. Defaults to the latest `postingDate` first.",
+              "enum": [
+                "payPeriodStartAsc",
+                "payPeriodStartDesc",
+                "payPeriodEndAsc",
+                "payPeriodEndDesc",
+                "payDateAsc",
+                "payDateDesc",
+                "totalPayrollAsc",
+                "totalPayrollDesc",
+                "employerCostAsc",
+                "employerCostDesc",
+                "runTypeAsc",
+                "runTypeDesc",
+                "matchingStatusAsc",
+                "matchingStatusDesc"
+              ],
+              "type": "string"
+            }
+          },
+          {
+            "in": "query",
+            "name": "pageToken",
+            "required": false,
+            "schema": {
+              "description": "The nextPageToken or prevPageToken from a previous response, to fetch that page.",
+              "type": "string"
+            }
+          },
+          {
+            "in": "query",
+            "name": "limit",
+            "required": false,
+            "schema": {
+              "default": 50,
+              "description": "The maximum number of payroll runs to return per page, from 1 to 250. Defaults to 50.",
+              "maximum": 250,
+              "minimum": 1,
+              "type": "integer"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/GetBooksAPIPayrollRunsResponse"
+                }
+              }
+            },
+            "description": ""
+          },
+          "400": {
+            "description": "Invalid `limit` or `pageToken` or `sort` or `maxEmployerCost` or `minEmployerCost` or `maxTotalPayroll` or `minTotalPayroll` or `postingDateTo` or `postingDateFrom` or `payPeriodEndTo` or `payPeriodEndFrom` or `payPeriodStartTo` or `payPeriodStartFrom` or `runTypes` or `matchingStatuses` or `booksId`"
+          }
+        },
+        "summary": "List payroll runs",
         "tags": [
           "Books"
         ],
@@ -13343,6 +13637,32 @@
         ],
         "type": "object"
       },
+      "BooksAPIClose": {
+        "description": " A close of the Books instance: the books are closed through `closeDate`. Closes are soft: journal entries dated on or before `closeDate` can still be created and edited.",
+        "properties": {
+          "closeDate": {
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/Day"
+              },
+              {
+                "description": " The last day the books are closed through, as `YYYY-MM-DD`."
+              }
+            ]
+          },
+          "closeId": {
+            "description": " The unique identifier of the close.",
+            "example": "7JRNsKwy2Lw66caxVU7WGC",
+            "format": "base58 (max length 22)",
+            "type": "string"
+          }
+        },
+        "required": [
+          "closeId",
+          "closeDate"
+        ],
+        "type": "object"
+      },
       "BooksAPICreateJournalEntryLineEntry": {
         "description": " A line entry within a journal entry creation request.",
         "properties": {
@@ -13511,6 +13831,103 @@
         "enum": [
           "self",
           "client"
+        ],
+        "type": "string"
+      },
+      "BooksAPIIntegration": {
+        "description": " One existing connection the Books instance syncs data from: an external bank or credit card account, a Stripe or PayPal account, or a Gusto payroll account.",
+        "properties": {
+          "connectionStatus": {
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/BooksAPIIntegrationConnectionStatus"
+              },
+              {
+                "description": " The integration's connection health."
+              }
+            ]
+          },
+          "integrationId": {
+            "description": " The identifier of the integration, as a UUID string. It is unique only among integrations with the same `provider`.",
+            "type": "string"
+          },
+          "lastSyncedAt": {
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/UTCTime"
+              },
+              {
+                "description": " The integration's last successful sync, when known. Its meaning depends on `provider`: for `stripe`, `payPal`, and `gusto` it is the last successful pull from the vendor into Mercury; for `plaid` it is the last successful push from Mercury into Books, since no account-level time of the last pull from Plaid is available. No staleness flag is returned; judge staleness from this time."
+              }
+            ],
+            "nullable": true
+          },
+          "name": {
+            "description": " The integration's display name, such as `Chase Credit (...1234)`, `Stripe Store 1`, or `Gusto`.",
+            "type": "string"
+          },
+          "provider": {
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/BooksAPIIntegrationProvider"
+              },
+              {
+                "description": " The vendor the integration connects to."
+              }
+            ]
+          },
+          "requiredAction": {
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/BooksAPIRequiredAction"
+              },
+              {
+                "description": " What the user must do to fix the integration. The user does it in the Mercury app; the API cannot perform it."
+              }
+            ]
+          },
+          "sourceAccountId": {
+            "description": " The source account the integration feeds in Books, when it is mapped to one: the `sourceAccountId` to pass when listing its transactions.",
+            "example": "7JRNsKwy2Lw66caxVU7WGC",
+            "format": "base58 (max length 22)",
+            "nullable": true,
+            "type": "string"
+          }
+        },
+        "required": [
+          "integrationId",
+          "name",
+          "provider",
+          "connectionStatus",
+          "requiredAction"
+        ],
+        "type": "object"
+      },
+      "BooksAPIIntegrationCheck": {
+        "enum": [
+          "externalBanks",
+          "commerce",
+          "payroll"
+        ],
+        "type": "string"
+      },
+      "BooksAPIIntegrationConnectionStatus": {
+        "enum": [
+          "connectionLost",
+          "setupInProgress",
+          "syncPaused",
+          "autoSynced",
+          "inactive",
+          "setupPending"
+        ],
+        "type": "string"
+      },
+      "BooksAPIIntegrationProvider": {
+        "enum": [
+          "plaid",
+          "stripe",
+          "payPal",
+          "gusto"
         ],
         "type": "string"
       },
@@ -14335,6 +14752,98 @@
         ],
         "type": "object"
       },
+      "BooksAPIPayrollRun": {
+        "description": " A payroll run synced from the organization's connected payroll provider:\n one pay period's payroll, which Books records as an accrual to be matched\n against the payments that settle it.",
+        "properties": {
+          "employerCost": {
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/Dollar"
+              },
+              {
+                "description": " What the run cost the company in dollars: earnings, employer taxes, and employer contributions."
+              }
+            ]
+          },
+          "id": {
+            "description": " The unique identifier of the payroll run. Pass it to getBooksPayrollRun.",
+            "example": "7JRNsKwy2Lw66caxVU7WGC",
+            "format": "base58 (max length 22)",
+            "type": "string"
+          },
+          "matchingStatus": {
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/BooksPayrollRunMatchingStatus"
+              },
+              {
+                "description": " How much of the run has been matched to payments: `unmatched`, `partiallyMatched`, or `fullyMatched`."
+              }
+            ]
+          },
+          "payPeriodEnd": {
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/Day"
+              },
+              {
+                "description": " The last day of the pay period the run covers."
+              }
+            ]
+          },
+          "payPeriodStart": {
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/Day"
+              },
+              {
+                "description": " The first day of the pay period the run covers."
+              }
+            ]
+          },
+          "postingDate": {
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/Day"
+              },
+              {
+                "description": " The date the run is posted to the ledger."
+              }
+            ]
+          },
+          "runType": {
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/BooksPayrollRunType"
+              },
+              {
+                "description": " Whether the run is `regular`, `offCycle`, or `oneTime`."
+              }
+            ]
+          },
+          "totalPayroll": {
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/Dollar"
+              },
+              {
+                "description": " The run's cash requirement in dollars: net pay plus employee and employer taxes."
+              }
+            ]
+          }
+        },
+        "required": [
+          "id",
+          "runType",
+          "payPeriodStart",
+          "payPeriodEnd",
+          "postingDate",
+          "totalPayroll",
+          "employerCost",
+          "matchingStatus"
+        ],
+        "type": "object"
+      },
       "BooksAPIPendingInvoice": {
         "description": " An invoice that was created in Mercury Invoicing but has not synced to\n Books yet, so it has no Books ID. Returned with HTTP 202.",
         "properties": {
@@ -14619,6 +15128,15 @@
           "ledger",
           "summary",
           "computed"
+        ],
+        "type": "string"
+      },
+      "BooksAPIRequiredAction": {
+        "enum": [
+          "reconnectInMercury",
+          "completeSetupInMercury",
+          "resumeSyncInMercury",
+          "none"
         ],
         "type": "string"
       },
@@ -16711,6 +17229,22 @@
           "creditAccountId"
         ],
         "type": "object"
+      },
+      "BooksPayrollRunMatchingStatus": {
+        "enum": [
+          "unmatched",
+          "partiallyMatched",
+          "fullyMatched"
+        ],
+        "type": "string"
+      },
+      "BooksPayrollRunType": {
+        "enum": [
+          "regular",
+          "offCycle",
+          "oneTime"
+        ],
+        "type": "string"
       },
       "BooksRequiredLedgerPurpose": {
         "enum": [
@@ -19036,6 +19570,22 @@
         ],
         "type": "object"
       },
+      "GetBooksAPIClosesResponse": {
+        "description": " Every close recorded for a Books instance, sorted by `closeDate`, latest first.",
+        "properties": {
+          "closes": {
+            "description": " The closes, sorted by `closeDate`, latest first. The first item is the current close date; the list is empty when the books have never been closed.",
+            "items": {
+              "$ref": "#/components/schemas/BooksAPIClose"
+            },
+            "type": "array"
+          }
+        },
+        "required": [
+          "closes"
+        ],
+        "type": "object"
+      },
       "GetBooksAPIInstancesResponse": {
         "description": " Response listing a page of the Books instances the token can act on.",
         "properties": {
@@ -19054,6 +19604,30 @@
         },
         "required": [
           "instances"
+        ],
+        "type": "object"
+      },
+      "GetBooksAPIIntegrationsResponse": {
+        "description": " The connection health of every integration the Books instance syncs data from.",
+        "properties": {
+          "failedChecks": {
+            "description": " Areas whose health could not be checked. For a listed area, health is unknown, not broken: don't treat its missing providers as never connected, and don't tell the user to reconnect them. Other areas' integrations are still returned. When empty, a missing provider was never connected.",
+            "items": {
+              "$ref": "#/components/schemas/BooksAPIIntegrationCheck"
+            },
+            "type": "array"
+          },
+          "integrations": {
+            "description": " One entry per existing integration. A provider the organization never connected has no entry, and neither has a removed Plaid connection, so a missing bank entry doesn't tell a never-connected account from a removed one. A disabled connection that still exists is returned as `inactive`. Mercury accounts and manual accounts are never included.",
+            "items": {
+              "$ref": "#/components/schemas/BooksAPIIntegration"
+            },
+            "type": "array"
+          }
+        },
+        "required": [
+          "integrations",
+          "failedChecks"
         ],
         "type": "object"
       },
@@ -19231,6 +19805,32 @@
         },
         "required": [
           "lineEntries"
+        ],
+        "type": "object"
+      },
+      "GetBooksAPIPayrollRunsResponse": {
+        "description": " One page of a Books instance's payroll runs.",
+        "properties": {
+          "nextPageToken": {
+            "description": " Token to fetch the next page of results",
+            "nullable": true,
+            "type": "string"
+          },
+          "payrollRuns": {
+            "description": " The payroll runs on this page.",
+            "items": {
+              "$ref": "#/components/schemas/BooksAPIPayrollRun"
+            },
+            "type": "array"
+          },
+          "prevPageToken": {
+            "description": " Token to fetch the previous page of results",
+            "nullable": true,
+            "type": "string"
+          }
+        },
+        "required": [
+          "payrollRuns"
         ],
         "type": "object"
       },
@@ -21999,6 +22599,7 @@
           "endogenousIncomingAchTransfer",
           "exogenousOutgoingAch",
           "exogenousIncomingAch",
+          "achReturn",
           "incomingCredit",
           "outgoingCredit",
           "incomingDebit",

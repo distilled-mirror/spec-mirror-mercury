@@ -2005,6 +2005,7 @@ Creates one or more journal entries in a Books instance and returns them. Each j
           "endogenousIncomingAchTransfer",
           "exogenousOutgoingAch",
           "exogenousIncomingAch",
+          "achReturn",
           "incomingCredit",
           "outgoingCredit",
           "incomingDebit",
