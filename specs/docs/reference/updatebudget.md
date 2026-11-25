@@ -45,6 +45,9 @@ Update a budget's fields. A draft is edited in place; a published budget gets a 
             "allOf": [
               {
                 "$ref": "#/components/schemas/NonNegativeDollar"
+              },
+              {
+                "description": " The amount each member can spend per period. Must be less than 100,000,000,000."
               }
             ],
             "nullable": true

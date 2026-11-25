@@ -45,6 +45,9 @@ Create a budget as a draft. Add members and publish it from the Mercury dashboar
             "allOf": [
               {
                 "$ref": "#/components/schemas/NonNegativeDollar"
+              },
+              {
+                "description": " The amount each member can spend per period. Must be less than 100,000,000,000."
               }
             ],
             "nullable": true

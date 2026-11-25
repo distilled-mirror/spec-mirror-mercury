@@ -1,5 +1,5 @@
 ---
-updatedAt: 2026-11-14T01:58:34.000Z
+updatedAt: 2026-11-19T21:13:22.000Z
 agentTools:
   projectIndex: https://docs.mercury.com/llms.txt
 ---
@@ -11,6 +11,8 @@ Categorize transactions, post journal entries, manage your chart of accounts, an
 Mercury's Books API lets you keep your general ledger current from your own code, then read it back as a profit and loss, balance sheet, or cash flow report.
 
 For every field, parameter, and response, see our [Books](https://docs.mercury.com/reference/books) API reference. To connect an AI agent instead, see [Books MCP Setup](https://docs.mercury.com/reference/books-mcp-setup).
+
+To stay under the request limit and handle `429` responses, see [Books API Rate Limits](https://docs.mercury.com/reference/books-api-rate-limits).
 
 ## What you can do
 

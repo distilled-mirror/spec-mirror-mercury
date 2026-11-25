@@ -1,6 +1,6 @@
 {
   "source": "https://docs.mercury.com/llms.txt",
-  "count": 180,
+  "count": 183,
   "pages": [
     {
       "page": "https://docs.mercury.com/changelog/account-balance-events-via-webhooksevents-endpoints-now-available",
@@ -188,6 +188,11 @@
       "file": "reference/books.md"
     },
     {
+      "page": "https://docs.mercury.com/reference/books-api-rate-limits",
+      "markdown": "https://docs.mercury.com/reference/books-api-rate-limits.md",
+      "file": "reference/books-api-rate-limits.md"
+    },
+    {
       "page": "https://docs.mercury.com/reference/books-api-use-cases",
       "markdown": "https://docs.mercury.com/reference/books-api-use-cases.md",
       "file": "reference/books-api-use-cases.md"
@@ -246,6 +251,11 @@
       "page": "https://docs.mercury.com/reference/createbookscategorizationrule",
       "markdown": "https://docs.mercury.com/reference/createbookscategorizationrule.md",
       "file": "reference/createbookscategorizationrule.md"
+    },
+    {
+      "page": "https://docs.mercury.com/reference/createbooksclose",
+      "markdown": "https://docs.mercury.com/reference/createbooksclose.md",
+      "file": "reference/createbooksclose.md"
     },
     {
       "page": "https://docs.mercury.com/reference/createbooksinvoice",
@@ -481,6 +491,11 @@
       "page": "https://docs.mercury.com/reference/getbookslineentries",
       "markdown": "https://docs.mercury.com/reference/getbookslineentries.md",
       "file": "reference/getbookslineentries.md"
+    },
+    {
+      "page": "https://docs.mercury.com/reference/getbookspayrollrun",
+      "markdown": "https://docs.mercury.com/reference/getbookspayrollrun.md",
+      "file": "reference/getbookspayrollrun.md"
     },
     {
       "page": "https://docs.mercury.com/reference/getbookspayrollruns",

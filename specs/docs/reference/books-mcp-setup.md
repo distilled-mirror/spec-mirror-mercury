@@ -1,5 +1,5 @@
 ---
-updatedAt: 2026-11-18T00:40:20.000Z
+updatedAt: 2026-11-19T21:13:22.000Z
 agentTools:
   projectIndex: https://docs.mercury.com/llms.txt
 ---
@@ -59,6 +59,8 @@ Add the server URL as a streamable HTTP server and let the client run OAuth. If 
 Changes made through Books MCP post to your books right away, so ask your AI tool to show you what it plans to change before it applies anything, especially for bulk changes.
 
 For everything your AI tool can do, see [Supported tools on Books MCP](https://docs.mercury.com/docs/supported-tools-on-mercury-mcp).
+
+Books MCP calls share your organization's Books API rate limit. See [Books API Rate Limits](https://docs.mercury.com/reference/books-api-rate-limits).
 
 ## Troubleshooting
 
