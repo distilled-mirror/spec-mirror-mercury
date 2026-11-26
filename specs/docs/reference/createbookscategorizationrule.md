@@ -495,7 +495,7 @@ Creates a categorization rule in a Books instance: a rule that automatically cat
             "name": "booksId",
             "required": false,
             "schema": {
-              "description": "The Books instance to act on. Required for agent organization tokens; defaults to the token organization's instance.",
+              "description": "The Books instance to act on. Must be the token organization's own instance, which it defaults to.",
               "format": "uuid",
               "type": "string"
             }

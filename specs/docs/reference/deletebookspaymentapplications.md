@@ -4,9 +4,9 @@ agentTools:
   projectIndex: https://docs.mercury.com/llms.txt
 ---
 
-# Unmatch a transaction from its bills or invoices
+# Unmatch a transaction from its bills, invoices, or payroll runs
 
-Unmatches a transaction's line entry from every bill or invoice it was matched to, and removes its adjustments, so the bills or invoices are owed again. Use the transaction's own `lineEntryId` from `GET /books/transactions` (getBooksTransactions) or `GET /books/transaction/{transactionId}` (getBooksTransaction). The transaction's other lines are replaced by one uncategorized line, so categorize it again afterwards with categorizeBooksTransactions; the line entry itself keeps its ID. When the unmatch completes, an invoice sent with Mercury Invoicing is also marked unpaid there. Unmatching a line entry with no matches changes nothing and returns 200 with empty `bills` and `invoices`, so retrying an unmatch is safe for Books. 409, and nothing changes, when the line entry has no matches in Books but Mercury Invoicing still records its payment, as after an unmatch whose result was lost: the invoice stays paid in Mercury Invoicing. Retrying won't fix this; contact Mercury support. Refused with 400, and nothing changes, when the line entry is matched to a payroll run, which this API can't unmatch, or when the payment was made through Bill Pay or is applied to a bill that came from Bill Pay. 404 when the Books instance has no such line entry. Returns the same shape as createBooksPaymentApplications: `lineEntry` (its `id`, `journalEntryId`, `transactionId`, unsigned `amount`, and `amountApplied` and `amountAdjusted`, both 0 now, in dollars) and the unmatched `bills` or `invoices`, each with its `id`, `amountPaid`, `amountAdjusted`, `amountOutstanding`, `status`, and `displayStatus`. A 503 response means Books couldn't unmatch the line entry or confirm the unmatch right now; retry the same request.
+Unmatches a transaction's line entry from every bill, invoice, or payroll run it was matched to, whether to a whole payroll run or to its lines, and removes its adjustments, so the bills, invoices, or payroll runs are owed again. Use the transaction's own `lineEntryId` from `GET /books/transactions` (getBooksTransactions) or `GET /books/transaction/{transactionId}` (getBooksTransaction). The transaction's other lines are replaced by one uncategorized line, so categorize it again afterwards with categorizeBooksTransactions; the line entry itself keeps its ID. When the unmatch completes, an invoice sent with Mercury Invoicing is also marked unpaid there. Unmatching a line entry with no matches changes nothing and returns 200 with empty `bills`, `invoices`, and `payrollRuns`, so retrying an unmatch is safe for Books. 409, and nothing changes, when the line entry has no matches in Books but Mercury Invoicing still records its payment, as after an unmatch whose result was lost: the invoice stays paid in Mercury Invoicing. Retrying won't fix this; contact Mercury support. Refused with 400, and nothing changes, when the payment was made through Bill Pay or is applied to a bill that came from Bill Pay. 404 when the Books instance has no such line entry. Returns the same shape as createBooksPaymentApplications: `lineEntry` (its `id`, `journalEntryId`, `transactionId`, unsigned `amount`, and `amountApplied` and `amountAdjusted`, both 0 now, in dollars), the unmatched `bills` and `invoices`, and the unmatched `payrollRuns`, one per payroll run whether the line entry was matched to the whole run or to its lines (read a run's lines with getBooksPayrollRun, which takes the same `id`). Each has its `id`, `amountPaid`, `amountAdjusted`, `amountOutstanding`, `status`, and `displayStatus`; a payroll run's amounts are signed, negative for a reversal run. A 503 response means Books couldn't unmatch the line entry or confirm the unmatch right now; retry the same request.
 
 # OpenAPI definition
 
@@ -15,7 +15,7 @@ Unmatches a transaction's line entry from every bill or invoice it was matched t
   "components": {
     "schemas": {
       "BooksAPIPaymentApplicationAccrualSource": {
-        "description": " A bill or invoice after the match or unmatch.",
+        "description": " A bill, invoice, or payroll run after the match or unmatch. A payroll\n run's amounts are signed, negative for a reversal run, as\n `getBooksPayrollRun` reports them.",
         "properties": {
           "amountAdjusted": {
             "allOf": [
@@ -58,7 +58,7 @@ Unmatches a transaction's line entry from every bill or invoice it was matched t
             ]
           },
           "id": {
-            "description": " The ID of the bill or invoice.",
+            "description": " The ID of the bill, invoice, or payroll run.",
             "example": "7JRNsKwy2Lw66caxVU7WGC",
             "format": "base58 (max length 22)",
             "type": "string"
@@ -69,7 +69,7 @@ Unmatches a transaction's line entry from every bill or invoice it was matched t
                 "$ref": "#/components/schemas/BooksAccrualSourceStatus"
               },
               {
-                "description": " The status of the bill or invoice."
+                "description": " The status of the bill, invoice, or payroll run."
               }
             ]
           }
@@ -145,17 +145,17 @@ Unmatches a transaction's line entry from every bill or invoice it was matched t
         "type": "object"
       },
       "BooksAPIPaymentApplicationsResponse": {
-        "description": " The result of matching a line entry to bills or invoices, or of unmatching\n it. Both operations return this shape.",
+        "description": " The result of matching a line entry to bills or invoices, or of unmatching\n it from its bills, invoices, and payroll runs. Both operations return this\n shape.",
         "properties": {
           "bills": {
-            "description": " The bills the request matched or unmatched. Empty when it matched or unmatched invoices.",
+            "description": " The bills the request matched or unmatched. Empty when the request matched invoices or the unmatch removed no bill.",
             "items": {
               "$ref": "#/components/schemas/BooksAPIPaymentApplicationAccrualSource"
             },
             "type": "array"
           },
           "invoices": {
-            "description": " The invoices the request matched or unmatched. Empty when it matched or unmatched bills.",
+            "description": " The invoices the request matched or unmatched. Empty when the request matched bills or the unmatch removed no invoice.",
             "items": {
               "$ref": "#/components/schemas/BooksAPIPaymentApplicationAccrualSource"
             },
@@ -170,12 +170,20 @@ Unmatches a transaction's line entry from every bill or invoice it was matched t
                 "description": " The line entry."
               }
             ]
+          },
+          "payrollRuns": {
+            "description": " The payroll runs the unmatch removed, one per run, whether the line entry was matched to the whole run or to its lines. Always empty for a match.",
+            "items": {
+              "$ref": "#/components/schemas/BooksAPIPaymentApplicationAccrualSource"
+            },
+            "type": "array"
           }
         },
         "required": [
           "lineEntry",
           "bills",
-          "invoices"
+          "invoices",
+          "payrollRuns"
         ],
         "type": "object"
       },
@@ -224,7 +232,7 @@ Unmatches a transaction's line entry from every bill or invoice it was matched t
   "paths": {
     "/books/line-entry/{lineEntryId}/payment-applications": {
       "delete": {
-        "description": "Unmatches a transaction's line entry from every bill or invoice it was matched to, and removes its adjustments, so the bills or invoices are owed again. Use the transaction's own `lineEntryId` from `GET /books/transactions` (getBooksTransactions) or `GET /books/transaction/{transactionId}` (getBooksTransaction). The transaction's other lines are replaced by one uncategorized line, so categorize it again afterwards with categorizeBooksTransactions; the line entry itself keeps its ID. When the unmatch completes, an invoice sent with Mercury Invoicing is also marked unpaid there. Unmatching a line entry with no matches changes nothing and returns 200 with empty `bills` and `invoices`, so retrying an unmatch is safe for Books. 409, and nothing changes, when the line entry has no matches in Books but Mercury Invoicing still records its payment, as after an unmatch whose result was lost: the invoice stays paid in Mercury Invoicing. Retrying won't fix this; contact Mercury support. Refused with 400, and nothing changes, when the line entry is matched to a payroll run, which this API can't unmatch, or when the payment was made through Bill Pay or is applied to a bill that came from Bill Pay. 404 when the Books instance has no such line entry. Returns the same shape as createBooksPaymentApplications: `lineEntry` (its `id`, `journalEntryId`, `transactionId`, unsigned `amount`, and `amountApplied` and `amountAdjusted`, both 0 now, in dollars) and the unmatched `bills` or `invoices`, each with its `id`, `amountPaid`, `amountAdjusted`, `amountOutstanding`, `status`, and `displayStatus`. A 503 response means Books couldn't unmatch the line entry or confirm the unmatch right now; retry the same request.",
+        "description": "Unmatches a transaction's line entry from every bill, invoice, or payroll run it was matched to, whether to a whole payroll run or to its lines, and removes its adjustments, so the bills, invoices, or payroll runs are owed again. Use the transaction's own `lineEntryId` from `GET /books/transactions` (getBooksTransactions) or `GET /books/transaction/{transactionId}` (getBooksTransaction). The transaction's other lines are replaced by one uncategorized line, so categorize it again afterwards with categorizeBooksTransactions; the line entry itself keeps its ID. When the unmatch completes, an invoice sent with Mercury Invoicing is also marked unpaid there. Unmatching a line entry with no matches changes nothing and returns 200 with empty `bills`, `invoices`, and `payrollRuns`, so retrying an unmatch is safe for Books. 409, and nothing changes, when the line entry has no matches in Books but Mercury Invoicing still records its payment, as after an unmatch whose result was lost: the invoice stays paid in Mercury Invoicing. Retrying won't fix this; contact Mercury support. Refused with 400, and nothing changes, when the payment was made through Bill Pay or is applied to a bill that came from Bill Pay. 404 when the Books instance has no such line entry. Returns the same shape as createBooksPaymentApplications: `lineEntry` (its `id`, `journalEntryId`, `transactionId`, unsigned `amount`, and `amountApplied` and `amountAdjusted`, both 0 now, in dollars), the unmatched `bills` and `invoices`, and the unmatched `payrollRuns`, one per payroll run whether the line entry was matched to the whole run or to its lines (read a run's lines with getBooksPayrollRun, which takes the same `id`). Each has its `id`, `amountPaid`, `amountAdjusted`, `amountOutstanding`, `status`, and `displayStatus`; a payroll run's amounts are signed, negative for a reversal run. A 503 response means Books couldn't unmatch the line entry or confirm the unmatch right now; retry the same request.",
         "operationId": "deleteBooksPaymentApplications",
         "parameters": [
           {
@@ -267,7 +275,7 @@ Unmatches a transaction's line entry from every bill or invoice it was matched t
             "description": "`lineEntryId` not found"
           }
         },
-        "summary": "Unmatch a transaction from its bills or invoices",
+        "summary": "Unmatch a transaction from its bills, invoices, or payroll runs",
         "tags": [
           "Books"
         ],

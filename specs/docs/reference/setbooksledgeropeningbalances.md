@@ -204,7 +204,7 @@ Sets or clears the opening balance of up to 100 ledgers, i.e. general ledger (GL
             "name": "booksId",
             "required": false,
             "schema": {
-              "description": "The Books instance to act on. Required for agent organization tokens; defaults to the token organization's instance.",
+              "description": "The Books instance to act on. Must be the token organization's own instance, which it defaults to.",
               "format": "uuid",
               "type": "string"
             }

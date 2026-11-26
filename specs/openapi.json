@@ -1505,7 +1505,7 @@
             "name": "booksId",
             "required": false,
             "schema": {
-              "description": "The Books instance to act on. Required for agent organization tokens; defaults to the token organization's instance.",
+              "description": "The Books instance to act on. Must be the token organization's own instance, which it defaults to.",
               "format": "uuid",
               "type": "string"
             }
@@ -1555,7 +1555,7 @@
             "name": "booksId",
             "required": false,
             "schema": {
-              "description": "The Books instance to act on. Required for agent organization tokens; defaults to the token organization's instance.",
+              "description": "The Books instance to act on. Must be the token organization's own instance, which it defaults to.",
               "format": "uuid",
               "type": "string"
             }
@@ -1613,7 +1613,7 @@
             "name": "booksId",
             "required": false,
             "schema": {
-              "description": "The Books instance to act on. Required for agent organization tokens; defaults to the token organization's instance.",
+              "description": "The Books instance to act on. Must be the token organization's own instance, which it defaults to.",
               "format": "uuid",
               "type": "string"
             }
@@ -1882,7 +1882,7 @@
             "name": "booksId",
             "required": false,
             "schema": {
-              "description": "The Books instance to act on. Required for agent organization tokens; defaults to the token organization's instance.",
+              "description": "The Books instance to act on. Must be the token organization's own instance, which it defaults to.",
               "format": "uuid",
               "type": "string"
             }
@@ -2118,7 +2118,7 @@
             "name": "booksId",
             "required": false,
             "schema": {
-              "description": "The Books instance to act on. Required for agent organization tokens; defaults to the token organization's instance.",
+              "description": "The Books instance to act on. Must be the token organization's own instance, which it defaults to.",
               "format": "uuid",
               "type": "string"
             }
@@ -2168,7 +2168,7 @@
             "name": "booksId",
             "required": false,
             "schema": {
-              "description": "The Books instance to act on. Required for agent organization tokens; defaults to the token organization's instance.",
+              "description": "The Books instance to act on. Must be the token organization's own instance, which it defaults to.",
               "format": "uuid",
               "type": "string"
             }
@@ -2236,7 +2236,7 @@
             "name": "booksId",
             "required": false,
             "schema": {
-              "description": "The Books instance to act on. Required for agent organization tokens; defaults to the token organization's instance.",
+              "description": "The Books instance to act on. Must be the token organization's own instance, which it defaults to.",
               "format": "uuid",
               "type": "string"
             }
@@ -3479,7 +3479,7 @@
             "name": "booksId",
             "required": false,
             "schema": {
-              "description": "The Books instance to act on. Required for agent organization tokens; defaults to the token organization's instance.",
+              "description": "The Books instance to act on. Must be the token organization's own instance, which it defaults to.",
               "format": "uuid",
               "type": "string"
             }
@@ -3599,7 +3599,7 @@
             "name": "minAmount",
             "required": false,
             "schema": {
-              "description": "Only return line entries with an amount of at least this value.",
+              "description": "Only return line entries with an amount of at least this value. Must be at most maxAmount when both are set.",
               "format": "double",
               "type": "number"
             }
@@ -3690,7 +3690,7 @@
     },
     "/books/line-entry/{lineEntryId}/payment-applications": {
       "post": {
-        "description": "Matches a transaction's line entry to bills (accounts payable) it paid, or to invoices (accounts receivable) it collected, i.e. records the payment against them. The transaction's other lines are replaced by lines for the matched bills or invoices and any adjustments, so an existing split is removed and the transaction's category can change. Use the transaction's own `lineEntryId` from `GET /books/transactions` (getBooksTransactions) or `GET /books/transaction/{transactionId}` (getBooksTransaction). Get bill IDs from `GET /books/bills` (getBooksBills) and invoice IDs from `GET /books/invoices` (getBooksInvoices). Each item of `applications` gives a `billId` or an `invoiceId`, never both, and the positive `amount` of the line entry applied to it, as a JSON number of dollars with at most two decimal places; one request matches bills only or invoices only, each at most once. An application may carry `adjustments`, each a `ledgerId` (a ledger, i.e. general ledger (GL) account, such as a bank fee or discount ledger, from getBooksLedgers) and a positive `amount`, booked against that bill or invoice; the request's own `adjustments` are booked on the line entry, such as to close out an overpayment. Send from 1 to 100 applications; each adjustments list may have at most 100 items, and all adjustments together may name at most 100 different ledgers. Every ID must be a bill, or every one an invoice, in the Books instance, and every adjustment ledger must be in the instance and editable; otherwise the request fails with 400 or 403 and nothing changes. A line entry already matched differently (to other bills or invoices, or with other amounts or adjustments) is refused with 409 and nothing changes; to change a match, unmatch it first with deleteBooksPaymentApplications. Retrying the same request is safe: a line entry is matched at most once, and a retried request whose match already landed returns 200 with the result. Matching an invoice sent with Mercury Invoicing also marks it paid there. Returns the same shape as deleteBooksPaymentApplications: `lineEntry` (its `id`, `journalEntryId`, `transactionId`, unsigned `amount`, `amountApplied`, and `amountAdjusted`, in dollars) and the matched `bills` or `invoices`, each with its `id`, `amountPaid`, `amountAdjusted`, `amountOutstanding`, `status`, and `displayStatus`. A 503 response means Books couldn't match the line entry, confirm the match, or return its result right now; retry the same request.",
+        "description": "Matches a transaction's line entry to bills (accounts payable) it paid, or to invoices (accounts receivable) it collected, i.e. records the payment against them. The transaction's other lines are replaced by lines for the matched bills or invoices and any adjustments, so an existing split is removed and the transaction's category can change. Use the transaction's own `lineEntryId` from `GET /books/transactions` (getBooksTransactions) or `GET /books/transaction/{transactionId}` (getBooksTransaction). Get bill IDs from `GET /books/bills` (getBooksBills) and invoice IDs from `GET /books/invoices` (getBooksInvoices). Each item of `applications` gives a `billId` or an `invoiceId`, never both, and the positive `amount` of the line entry applied to it, as a JSON number of dollars with at most two decimal places; one request matches bills only or invoices only, each at most once. An application may carry `adjustments`, each a `ledgerId` (a ledger, i.e. general ledger (GL) account, such as a bank fee or discount ledger, from getBooksLedgers) and a positive `amount`, booked against that bill or invoice; the request's own `adjustments` are booked on the line entry, such as to close out an overpayment. Send from 1 to 100 applications; each adjustments list may have at most 100 items, and all adjustments together may name at most 100 different ledgers. Every ID must be a bill, or every one an invoice, in the Books instance, and every adjustment ledger must be in the instance and editable; otherwise the request fails with 400 or 403 and nothing changes. A line entry already matched differently (to other bills, invoices, or payroll runs, or with other amounts or adjustments) is refused with 409 and nothing changes; to change a match, unmatch it first with deleteBooksPaymentApplications. Retrying the same request is safe: a line entry is matched at most once, and a retried request whose match already landed returns 200 with the result. Matching an invoice sent with Mercury Invoicing also marks it paid there. Returns the same shape as deleteBooksPaymentApplications: `lineEntry` (its `id`, `journalEntryId`, `transactionId`, unsigned `amount`, `amountApplied`, and `amountAdjusted`, in dollars) and the matched `bills` or `invoices`, each with its `id`, `amountPaid`, `amountAdjusted`, `amountOutstanding`, `status`, and `displayStatus`; `payrollRuns` is always empty for a match. A 503 response means Books couldn't match the line entry, confirm the match, or return its result right now; retry the same request.",
         "operationId": "createBooksPaymentApplications",
         "parameters": [
           {
@@ -3749,7 +3749,7 @@
         "x-business-only": true
       },
       "delete": {
-        "description": "Unmatches a transaction's line entry from every bill or invoice it was matched to, and removes its adjustments, so the bills or invoices are owed again. Use the transaction's own `lineEntryId` from `GET /books/transactions` (getBooksTransactions) or `GET /books/transaction/{transactionId}` (getBooksTransaction). The transaction's other lines are replaced by one uncategorized line, so categorize it again afterwards with categorizeBooksTransactions; the line entry itself keeps its ID. When the unmatch completes, an invoice sent with Mercury Invoicing is also marked unpaid there. Unmatching a line entry with no matches changes nothing and returns 200 with empty `bills` and `invoices`, so retrying an unmatch is safe for Books. 409, and nothing changes, when the line entry has no matches in Books but Mercury Invoicing still records its payment, as after an unmatch whose result was lost: the invoice stays paid in Mercury Invoicing. Retrying won't fix this; contact Mercury support. Refused with 400, and nothing changes, when the line entry is matched to a payroll run, which this API can't unmatch, or when the payment was made through Bill Pay or is applied to a bill that came from Bill Pay. 404 when the Books instance has no such line entry. Returns the same shape as createBooksPaymentApplications: `lineEntry` (its `id`, `journalEntryId`, `transactionId`, unsigned `amount`, and `amountApplied` and `amountAdjusted`, both 0 now, in dollars) and the unmatched `bills` or `invoices`, each with its `id`, `amountPaid`, `amountAdjusted`, `amountOutstanding`, `status`, and `displayStatus`. A 503 response means Books couldn't unmatch the line entry or confirm the unmatch right now; retry the same request.",
+        "description": "Unmatches a transaction's line entry from every bill, invoice, or payroll run it was matched to, whether to a whole payroll run or to its lines, and removes its adjustments, so the bills, invoices, or payroll runs are owed again. Use the transaction's own `lineEntryId` from `GET /books/transactions` (getBooksTransactions) or `GET /books/transaction/{transactionId}` (getBooksTransaction). The transaction's other lines are replaced by one uncategorized line, so categorize it again afterwards with categorizeBooksTransactions; the line entry itself keeps its ID. When the unmatch completes, an invoice sent with Mercury Invoicing is also marked unpaid there. Unmatching a line entry with no matches changes nothing and returns 200 with empty `bills`, `invoices`, and `payrollRuns`, so retrying an unmatch is safe for Books. 409, and nothing changes, when the line entry has no matches in Books but Mercury Invoicing still records its payment, as after an unmatch whose result was lost: the invoice stays paid in Mercury Invoicing. Retrying won't fix this; contact Mercury support. Refused with 400, and nothing changes, when the payment was made through Bill Pay or is applied to a bill that came from Bill Pay. 404 when the Books instance has no such line entry. Returns the same shape as createBooksPaymentApplications: `lineEntry` (its `id`, `journalEntryId`, `transactionId`, unsigned `amount`, and `amountApplied` and `amountAdjusted`, both 0 now, in dollars), the unmatched `bills` and `invoices`, and the unmatched `payrollRuns`, one per payroll run whether the line entry was matched to the whole run or to its lines (read a run's lines with getBooksPayrollRun, which takes the same `id`). Each has its `id`, `amountPaid`, `amountAdjusted`, `amountOutstanding`, `status`, and `displayStatus`; a payroll run's amounts are signed, negative for a reversal run. A 503 response means Books couldn't unmatch the line entry or confirm the unmatch right now; retry the same request.",
         "operationId": "deleteBooksPaymentApplications",
         "parameters": [
           {
@@ -3792,7 +3792,7 @@
             "description": "`lineEntryId` not found"
           }
         },
-        "summary": "Unmatch a transaction from its bills or invoices",
+        "summary": "Unmatch a transaction from its bills, invoices, or payroll runs",
         "tags": [
           "Books"
         ],
@@ -4444,7 +4444,7 @@
             "name": "booksId",
             "required": false,
             "schema": {
-              "description": "The Books instance to act on. Required for agent organization tokens; defaults to the token organization's instance.",
+              "description": "The Books instance to act on. Must be the token organization's own instance, which it defaults to.",
               "format": "uuid",
               "type": "string"
             }
@@ -14665,7 +14665,7 @@
         "type": "object"
       },
       "BooksAPIPaymentApplicationAccrualSource": {
-        "description": " A bill or invoice after the match or unmatch.",
+        "description": " A bill, invoice, or payroll run after the match or unmatch. A payroll\n run's amounts are signed, negative for a reversal run, as\n `getBooksPayrollRun` reports them.",
         "properties": {
           "amountAdjusted": {
             "allOf": [
@@ -14708,7 +14708,7 @@
             ]
           },
           "id": {
-            "description": " The ID of the bill or invoice.",
+            "description": " The ID of the bill, invoice, or payroll run.",
             "example": "7JRNsKwy2Lw66caxVU7WGC",
             "format": "base58 (max length 22)",
             "type": "string"
@@ -14719,7 +14719,7 @@
                 "$ref": "#/components/schemas/BooksAccrualSourceStatus"
               },
               {
-                "description": " The status of the bill or invoice."
+                "description": " The status of the bill, invoice, or payroll run."
               }
             ]
           }
@@ -14821,17 +14821,17 @@
         "type": "object"
       },
       "BooksAPIPaymentApplicationsResponse": {
-        "description": " The result of matching a line entry to bills or invoices, or of unmatching\n it. Both operations return this shape.",
+        "description": " The result of matching a line entry to bills or invoices, or of unmatching\n it from its bills, invoices, and payroll runs. Both operations return this\n shape.",
         "properties": {
           "bills": {
-            "description": " The bills the request matched or unmatched. Empty when it matched or unmatched invoices.",
+            "description": " The bills the request matched or unmatched. Empty when the request matched invoices or the unmatch removed no bill.",
             "items": {
               "$ref": "#/components/schemas/BooksAPIPaymentApplicationAccrualSource"
             },
             "type": "array"
           },
           "invoices": {
-            "description": " The invoices the request matched or unmatched. Empty when it matched or unmatched bills.",
+            "description": " The invoices the request matched or unmatched. Empty when the request matched bills or the unmatch removed no invoice.",
             "items": {
               "$ref": "#/components/schemas/BooksAPIPaymentApplicationAccrualSource"
             },
@@ -14846,12 +14846,20 @@
                 "description": " The line entry."
               }
             ]
+          },
+          "payrollRuns": {
+            "description": " The payroll runs the unmatch removed, one per run, whether the line entry was matched to the whole run or to its lines. Always empty for a match.",
+            "items": {
+              "$ref": "#/components/schemas/BooksAPIPaymentApplicationAccrualSource"
+            },
+            "type": "array"
           }
         },
         "required": [
           "lineEntry",
           "bills",
-          "invoices"
+          "invoices",
+          "payrollRuns"
         ],
         "type": "object"
       },

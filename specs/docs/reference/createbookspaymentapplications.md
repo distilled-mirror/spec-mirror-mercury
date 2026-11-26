@@ -6,7 +6,7 @@ agentTools:
 
 # Match a transaction to bills or invoices
 
-Matches a transaction's line entry to bills (accounts payable) it paid, or to invoices (accounts receivable) it collected, i.e. records the payment against them. The transaction's other lines are replaced by lines for the matched bills or invoices and any adjustments, so an existing split is removed and the transaction's category can change. Use the transaction's own `lineEntryId` from `GET /books/transactions` (getBooksTransactions) or `GET /books/transaction/{transactionId}` (getBooksTransaction). Get bill IDs from `GET /books/bills` (getBooksBills) and invoice IDs from `GET /books/invoices` (getBooksInvoices). Each item of `applications` gives a `billId` or an `invoiceId`, never both, and the positive `amount` of the line entry applied to it, as a JSON number of dollars with at most two decimal places; one request matches bills only or invoices only, each at most once. An application may carry `adjustments`, each a `ledgerId` (a ledger, i.e. general ledger (GL) account, such as a bank fee or discount ledger, from getBooksLedgers) and a positive `amount`, booked against that bill or invoice; the request's own `adjustments` are booked on the line entry, such as to close out an overpayment. Send from 1 to 100 applications; each adjustments list may have at most 100 items, and all adjustments together may name at most 100 different ledgers. Every ID must be a bill, or every one an invoice, in the Books instance, and every adjustment ledger must be in the instance and editable; otherwise the request fails with 400 or 403 and nothing changes. A line entry already matched differently (to other bills or invoices, or with other amounts or adjustments) is refused with 409 and nothing changes; to change a match, unmatch it first with deleteBooksPaymentApplications. Retrying the same request is safe: a line entry is matched at most once, and a retried request whose match already landed returns 200 with the result. Matching an invoice sent with Mercury Invoicing also marks it paid there. Returns the same shape as deleteBooksPaymentApplications: `lineEntry` (its `id`, `journalEntryId`, `transactionId`, unsigned `amount`, `amountApplied`, and `amountAdjusted`, in dollars) and the matched `bills` or `invoices`, each with its `id`, `amountPaid`, `amountAdjusted`, `amountOutstanding`, `status`, and `displayStatus`. A 503 response means Books couldn't match the line entry, confirm the match, or return its result right now; retry the same request.
+Matches a transaction's line entry to bills (accounts payable) it paid, or to invoices (accounts receivable) it collected, i.e. records the payment against them. The transaction's other lines are replaced by lines for the matched bills or invoices and any adjustments, so an existing split is removed and the transaction's category can change. Use the transaction's own `lineEntryId` from `GET /books/transactions` (getBooksTransactions) or `GET /books/transaction/{transactionId}` (getBooksTransaction). Get bill IDs from `GET /books/bills` (getBooksBills) and invoice IDs from `GET /books/invoices` (getBooksInvoices). Each item of `applications` gives a `billId` or an `invoiceId`, never both, and the positive `amount` of the line entry applied to it, as a JSON number of dollars with at most two decimal places; one request matches bills only or invoices only, each at most once. An application may carry `adjustments`, each a `ledgerId` (a ledger, i.e. general ledger (GL) account, such as a bank fee or discount ledger, from getBooksLedgers) and a positive `amount`, booked against that bill or invoice; the request's own `adjustments` are booked on the line entry, such as to close out an overpayment. Send from 1 to 100 applications; each adjustments list may have at most 100 items, and all adjustments together may name at most 100 different ledgers. Every ID must be a bill, or every one an invoice, in the Books instance, and every adjustment ledger must be in the instance and editable; otherwise the request fails with 400 or 403 and nothing changes. A line entry already matched differently (to other bills, invoices, or payroll runs, or with other amounts or adjustments) is refused with 409 and nothing changes; to change a match, unmatch it first with deleteBooksPaymentApplications. Retrying the same request is safe: a line entry is matched at most once, and a retried request whose match already landed returns 200 with the result. Matching an invoice sent with Mercury Invoicing also marks it paid there. Returns the same shape as deleteBooksPaymentApplications: `lineEntry` (its `id`, `journalEntryId`, `transactionId`, unsigned `amount`, `amountApplied`, and `amountAdjusted`, in dollars) and the matched `bills` or `invoices`, each with its `id`, `amountPaid`, `amountAdjusted`, `amountOutstanding`, `status`, and `displayStatus`; `payrollRuns` is always empty for a match. A 503 response means Books couldn't match the line entry, confirm the match, or return its result right now; retry the same request.
 
 # OpenAPI definition
 
@@ -56,7 +56,7 @@ Matches a transaction's line entry to bills (accounts payable) it paid, or to in
         "type": "object"
       },
       "BooksAPIPaymentApplicationAccrualSource": {
-        "description": " A bill or invoice after the match or unmatch.",
+        "description": " A bill, invoice, or payroll run after the match or unmatch. A payroll\n run's amounts are signed, negative for a reversal run, as\n `getBooksPayrollRun` reports them.",
         "properties": {
           "amountAdjusted": {
             "allOf": [
@@ -99,7 +99,7 @@ Matches a transaction's line entry to bills (accounts payable) it paid, or to in
             ]
           },
           "id": {
-            "description": " The ID of the bill or invoice.",
+            "description": " The ID of the bill, invoice, or payroll run.",
             "example": "7JRNsKwy2Lw66caxVU7WGC",
             "format": "base58 (max length 22)",
             "type": "string"
@@ -110,7 +110,7 @@ Matches a transaction's line entry to bills (accounts payable) it paid, or to in
                 "$ref": "#/components/schemas/BooksAccrualSourceStatus"
               },
               {
-                "description": " The status of the bill or invoice."
+                "description": " The status of the bill, invoice, or payroll run."
               }
             ]
           }
@@ -212,17 +212,17 @@ Matches a transaction's line entry to bills (accounts payable) it paid, or to in
         "type": "object"
       },
       "BooksAPIPaymentApplicationsResponse": {
-        "description": " The result of matching a line entry to bills or invoices, or of unmatching\n it. Both operations return this shape.",
+        "description": " The result of matching a line entry to bills or invoices, or of unmatching\n it from its bills, invoices, and payroll runs. Both operations return this\n shape.",
         "properties": {
           "bills": {
-            "description": " The bills the request matched or unmatched. Empty when it matched or unmatched invoices.",
+            "description": " The bills the request matched or unmatched. Empty when the request matched invoices or the unmatch removed no bill.",
             "items": {
               "$ref": "#/components/schemas/BooksAPIPaymentApplicationAccrualSource"
             },
             "type": "array"
           },
           "invoices": {
-            "description": " The invoices the request matched or unmatched. Empty when it matched or unmatched bills.",
+            "description": " The invoices the request matched or unmatched. Empty when the request matched bills or the unmatch removed no invoice.",
             "items": {
               "$ref": "#/components/schemas/BooksAPIPaymentApplicationAccrualSource"
             },
@@ -237,12 +237,20 @@ Matches a transaction's line entry to bills (accounts payable) it paid, or to in
                 "description": " The line entry."
               }
             ]
+          },
+          "payrollRuns": {
+            "description": " The payroll runs the unmatch removed, one per run, whether the line entry was matched to the whole run or to its lines. Always empty for a match.",
+            "items": {
+              "$ref": "#/components/schemas/BooksAPIPaymentApplicationAccrualSource"
+            },
+            "type": "array"
           }
         },
         "required": [
           "lineEntry",
           "bills",
-          "invoices"
+          "invoices",
+          "payrollRuns"
         ],
         "type": "object"
       },
@@ -316,7 +324,7 @@ Matches a transaction's line entry to bills (accounts payable) it paid, or to in
   "paths": {
     "/books/line-entry/{lineEntryId}/payment-applications": {
       "post": {
-        "description": "Matches a transaction's line entry to bills (accounts payable) it paid, or to invoices (accounts receivable) it collected, i.e. records the payment against them. The transaction's other lines are replaced by lines for the matched bills or invoices and any adjustments, so an existing split is removed and the transaction's category can change. Use the transaction's own `lineEntryId` from `GET /books/transactions` (getBooksTransactions) or `GET /books/transaction/{transactionId}` (getBooksTransaction). Get bill IDs from `GET /books/bills` (getBooksBills) and invoice IDs from `GET /books/invoices` (getBooksInvoices). Each item of `applications` gives a `billId` or an `invoiceId`, never both, and the positive `amount` of the line entry applied to it, as a JSON number of dollars with at most two decimal places; one request matches bills only or invoices only, each at most once. An application may carry `adjustments`, each a `ledgerId` (a ledger, i.e. general ledger (GL) account, such as a bank fee or discount ledger, from getBooksLedgers) and a positive `amount`, booked against that bill or invoice; the request's own `adjustments` are booked on the line entry, such as to close out an overpayment. Send from 1 to 100 applications; each adjustments list may have at most 100 items, and all adjustments together may name at most 100 different ledgers. Every ID must be a bill, or every one an invoice, in the Books instance, and every adjustment ledger must be in the instance and editable; otherwise the request fails with 400 or 403 and nothing changes. A line entry already matched differently (to other bills or invoices, or with other amounts or adjustments) is refused with 409 and nothing changes; to change a match, unmatch it first with deleteBooksPaymentApplications. Retrying the same request is safe: a line entry is matched at most once, and a retried request whose match already landed returns 200 with the result. Matching an invoice sent with Mercury Invoicing also marks it paid there. Returns the same shape as deleteBooksPaymentApplications: `lineEntry` (its `id`, `journalEntryId`, `transactionId`, unsigned `amount`, `amountApplied`, and `amountAdjusted`, in dollars) and the matched `bills` or `invoices`, each with its `id`, `amountPaid`, `amountAdjusted`, `amountOutstanding`, `status`, and `displayStatus`. A 503 response means Books couldn't match the line entry, confirm the match, or return its result right now; retry the same request.",
+        "description": "Matches a transaction's line entry to bills (accounts payable) it paid, or to invoices (accounts receivable) it collected, i.e. records the payment against them. The transaction's other lines are replaced by lines for the matched bills or invoices and any adjustments, so an existing split is removed and the transaction's category can change. Use the transaction's own `lineEntryId` from `GET /books/transactions` (getBooksTransactions) or `GET /books/transaction/{transactionId}` (getBooksTransaction). Get bill IDs from `GET /books/bills` (getBooksBills) and invoice IDs from `GET /books/invoices` (getBooksInvoices). Each item of `applications` gives a `billId` or an `invoiceId`, never both, and the positive `amount` of the line entry applied to it, as a JSON number of dollars with at most two decimal places; one request matches bills only or invoices only, each at most once. An application may carry `adjustments`, each a `ledgerId` (a ledger, i.e. general ledger (GL) account, such as a bank fee or discount ledger, from getBooksLedgers) and a positive `amount`, booked against that bill or invoice; the request's own `adjustments` are booked on the line entry, such as to close out an overpayment. Send from 1 to 100 applications; each adjustments list may have at most 100 items, and all adjustments together may name at most 100 different ledgers. Every ID must be a bill, or every one an invoice, in the Books instance, and every adjustment ledger must be in the instance and editable; otherwise the request fails with 400 or 403 and nothing changes. A line entry already matched differently (to other bills, invoices, or payroll runs, or with other amounts or adjustments) is refused with 409 and nothing changes; to change a match, unmatch it first with deleteBooksPaymentApplications. Retrying the same request is safe: a line entry is matched at most once, and a retried request whose match already landed returns 200 with the result. Matching an invoice sent with Mercury Invoicing also marks it paid there. Returns the same shape as deleteBooksPaymentApplications: `lineEntry` (its `id`, `journalEntryId`, `transactionId`, unsigned `amount`, `amountApplied`, and `amountAdjusted`, in dollars) and the matched `bills` or `invoices`, each with its `id`, `amountPaid`, `amountAdjusted`, `amountOutstanding`, `status`, and `displayStatus`; `payrollRuns` is always empty for a match. A 503 response means Books couldn't match the line entry, confirm the match, or return its result right now; retry the same request.",
         "operationId": "createBooksPaymentApplications",
         "parameters": [
           {

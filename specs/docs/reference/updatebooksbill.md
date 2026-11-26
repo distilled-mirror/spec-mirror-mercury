@@ -462,7 +462,7 @@ Edits an existing bill, i.e. an accounts payable record, and returns the updated
             "name": "booksId",
             "required": false,
             "schema": {
-              "description": "The Books instance to act on. Required for agent organization tokens; defaults to the token organization's instance.",
+              "description": "The Books instance to act on. Must be the token organization's own instance, which it defaults to.",
               "format": "uuid",
               "type": "string"
             }

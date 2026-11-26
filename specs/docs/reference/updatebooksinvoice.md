@@ -499,7 +499,7 @@ Edits an existing invoice, i.e. an accounts receivable (AR) record of money a cu
             "name": "booksId",
             "required": false,
             "schema": {
-              "description": "The Books instance to act on. Required for agent organization tokens; defaults to the token organization's instance.",
+              "description": "The Books instance to act on. Must be the token organization's own instance, which it defaults to.",
               "format": "uuid",
               "type": "string"
             }

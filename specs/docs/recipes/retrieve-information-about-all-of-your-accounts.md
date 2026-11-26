@@ -1,5 +1,5 @@
 ---
-updatedAt: 2026-09-11T19:32:16.000Z
+updatedAt: 2026-11-25T20:35:43.000Z
 agentTools:
   projectIndex: https://docs.mercury.com/llms.txt
 ---
@@ -125,3 +125,12 @@ This includes specifying the right URL, HTTP method, as well as HTTP request hea
 You can generate one over at https://mercury.com/settings/tokens.
 
 A read-only API token is sufficient for this request.
+
+# Find your Treasury and credit accounts
+
+<!-- curl@2 -->
+<!-- python@3 -->
+<!-- ruby@5 -->
+<!-- node@3 -->
+
+This endpoint returns checking and savings accounts only. List Treasury accounts with [GET /treasury](https://docs.mercury.com/reference/gettreasury) and credit accounts with [GET /credit](https://docs.mercury.com/reference/listcredit). Personal accounts list Invest accounts with [GET /invest](https://docs.mercury.com/reference/getinvest).

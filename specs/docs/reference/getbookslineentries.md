@@ -281,7 +281,7 @@ Returns line-level general ledger (GL) activity for a date range. Each line entr
             "name": "minAmount",
             "required": false,
             "schema": {
-              "description": "Only return line entries with an amount of at least this value.",
+              "description": "Only return line entries with an amount of at least this value. Must be at most maxAmount when both are set.",
               "format": "double",
               "type": "number"
             }
