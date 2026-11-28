@@ -6,7 +6,7 @@ agentTools:
 
 # Close the books
 
-Closes the books through `closeDate` (`YYYY-MM-DD`), which must be today or earlier (UTC) and after the latest close date, or, when the books have never been closed, on or after the day the books' entries start; any other date is a 400 that names the rule. The close is soft: it sets the close date reports use and doesn't lock journal entries dated on or before it. To list existing closes and the latest close date, use getBooksCloses.
+Closes the books through `closeDate` (`YYYY-MM-DD`), which must be today or earlier (UTC) and after the latest close date, or, when the books have never been closed, on or after the day the books' entries start; any other date is a 400 that names the rule. A `closeDate` equal to the latest close date returns 200 and changes nothing, so retrying the same request is safe. A 503 means Books couldn't close the books or couldn't confirm the close; retry the same request. The close is soft: it sets the close date reports use and doesn't lock journal entries dated on or before it. To list existing closes and the latest close date, use getBooksCloses.
 
 # OpenAPI definition
 
@@ -75,7 +75,7 @@ Closes the books through `closeDate` (`YYYY-MM-DD`), which must be today or earl
   "paths": {
     "/books/closes": {
       "post": {
-        "description": "Closes the books through `closeDate` (`YYYY-MM-DD`), which must be today or earlier (UTC) and after the latest close date, or, when the books have never been closed, on or after the day the books' entries start; any other date is a 400 that names the rule. The close is soft: it sets the close date reports use and doesn't lock journal entries dated on or before it. To list existing closes and the latest close date, use getBooksCloses.",
+        "description": "Closes the books through `closeDate` (`YYYY-MM-DD`), which must be today or earlier (UTC) and after the latest close date, or, when the books have never been closed, on or after the day the books' entries start; any other date is a 400 that names the rule. A `closeDate` equal to the latest close date returns 200 and changes nothing, so retrying the same request is safe. A 503 means Books couldn't close the books or couldn't confirm the close; retry the same request. The close is soft: it sets the close date reports use and doesn't lock journal entries dated on or before it. To list existing closes and the latest close date, use getBooksCloses.",
         "operationId": "createBooksClose",
         "parameters": [
           {

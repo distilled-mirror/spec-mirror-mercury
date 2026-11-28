@@ -1,6 +1,6 @@
 {
   "source": "https://docs.mercury.com/llms.txt",
-  "count": 183,
+  "count": 184,
   "pages": [
     {
       "page": "https://docs.mercury.com/changelog/account-balance-events-via-webhooksevents-endpoints-now-available",
@@ -791,6 +791,11 @@
       "page": "https://docs.mercury.com/reference/markreimbursementpaid",
       "markdown": "https://docs.mercury.com/reference/markreimbursementpaid.md",
       "file": "reference/markreimbursementpaid.md"
+    },
+    {
+      "page": "https://docs.mercury.com/reference/matchbookspayrollpayment",
+      "markdown": "https://docs.mercury.com/reference/matchbookspayrollpayment.md",
+      "file": "reference/matchbookspayrollpayment.md"
     },
     {
       "page": "https://docs.mercury.com/reference/matchreceipt",

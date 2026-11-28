@@ -1965,7 +1965,7 @@
         "x-business-only": true
       },
       "post": {
-        "description": "Closes the books through `closeDate` (`YYYY-MM-DD`), which must be today or earlier (UTC) and after the latest close date, or, when the books have never been closed, on or after the day the books' entries start; any other date is a 400 that names the rule. The close is soft: it sets the close date reports use and doesn't lock journal entries dated on or before it. To list existing closes and the latest close date, use getBooksCloses.",
+        "description": "Closes the books through `closeDate` (`YYYY-MM-DD`), which must be today or earlier (UTC) and after the latest close date, or, when the books have never been closed, on or after the day the books' entries start; any other date is a 400 that names the rule. A `closeDate` equal to the latest close date returns 200 and changes nothing, so retrying the same request is safe. A 503 means Books couldn't close the books or couldn't confirm the close; retry the same request. The close is soft: it sets the close date reports use and doesn't lock journal entries dated on or before it. To list existing closes and the latest close date, use getBooksCloses.",
         "operationId": "createBooksClose",
         "parameters": [
           {
@@ -4063,6 +4063,46 @@
           }
         },
         "summary": "List payroll runs",
+        "tags": [
+          "Books"
+        ],
+        "x-business-only": true
+      }
+    },
+    "/books/payroll-runs/payments": {
+      "post": {
+        "description": "Records that a transaction's line entry, a bank withdrawal, paid one or more payroll runs, i.e. matches the payment to them. Payroll runs come from the organization's connected payroll provider; each is one pay period's payroll, which Books records as an accrual awaiting payment. Use the transaction's own `lineEntryId` from getBooksTransactions or getBooksTransaction, and payroll run IDs from getBooksPayrollRuns. Before matching, read each run's `amountOutstanding` with getBooksPayrollRun. Each item of `applications` gives a `payrollRunId` and the positive `amount` of the payment applied to that run, as a JSON number of dollars with at most two decimal places. A run may take a partial amount, less than its `amountOutstanding`, but never more. An application may carry `adjustments`, which write off part of that run's remaining balance; a run's `amount` plus its adjustments can't exceed its `amountOutstanding`. The request's own `adjustments` are closing adjustments on the line entry, for any part of the payment no run accounts for, such as a bank fee. Each adjustment is a `ledgerId` (an editable ledger, i.e. general ledger (GL) account, of the instance, from getBooksLedgers) and a positive `amount` in dollars with at most two decimal places; each adjustments list may have at most 100 items, and all adjustments together may name at most 100 different ledgers. List every run the payment covers in one request, from 1 to 100 runs, each at most once: a line entry is matched at most once, and the applied amounts plus the closing adjustments must add up to the transaction's amount (a run's own adjustments don't count toward it). The transaction's other lines are replaced by lines for the matched runs and adjustments, so an existing split is removed and the transaction's category can change. 400, and nothing changes, when an ID isn't a payroll run of the Books instance (a bill or invoice ID included) or the request is malformed. 403, and nothing changes, when an adjustment ledger is read-only or in another Books instance; a ledger Books can't otherwise post to is refused with 400. 409, and nothing changes, when the line entry is already matched differently. A 503 response means Books couldn't match the line entry or confirm the match right now; retry the same request. Retrying the same request is always safe: a retried request whose match already landed succeeds without matching again. Returns 204 with no body on success; to see the result, read the runs back with getBooksPayrollRun, whose `amountPaid` and `matchingStatus` reflect the match. To undo a payroll match, unmatch the line entry with deleteBooksPaymentApplications.",
+        "operationId": "matchBooksPayrollPayment",
+        "parameters": [
+          {
+            "in": "query",
+            "name": "booksId",
+            "required": false,
+            "schema": {
+              "description": "The Books instance to act on. Must be the token organization's own instance, which it defaults to.",
+              "format": "uuid",
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/MatchBooksAPIPayrollPaymentRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "204": {
+            "description": ""
+          },
+          "400": {
+            "description": "Invalid `body` or `booksId`"
+          }
+        },
+        "summary": "Match a payment to payroll runs",
         "tags": [
           "Books"
         ],
@@ -7896,7 +7936,7 @@
     },
     "/spend/reimbursements/{reimbursementId}/approve": {
       "post": {
-        "description": "Approve a submitted reimbursement. The token's user needs the \"Reimbursement approval and submission\" or \"Policy management and approval\" permission, and access to the organization's reimbursement account. The token needs the `reimbursements:manage` scope or Read and Write access. Self-approval works only when the organization allows it or has only one admin.\n\nApproved reimbursements pay out in a batch each weekday at 1:49 PM Eastern. A payout waits for a later batch when the reimbursement account can't cover it or the submitter has no verified payout account.",
+        "description": "Approve a submitted reimbursement. The token's user needs the \"Reimbursement approval and submission\" or \"Policy management and approval\" permission, and access to the organization's reimbursement account. The token needs the `reimbursements:manage` scope or Read and Write access. Self-approval works only when the organization allows it or has only one admin.\n\nApproved reimbursements pay out in a batch each weekday at 1:49 PM Eastern. A payout waits for a later batch when the reimbursement account can't cover it or the submitter has no verified payout account.\n\nThe body is optional. Send `{\"requireApproval\": true}` to get an approval request instead of approving. A call from an MCP client always gets one. The response is 202 with the approval request, including a `dashboardLink`, and the reimbursement is approved only after a person confirms it in Mercury.",
         "operationId": "approveReimbursement",
         "parameters": [
           {
@@ -7918,12 +7958,31 @@
             }
           }
         ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ApiV1ApproveReimbursementRequest"
+              }
+            }
+          }
+        },
         "responses": {
+          "202": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApprovalRequestResponse"
+                }
+              }
+            },
+            "description": "The call set requireApproval or came from an MCP client, so it doesn’t approve the reimbursement. The response is an approval request, including a dashboardLink, that a person confirms in Mercury."
+          },
           "204": {
             "description": ""
           },
           "400": {
-            "description": "Invalid `Idempotency-Key`"
+            "description": "Invalid `body` or `Idempotency-Key`"
           },
           "404": {
             "description": "`reimbursementId` not found"
@@ -10150,6 +10209,17 @@
           "employee"
         ],
         "type": "string"
+      },
+      "ApiV1ApproveReimbursementRequest": {
+        "description": " The optional body of an approval. No body and @{}@ approve directly, except from an MCP client.",
+        "properties": {
+          "requireApproval": {
+            "description": " Return an approval request that a person confirms in Mercury, instead of approving.",
+            "nullable": true,
+            "type": "boolean"
+          }
+        },
+        "type": "object"
       },
       "ApiV1ArAttachmentResponseData": {
         "description": " The object representing a file attachment for an invoice.\n The file is not a part of this object itself but information\n for where to download it will be in this object.",
@@ -12588,6 +12658,202 @@
         ],
         "type": "object"
       },
+      "ApprovalActionType": {
+        "description": "The action an approval request runs once approved, such as createRecipient. Mercury can add new values. Clients must accept unknown values.",
+        "enum": [
+          "createRecipient",
+          "approveReimbursement"
+        ],
+        "type": "string"
+      },
+      "ApprovalRequestFailure": {
+        "description": " Why an approved request's action failed.",
+        "properties": {
+          "code": {
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/ApprovalRequestFailureCode"
+              },
+              {
+                "description": " What kind of failure stopped the action."
+              }
+            ]
+          },
+          "message": {
+            "description": " Why the action failed, in words. Present only for actions that share their failure reasons.",
+            "nullable": true,
+            "type": "string"
+          }
+        },
+        "required": [
+          "code"
+        ],
+        "type": "object"
+      },
+      "ApprovalRequestFailureCode": {
+        "enum": [
+          "validationFailed",
+          "executionFailed"
+        ],
+        "type": "string"
+      },
+      "ApprovalRequestId": {
+        "description": "ID for the approval request",
+        "format": "uuid",
+        "type": "string"
+      },
+      "ApprovalRequestInput": {
+        "description": "The action's input as submitted, in the shape of the action's own create request body.",
+        "type": "object"
+      },
+      "ApprovalRequestResponse": {
+        "description": " An action that waits for a person's approval before Mercury runs it.",
+        "properties": {
+          "actionType": {
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/ApprovalActionType"
+              },
+              {
+                "description": " The action Mercury runs once the request is approved, such as @createRecipient@."
+              }
+            ]
+          },
+          "dashboardLink": {
+            "description": " A link to the page in the Mercury app where the request can be approved or rejected.",
+            "type": "string"
+          },
+          "failure": {
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/ApprovalRequestFailure"
+              },
+              {
+                "description": " Why the action failed. Present only when the status is @failed@."
+              }
+            ],
+            "nullable": true
+          },
+          "id": {
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/ApprovalRequestId"
+              },
+              {
+                "description": " The approval request's id."
+              }
+            ]
+          },
+          "input": {
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/ApprovalRequestInput"
+              },
+              {
+                "description": " The action's input as submitted. Present only while the request is pending and your token can read\n the action's resource, such as with @recipients:read@ for @createRecipient@."
+              }
+            ],
+            "nullable": true
+          },
+          "requirement": {
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/ApprovalRequirement"
+              },
+              {
+                "description": " Who must approve the request, as decided when it was submitted."
+              }
+            ]
+          },
+          "resourceType": {
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/ApprovalResourceType"
+              },
+              {
+                "description": " The kind of resource the action creates, such as @recipient@."
+              }
+            ]
+          },
+          "result": {
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/ApprovalRequestResult"
+              },
+              {
+                "description": " What the action produced. Present only when the status is @completed@."
+              }
+            ],
+            "nullable": true
+          },
+          "status": {
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/ApprovalRequestStatus"
+              },
+              {
+                "description": " Where the request stands."
+              }
+            ]
+          }
+        },
+        "required": [
+          "id",
+          "status",
+          "actionType",
+          "resourceType",
+          "requirement",
+          "dashboardLink"
+        ],
+        "type": "object"
+      },
+      "ApprovalRequestResult": {
+        "description": " What an approved request's action produced once it completed.",
+        "properties": {
+          "resourceId": {
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/UUID"
+              },
+              {
+                "description": " The id of the resource the action created, of the request's @resourceType@."
+              }
+            ]
+          }
+        },
+        "required": [
+          "resourceId"
+        ],
+        "type": "object"
+      },
+      "ApprovalRequestStatus": {
+        "enum": [
+          "pending",
+          "approved",
+          "completed",
+          "failed",
+          "rejected",
+          "cancelled"
+        ],
+        "type": "string"
+      },
+      "ApprovalRequirement": {
+        "enum": [
+          "requesterOrAdmin",
+          "requester",
+          "oneAdmin",
+          "twoAdmins"
+        ],
+        "type": "string"
+      },
+      "ApprovalResourceType": {
+        "description": "The kind of resource an approval request's action creates or acts on, such as recipient. Mercury can add new values. Clients must accept unknown values.",
+        "enum": [
+          "recipient",
+          "reimbursement"
+        ],
+        "type": "string"
+      },
       "AttachmentId": {
         "description": "ID for the attachment.",
         "format": "uuid",
@@ -14860,6 +15126,40 @@
           "bills",
           "invoices",
           "payrollRuns"
+        ],
+        "type": "object"
+      },
+      "BooksAPIPayrollPaymentApplication": {
+        "description": " The part of the line entry's amount applied to one payroll run.",
+        "properties": {
+          "adjustments": {
+            "description": " Adjustments booked against this payroll run, writing off part of its remaining balance, at most 100.",
+            "items": {
+              "$ref": "#/components/schemas/BooksAPIPaymentApplicationAdjustment"
+            },
+            "nullable": true,
+            "type": "array"
+          },
+          "amount": {
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/Dollar"
+              },
+              {
+                "description": " The positive amount applied to the payroll run: a number of dollars with at most two decimal places. It may be less than the run's `amountOutstanding`, but not more."
+              }
+            ]
+          },
+          "payrollRunId": {
+            "description": " The payroll run paid, as `getBooksPayrollRuns` returns its `id`.",
+            "example": "7JRNsKwy2Lw66caxVU7WGC",
+            "format": "base58 (max length 22)",
+            "type": "string"
+          }
+        },
+        "required": [
+          "payrollRunId",
+          "amount"
         ],
         "type": "object"
       },
@@ -20805,6 +21105,38 @@
         "description": "ID for the invoice payment.",
         "format": "uuid",
         "type": "string"
+      },
+      "MatchBooksAPIPayrollPaymentRequest": {
+        "description": " Request to match a transaction's line entry to payroll runs.",
+        "properties": {
+          "adjustments": {
+            "description": " Adjustments on the line entry itself, for any part of the payment no payroll run accounts for, such as a bank fee, at most 100.",
+            "items": {
+              "$ref": "#/components/schemas/BooksAPIPaymentApplicationAdjustment"
+            },
+            "nullable": true,
+            "type": "array"
+          },
+          "applications": {
+            "description": " One item per payroll run the withdrawal paid: at least 1 and at most 100 items, with no `payrollRunId` repeated.",
+            "items": {
+              "$ref": "#/components/schemas/BooksAPIPayrollPaymentApplication"
+            },
+            "minItems": 1,
+            "type": "array"
+          },
+          "lineEntryId": {
+            "description": " The line entry of the bank withdrawal that paid the payroll runs, as `getBooksTransactions` and `getBooksTransaction` return its `lineEntryId`.",
+            "example": "7JRNsKwy2Lw66caxVU7WGC",
+            "format": "base58 (max length 22)",
+            "type": "string"
+          }
+        },
+        "required": [
+          "lineEntryId",
+          "applications"
+        ],
+        "type": "object"
       },
       "MerchantData": {
         "description": " Merchant information for card transactions",
